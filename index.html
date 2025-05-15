@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drogueria Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .view-hidden {
+            display: none;
+        }
+        .view-visible {
+            display: block;
+        }
+        header {
+            z-index: 10;
+        }
+        .pagination-btn {
+            @apply inline-flex items-center justify-center px-3 py-1 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition ease-in-out duration-150;
+        }
+        .pagination-btn.active {
+            @apply bg-blue-600 border-blue-600 text-white hover:bg-blue-700;
+        }
+        .pagination-btn:disabled {
+            @apply opacity-50 cursor-not-allowed;
+        }
+        input:required:invalid {
+            border-color: #fecaca;
+        }
+        input:required:valid {
+            border-color: #bbf7d0;
+        }
+        .button-loading::after {
+            content: '';
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            margin-left: 0.5rem;
+            border: 2px solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .search-input-container {
+            position: relative;
+            width: 100%;
+        }
+        #search-input {
+            width: 100%;
+            padding-left: 2.5rem;
+            padding-right: 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            font-size: 1rem;
+            line-height: 1.5rem;
+            color: #374151;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        #search-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+        }
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+        }
+        .table-container-no-scroll {
+            width: 100%;
+            overflow-x: auto; /* Cambiado a auto para permitir scroll en móviles */
+        }
+        table {
+            width: 100%;
+            table-layout: auto; /* Cambiado a auto para mejor comportamiento en móviles */
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 0.5rem 0.4rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        th {
+            position: sticky;
+            top: 0;
+            background-color: #f0f9ff;
+            z-index: 5;
+            font-size: 0.75rem;
+            line-height: 1.25rem;
+            font-weight: 500;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        td {
+            font-size: 0.9rem;
+            line-height: 1.4rem;
+            color: #374151;
+        }
+        /* Definir anchos de las columnas principales para escritorio */
+        th:nth-child(1), td:nth-child(1) { width: 60px; }
+        th:nth-child(2), td:nth-child(2) { width: 28%; }
+        th:nth-child(3), td:nth-child(3) { width: 12%; }
+        th:nth-child(4), td:nth-child(4) { width: 12%; }
+        th:nth-child(5), td:nth-child(5) { width: 10%; }
+        th:nth-child(6), td:nth-child(6) { width: 9%; text-align: right; }
+        th:nth-child(7), td:nth-child(7) { width: 10%; text-align: center; }
+        th:nth-child(8), td:nth-child(8) { width: 75px; text-align: center; }
+        th:last-child, td:last-child { width: 90px; text-align: center; }
+
+        .product-quantity-input {
+            width: 100%;
+            max-width: 65px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Estilos para pantallas más pequeñas (móviles) */
+        @media (max-width: 768px) {
+            .table-container-no-scroll {
+                overflow-x: auto;
+            }
+            table {
+                table-layout: auto; /* Importante: Deja que el contenido determine el ancho */
+            }
+            /* Oculta columnas no esenciales en móvil */
+            th:nth-child(6), 
+            td:nth-child(6),
+            th:nth-child(7), 
+            td:nth-child(7),
+            th:nth-child(8), 
+            td:nth-child(8),
+            th:nth-last-child, 
+            td:nth-last-child {
+                display: none;
+            }
+            /* Ajusta el ancho de las columnas visibles en móvil */
+            th:nth-child(1), td:nth-child(1) { width: auto; }
+            th:nth-child(2), td:nth-child(2) { width: 60%; }  /* Descripción ocupa más espacio */
+            th:nth-child(3), td:nth-child(3) { width: auto; }
+            th:nth-child(4), td:nth-child(4) { width: auto; }
+            th:nth-child(5), td:nth-child(5) { width: auto; }
+
+            .product-description-cell {
+                font-size: 0.9rem; /* Asegura que la descripción sea legible */
+            }
+        }
+
+        /* Estilos adicionales para mejorar la apariencia general en móviles (opcional) */
+        @media (max-width: 768px) {
+            body {
+                font-size: 0.9rem;  /* Tamaño de fuente base más grande en móviles */
+                line-height: 1.4;
+            }
+            h1 {
+                font-size: 1.8rem; /* Encabezados más pequeños en móviles */
+            }
+            .container {
+                padding-left: 1rem; /* Menos padding en los lados en móviles */
+                padding-right: 1rem;
+            }
+            .pagination-btn {
+                font-size: 0.8rem; /* Paginación más pequeña en móviles */
+                padding: 0.5rem 1rem;
+            }
+            #cart-button {
+                font-size: 1.2rem;  /* Icono de carrito más grande en móviles */
+            }
+            #cart-count {
+                font-size: 0.7rem;  /* Contar en el carrito más pequeño */
+                height: 1.2rem;
+                width: 1.2rem;
+            }
+            .search-input-container {
+                margin-bottom: 1.5rem; /* Más margen debajo de la búsqueda en móviles */
+            }
+            #search-input {
+                font-size: 0.9rem;  /* Entrada de búsqueda más pequeña */
+                padding: 0.75rem 2.5rem 0.75rem 2.5rem;
+            }
+            .search-icon {
+                font-size: 1rem;
+            }
+            .bg-white {
+                border-radius: 0.5rem;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+                margin-bottom: 1.5rem;
+            }
+
+        }
+    </style>
+</head>
+<body>
+
+<header class="bg-white shadow-md sticky top-0">
+    <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="text-2xl font-bold text-blue-600">
+            <i class="fa-solid fa-pills mr-2"></i>Drogueria Manufharm
+        </div>
+        <button id="cart-button" class="relative text-gray-700 hover:text-blue-600 transition duration-300">
+            <i class="fas fa-shopping-cart fa-lg"></i>
+            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+        </button>
+    </nav>
+</header>
+
+<main class="container mx-auto p-4">
+
+    <section id="product-view" class="view-visible">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Nuestros Productos</h1>
+        <div class="mb-6 search-input-container">
+            <label for="search-input" class="sr-only">Buscar remedio</label>
+            <input type="text" id="search-input" placeholder="Buscar remedio por descripción o EAN/Interno..." class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition duration-300">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+        <p id="loading-message" class="text-center text-blue-600 my-4">Cargando productos...</p>
+        <p id="error-message" class="text-center text-red-600 my-4 hidden"></p>
+
+        <div class="bg-white shadow-md rounded-lg overflow-hidden table-container-no-scroll">
+            <div>
+                <table class="divide-y divide-gray-200">
+                    <thead class="bg-sky-100">
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Descripción (Click para ver detalle)</th>
+                            <th>Laboratorio</th>
+                            <th>Código EAN/Ref.</th>
+                            <th>Código Interno</th>
+                            <th>Precio Neto</th>
+                            <th>Fecha Vencimiento</th>
+                            <th>Cantidad</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-table-body" class="bg-white divide-y divide-gray-200">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <p id="no-results" class="text-center text-gray-500 mt-4 hidden">No se encontraron productos.</p>
+        <div id="pagination-controls" class="flex justify-center items-center space-x-1 mt-6">
+        </div>
+    </section>
+
+    <section id="product-detail-view" class="view-hidden">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Detalle del Producto</h1>
+            <button id="back-to-products-detail" class="text-blue-600 hover:text-blue-800 transition duration-300">
+                <i class="fas fa-arrow-left mr-2"></i>Volver a Productos
+            </button>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-6 md:p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
+                <div>
+                    <img id="detail-img" src="https://placehold.co/400x400/e0e7ff/374151?text=Producto" alt="Imagen del Producto" class="w-full h-auto object-cover rounded-lg shadow-sm mb-4 md:mb-0" onerror="this.src='https://placehold.co/400x400/e0e7ff/374151?text=Error'">
+                </div>
+                <div class="flex flex-col justify-between h-full">
+                    <div>
+                        <h2 id="detail-desc" class="text-2xl font-semibold text-gray-800 mb-2">Nombre del Producto</h2>
+                        <p class="text-sm text-gray-500 mb-1">Código EAN/Ref.: <span id="detail-ean" class="font-medium">0000000000000</span></p>
+                        <p class="text-sm text-gray-500 mb-4">Código Interno: <span id="detail-interno" class="font-medium">N/A</span></p>
+                        <p class="text-sm text-gray-500 mb-4">Laboratorio: <span id="detail-laboratorio" class="font-medium">N/A</span></p>
+                        <p class="text-3xl font-bold text-blue-600 mb-4" id="detail-price">$0</p>
+                        <p class="text-gray-700 mb-4">
+                            <span class="font-semibold">Descripción adicional:</span>
+                            <span id="detail-extra-desc"> Aquí iría una descripción más detallada del producto si estuviera disponible. Por ahora es texto de ejemplo.</span>
+                        </p>
+                        <p class="text-sm text-gray-500 mb-4">Fecha de Vencimiento: <span id="detail-vence" class="font-medium">DD/MM/AAAA</span></p>
+                    </div>
+                    <div class="flex items-center space-x-4 mt-4">
+                        <label for="detail-quantity" class="block text-sm font-medium text-gray-700">Cantidad:</label>
+                        <input type="number" id="detail-quantity" value="1" min="1" class="w-24 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition duration-300">
+                        <button id="detail-add-to-cart-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 text-sm" data-ean="">
+                            <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cart-view" class="view-hidden">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Carrito de Compras</h1>
+            <button id="back-to-products-cart" class="text-blue-600 hover:text-blue-800 transition duration-300">
+                <i class="fas fa-arrow-left mr-2"></i>Volver a Productos
+            </button>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <div id="cart-items" class="mb-6 divide-y divide-gray-200">
+                <p id="empty-cart-message" class="text-center text-gray-500 py-4">Tu carrito está vacío.</p>
+            </div>
+            <form id="checkout-form" class="border-t border-gray-200 pt-4">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-semibold text-gray-700">Total Neto:</span>
+                    <span id="cart-total" class="text-xl font-bold text-gray-900">$0</span>
+                </div>
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg font-semibold text-gray-700">IVA (19%):</span>
+                    <span id="cart-tax" class="text-xl font-bold text-gray-900">$0</span>
+                </div>
+                <div class="flex justify-between items-center mb-6"> <span class="text-lg font-semibold text-gray-700">Total Final:</span>
+                    <span id="cart-grand-total" class="text-xl font-bold text-gray-900">$0</span>
+                </div>
+                <div id="email-section" class="mb-4 hidden">
+                    <label for="customer-email" class="block text-sm font-medium text-gray-700 mb-1">Tu correo electrónico (para copia del pedido):</label>
+                    <input type="email" id="customer-email" name="customer-email" required placeholder="tu.correo@ejemplo.com" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition duration-150">
+                </div>
+                <button id="checkout-button" type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center" disabled>
+                    <span id="checkout-button-text"><i class="fas fa-envelope mr-2"></i>Enviar Pedido por Correo</span>
+                </button>
+                <p class="text-sm text-gray-500 mt-2 text-center">Se enviará una copia a tu correo y a la drogueria.</p>
+            </form>
+        </div>
+    </section>
+</main>
+
+<footer class="bg-gray-800 text-white mt-10 py-6">
+    <div class="container mx-auto px-4 text-center">
+        <p>© 2025 Drogueria Manufharm. Todos los derechos reservados.</p>
+        <p class="text-sm text-gray-400 mt-1">Diseñado con <i class="fas fa-heart text-red-500"></i></p>
+    </div>
+</footer>
+
+<script>
+    let allProducts = [];
+    let displayProducts = [];
+    let cart = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+    const farmaciaEmail = "quimico@manufharm.com";
+    const emailjsServiceId = 'service_q06m7o8';
+    const emailjsTemplateId = 'template_62zn036';
+    const emailjsPublicKey = 'zC5iSodo0VsHC4LbD';
+
+    const productTableBody = document.getElementById('product-table-body');
+    const searchInput = document.getElementById('search-input');
+    const cartButton = document.getElementById('cart-button');
+    const cartCount = document.getElementById('cart-count');
+    const productView = document.getElementById('product-view');
+    const cartView = document.getElementById('cart-view');
+    const productDetailView = document.getElementById('product-detail-view');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartTotalElement = document.getElementById('cart-total');
+    const cartTaxElement = document.getElementById('cart-tax');
+    const cartGrandTotalElement = document.getElementById('cart-grand-total');
+    const checkoutForm = document.getElementById('checkout-form');
+    const checkoutButton = document.getElementById('checkout-button');
+    const checkoutButtonText = document.getElementById('checkout-button-text');
+    const customerEmailInput = document.getElementById('customer-email');
+    const emailSection = document.getElementById('email-section');
+    const backToProductsCartButton = document.getElementById('back-to-products-cart');
+    const backToProductsDetailButton = document.getElementById('back-to-products-detail');
+    const emptyCartMessage = document.getElementById('empty-cart-message');
+    const noResultsMessage = document.getElementById('no-results');
+    const paginationControls = document.getElementById('pagination-controls');
+    const loadingMessage = document.getElementById('loading-message');
+    const errorMessage = document.getElementById('error-message');
+    const detailImg = document.getElementById('detail-img');
+    const detailDesc = document.getElementById('detail-desc');
+    const detailEan = document.getElementById('detail-ean');
+    const detailInterno = document.getElementById('detail-interno');
+    const detailLaboratorio = document.getElementById('detail-laboratorio');
+    const detailPrice = document.getElementById('detail-price');
+    const detailVence = document.getElementById('detail-vence');
+    const detailAddToCartBtn = document.getElementById('detail-add-to-cart-btn');
+    const detailQuantityInput = document.getElementById('detail-quantity');
+    const detailExtraDesc = document.getElementById('detail-extra-desc');
+
+    const meses = { 'ene': 0, 'feb': 1, 'mar': 2, 'abr': 3, 'may': 4, 'jun': 5, 'jul': 6, 'ago': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dic': 11 };
+
+    const parseFecloteToTimestamp = (fecloteStr) => {
+        if (!fecloteStr || typeof fecloteStr !== 'string') return null;
+        const parts = fecloteStr.toLowerCase().split('-');
+        if (parts.length !== 2) return null;
+        const mesStr = parts[0];
+        const anioStr = parts[1];
+        const mesNum = meses[mesStr];
+        if (typeof mesNum === 'undefined') return null;
+        const anioCompleto = parseInt(anioStr, 10) + 2000;
+        if (isNaN(anioCompleto)) return null;
+        let fecha;
+        if (mesNum === 11) { fecha = new Date(anioCompleto + 1, 0, 0); } else { fecha = new Date(anioCompleto, mesNum + 1, 0); }
+        if (isNaN(fecha.getTime())) return null;
+        return fecha.getTime();
+    };
+
+    const parseCSV = (csvText) => {
+        const lines = csvText.trim().split(/\r\n|\n/);
+        if (lines.length <= 1) return [];
+        const headers = lines[0].split(';').map(header => header.trim().toUpperCase());
+        const products = [];
+        const idxBarra = headers.indexOf('BARRA');
+        const idxProducto = headers.indexOf('PRODUCTO');
+        const idxDescProd = headers.indexOf('DESCPROD');
+        const idxLaboratorio = headers.indexOf('LABORATORIO');
+        const idxFecLote = headers.indexOf('FECLOTE');
+        const idxNeto = headers.indexOf('NETO');
+
+        if (idxDescProd === -1 || idxNeto === -1 || idxProducto === -1 || idxBarra === -1 || idxFecLote === -1 || idxLaboratorio === -1 ) {
+            errorMessage.textContent = "Error: El formato del archivo CSV de productos no es el esperado. Faltan columnas esenciales (BARRA, PRODUCTO, DESCPROD, LABORATORIO, FECLOTE, NETO).";
+            errorMessage.classList.remove('hidden');
+            return [];
+        }
+        for (let i = 1; i < lines.length; i++) {
+            const lineValues = lines[i].split(';');
+            if (lineValues.length < headers.length) continue;
+            const values = {};
+            headers.forEach((header, index) => { values[header] = lineValues[index] ? lineValues[index].trim() : ''; });
+            const rawEan = values['BARRA'];
+            const codigoInterno = values['PRODUCTO'];
+            let eanValor;
+            const parsedEan = parseInt(rawEan);
+            if (!isNaN(parsedEan) && parsedEan !== 0 && String(parsedEan).length > 5) { eanValor = parsedEan; } else { eanValor = codigoInterno || `REF-${Date.now()}-${i}`; }
+            const descripcion = values['DESCPROD'];
+            const cleanedDescripcion = descripcion.replace(/\s{2,}/g, ' ').trim();
+            const netoOriginalStr = values['NETO'] || '$0';
+            const netoNumericoStr = netoOriginalStr.replace(/\$/g, '').replace(/\./g, '').replace(',', '.');
+            const netoNum = parseFloat(netoNumericoStr);
+            const fecloteOriginalStr = values['FECLOTE'] || '';
+            const venceTimestamp = parseFecloteToTimestamp(fecloteOriginalStr);
+            if (cleanedDescripcion && !isNaN(netoNum) && netoNum >= 0 && fecloteOriginalStr) {
+                products.push({
+                    "EAN-VALOR": eanValor, "INTERNO": codigoInterno, "DESCRIPCION DEL PRODUCTO": cleanedDescripcion,
+                    "LABORATORIO": values['LABORATORIO'] || 'N/A', "VENCE_ORIGINAL": fecloteOriginalStr,
+                    "VENCE_TIMESTAMP": venceTimestamp, "NETO_ORIGINAL": netoOriginalStr, "NETO_NUMERICO": netoNum,
+                });
+            }
+        }
+        return products;
+    };
+
+    const fetchProducts = async () => {
+        loadingMessage.classList.remove('hidden'); errorMessage.classList.add('hidden');
+        productTableBody.innerHTML = ''; paginationControls.innerHTML = '';
+        try {
+            const response = await fetch('productos_pag.csv');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status} al cargar productos_pag.csv`);
+            const csvText = await response.text();
+            allProducts = parseCSV(csvText);
+            if (!Array.isArray(allProducts)) throw new Error("La función parseCSV no devolvió un array.");
+            if (allProducts.length === 0 && errorMessage.classList.contains('hidden')) console.warn("No se procesaron productos.");
+            displayProducts = [...allProducts]; currentPage = 1;
+            renderProducts(); renderPaginationControls(); loadingMessage.classList.add('hidden');
+        } catch (error) {
+            loadingMessage.classList.add('hidden');
+            errorMessage.textContent = `Error al cargar los productos: ${error.message}.`;
+            errorMessage.classList.remove('hidden');
+            allProducts = []; displayProducts = []; renderProducts(); renderPaginationControls();
+        }
+    };
+
+    const formatCurrency = (amount) => { const roundedAmount = Math.round(parseFloat(amount) || 0); return roundedAmount.toLocaleString('es-CL'); };
+    const formatCurrencyWithSymbol = (amount) => { const roundedAmount = Math.round(parseFloat(amount) || 0); return `$${roundedAmount.toLocaleString('es-CL')}`; }
+    const calculatePriceWithVAT = (netAmount) => (parseFloat(netAmount) || 0) * 1.19;
+
+    const renderProducts = () => {
+        productTableBody.innerHTML = ''; noResultsMessage.classList.add('hidden');
+        if (displayProducts.length === 0) {
+            if (allProducts.length > 0 && errorMessage.classList.contains('hidden')) {
+                noResultsMessage.textContent = 'No se encontraron productos que coincidan con la búsqueda.';
+                noResultsMessage.classList.remove('hidden');
+            } else if (errorMessage.classList.contains('hidden') && loadingMessage.classList.contains('hidden')) {
+                noResultsMessage.textContent = 'No hay productos disponibles o el archivo CSV está mal formateado.';
+                noResultsMessage.classList.remove('hidden');
+            }
+            paginationControls.innerHTML = ''; return;
+        }
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const productsToRender = displayProducts.slice(startIndex, endIndex);
+        if (productsToRender.length === 0 && currentPage > 1) { currentPage--; renderProducts(); renderPaginationControls(); return; }
+        productsToRender.forEach(product => {
+            if (!product || typeof product["DESCRIPCION DEL PRODUCTO"] !== 'string' || (typeof product["EAN-VALOR"] !== 'number' && typeof product["EAN-VALOR"] !== 'string')) return;
+            const row = document.createElement('tr'); row.classList.add('hover:bg-gray-50', 'transition', 'duration-150');
+            row.dataset.ean = String(product["EAN-VALOR"]);
+            row.innerHTML = `
+                <td><img src="https://placehold.co/50x50/e0e7ff/374151?text=Med" alt="${product["DESCRIPCION DEL PRODUCTO"]}" class="h-10 w-10 rounded-md object-cover mx-auto" onerror="this.src='https://placehold.co/50x50/e0e7ff/374151?text=Error'"></td>
+                <td class="product-description-cell" data-ean="${String(product["EAN-VALOR"])}"><div class="text-sm font-medium text-gray-900">${product["DESCRIPCION DEL PRODUCTO"]}</div><div class="text-xs text-gray-500">Vence: ${product.VENCE_ORIGINAL || 'N/A'}</div></td>
+                <td class="text-sm text-gray-500">${product.LABORATORIO || 'N/A'}</td>
+                <td class="text-sm text-gray-500">${product["EAN-VALOR"]}</td>
+                <td class="text-sm text-gray-500">${product.INTERNO || 'N/A'}</td>
+                <td class="text-sm text-gray-700 font-semibold">${formatCurrencyWithSymbol(product.NETO_NUMERICO)}</td>
+                <td class="text-sm text-gray-500">${product.VENCE_ORIGINAL || 'N/A'}</td>
+                <td class="text-center text-sm"><input type="number" value="1" min="1" class="product-quantity-input p-2 border border-gray-300 rounded-md shadow-sm" data-ean="${String(product["EAN-VALOR"])}"></td>
+                <td class="text-center text-sm font-medium"><button class="add-to-cart-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-lg transition duration-300 text-xs" data-ean="${String(product["EAN-VALOR"])}"><i class="fas fa-cart-plus mr-1 sm:mr-1"></i><span class="hidden sm:inline"> Agregar</span></button></td>`;
+            productTableBody.appendChild(row);
+        });
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => button.addEventListener('click', handleAddToCart));
+        document.querySelectorAll('.product-description-cell').forEach(cell => cell.addEventListener('click', showProductDetail));
+    };
+
+    const renderPaginationControls = () => {
+        paginationControls.innerHTML = ''; const totalPages = Math.ceil(displayProducts.length / itemsPerPage); if (totalPages <= 1) return;
+        const prevButton = document.createElement('button'); prevButton.innerHTML = `<i class="fas fa-chevron-left fa-xs mr-1"></i> Anterior`; prevButton.classList.add('pagination-btn'); prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderProducts(); renderPaginationControls(); window.scrollTo(0, productView.offsetTop); } }); paginationControls.appendChild(prevButton);
+        const maxPagesToShow = 5; let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2)); let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+        if (endPage === totalPages && totalPages > maxPagesToShow) { startPage = totalPages - maxPagesToShow + 1; } else if (startPage + maxPagesToShow -1 > totalPages) { startPage = Math.max(1, totalPages - maxPagesToShow + 1); }
+        if (startPage > 1) { const firstButton = document.createElement('button'); firstButton.textContent = '1'; firstButton.classList.add('pagination-btn'); firstButton.addEventListener('click', () => changePage(1)); paginationControls.appendChild(firstButton); if (startPage > 2) { const ellipsis = document.createElement('span'); ellipsis.textContent = '...'; ellipsis.classList.add('px-3', 'py-1', 'text-sm', 'text-gray-500'); paginationControls.appendChild(ellipsis); } }
+        for (let i = startPage; i <= endPage; i++) { const pageButton = document.createElement('button'); pageButton.textContent = i; pageButton.classList.add('pagination-btn'); if (i === currentPage) { pageButton.classList.add('active'); pageButton.setAttribute('aria-current', 'page'); } pageButton.addEventListener('click', () => changePage(i)); paginationControls.appendChild(pageButton); }
+        if (endPage < totalPages) { if (endPage < totalPages - 1) { const ellipsis = document.createElement('span'); ellipsis.textContent = '...'; ellipsis.classList.add('px-3', 'py-1', 'text-sm', 'text-gray-500'); paginationControls.appendChild(ellipsis); } const lastButton = document.createElement('button'); lastButton.textContent = totalPages; lastButton.classList.add('pagination-btn'); lastButton.addEventListener('click', () => changePage(totalPages)); paginationControls.appendChild(lastButton); }
+        const nextButton = document.createElement('button'); nextButton.innerHTML = `Siguiente <i class="fas fa-chevron-right fa-xs ml-1"></i>`; nextButton.classList.add('pagination-btn'); nextButton.disabled = currentPage === totalPages;
+        nextButton.addEventListener('click', () => { if (currentPage < totalPages) { currentPage++; renderProducts(); renderPaginationControls(); window.scrollTo(0, productView.offsetTop); } }); paginationControls.appendChild(nextButton);
+    };
+
+    const changePage = (pageNumber) => { if (pageNumber === currentPage) return; currentPage = pageNumber; renderProducts(); renderPaginationControls(); window.scrollTo(0, productView.offsetTop); };
+
+    const showProductDetail = (event) => {
+        const eanFromCell = event.currentTarget.dataset.ean; const product = allProducts.find(p => String(p["EAN-VALOR"]) === eanFromCell);
+        if (product) {
+            detailImg.src = `https://placehold.co/400x400/e0e7ff/374151?text=${encodeURIComponent(product["DESCRIPCION DEL PRODUCTO"].substring(0,15))}`;
+            detailImg.alt = product["DESCRIPCION DEL PRODUCTO"]; detailDesc.textContent = product["DESCRIPCION DEL PRODUCTO"];
+            detailEan.textContent = product["EAN-VALOR"]; detailInterno.textContent = product.INTERNO || 'N/A';
+            detailLaboratorio.textContent = product.LABORATORIO || 'N/A'; detailPrice.textContent = formatCurrencyWithSymbol(product.NETO_NUMERICO);
+            detailVence.textContent = product.VENCE_ORIGINAL || 'N/A'; detailQuantityInput.value = "1";
+            detailAddToCartBtn.dataset.ean = String(product["EAN-VALOR"]);
+            detailExtraDesc.textContent = `Este es un ${product["DESCRIPCION DEL PRODUCTO"]}. Válido hasta ${product.VENCE_ORIGINAL || 'N/A'}.`;
+            showView('product-detail-view');
+        } else { showToast("Error: No se pudo encontrar el detalle del producto."); }
+    };
+
+    const handleAddToCart = (event) => {
+        const eanFromButton = event.target.closest('button').dataset.ean; if (!eanFromButton) { showToast("Error al identificar el producto."); return; }
+        const quantityInput = event.target.closest('tr').querySelector('.product-quantity-input'); const quantity = parseInt(quantityInput.value);
+        if (isNaN(quantity) || quantity <= 0) { showToast("Por favor, ingrese una cantidad válida."); if(quantityInput) quantityInput.focus(); return; }
+        const productToAdd = allProducts.find(p => String(p["EAN-VALOR"]) === eanFromButton);
+        if (productToAdd) {
+            const existingCartItem = cart.find(item => String(item.product["EAN-VALOR"]) === eanFromButton);
+            if (existingCartItem) { existingCartItem.quantity += quantity; } else { cart.push({ product: { ...productToAdd }, quantity: quantity }); }
+        updateCart(); showToast(`${productToAdd["DESCRIPCION DEL PRODUCTO"]} agregado al carrito.`);
+        } else { showToast("Error al agregar el producto al carrito."); }
+    };
+
+    const handleRemoveFromCart = (event) => { const ean = event.target.closest('button').dataset.ean; cart = cart.filter(item => String(item.product["EAN-VALOR"]) !== ean); updateCart(); };
+    const handleDecreaseQuantity = (event) => { const ean = event.target.closest('button').dataset.ean; const cartItem = cart.find(item => String(item.product["EAN-VALOR"]) === ean); if (cartItem) { cartItem.quantity -= 1; if (cartItem.quantity <= 0) { cart = cart.filter(item => String(item.product["EAN-VALOR"]) !== ean); } updateCart(); } };
+    const handleIncreaseQuantity = (event) => { const ean = event.target.closest('button').dataset.ean; const cartItem = cart.find(item => String(item.product["EAN-VALOR"]) === ean); if (cartItem) { cartItem.quantity += 1; updateCart(); } };
+
+    const updateCart = () => {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems; cartCount.classList.toggle('hidden', totalItems === 0);
+        cartItemsContainer.innerHTML = ''; let totalNeto = 0;
+        if (cart.length === 0) { emptyCartMessage.classList.remove('hidden'); checkoutButton.disabled = true; emailSection.classList.add('hidden'); }
+        else {
+            emptyCartMessage.classList.add('hidden'); emailSection.classList.remove('hidden');
+            cart.forEach(item => {
+                if (!item.product) return;
+                const itemTotalNeto = (parseFloat(item.product.NETO_NUMERICO) || 0) * item.quantity; totalNeto += itemTotalNeto;
+                const itemElement = document.createElement('div'); itemElement.classList.add('py-4', 'flex', 'justify-between', 'items-center', 'flex-wrap');
+                itemElement.innerHTML = `
+                    <div class="flex items-center space-x-3 mb-2 sm:mb-0"><img src="https://placehold.co/40x40/e0e7ff/374151?text=Med" alt="${item.product["DESCRIPCION DEL PRODUCTO"]}" class="h-10 w-10 rounded-md object-cover flex-shrink-0" onerror="this.src='https://placehold.co/40x40/e0e7ff/374151?text=Error'"><div><p class="text-sm font-medium text-gray-900">${item.product["DESCRIPCION DEL PRODUCTO"]}</p><p class="text-xs text-gray-500">Vence: ${item.product.VENCE_ORIGINAL || 'N/A'}</p><p class="text-xs text-gray-500">${formatCurrencyWithSymbol(item.product.NETO_NUMERICO)} c/u (Neto)</p></div></div>
+                    <div class="flex items-center space-x-2"><button class="decrease-quantity-btn text-red-500 hover:text-red-700 px-2 py-1 rounded border border-red-300" data-ean="${String(item.product["EAN-VALOR"])}"><i class="fas fa-minus fa-xs"></i></button><span class="text-sm font-semibold w-8 text-center">${item.quantity}</span><button class="increase-quantity-btn text-green-500 hover:text-green-700 px-2 py-1 rounded border border-green-300" data-ean="${String(item.product["EAN-VALOR"])}"><i class="fas fa-plus fa-xs"></i></button><span class="text-sm font-semibold w-20 text-right">${formatCurrencyWithSymbol(itemTotalNeto)}</span><button class="remove-from-cart-btn text-gray-400 hover:text-red-600 ml-2" data-ean="${String(item.product["EAN-VALOR"])}"><i class="fas fa-trash-alt fa-sm"></i></button></div>`;
+                cartItemsContainer.appendChild(itemElement);
+            });
+            document.querySelectorAll('.remove-from-cart-btn').forEach(button => button.addEventListener('click', handleRemoveFromCart));
+            document.querySelectorAll('.decrease-quantity-btn').forEach(button => button.addEventListener('click', handleDecreaseQuantity));
+            document.querySelectorAll('.increase-quantity-btn').forEach(button => button.addEventListener('click', handleIncreaseQuantity));
+            checkoutButton.disabled = false;
+        }
+        const tax = totalNeto * 0.19; const grandTotal = totalNeto + tax;
+        cartTotalElement.textContent = formatCurrencyWithSymbol(totalNeto);
+        cartTaxElement.textContent = formatCurrencyWithSymbol(tax);
+        cartGrandTotalElement.textContent = formatCurrencyWithSymbol(grandTotal);
+    };
+
+    const filterProducts = () => {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        if (!searchTerm) { displayProducts = [...allProducts]; }
+        else {
+            displayProducts = allProducts.filter(p => {
+                if (!p) return false;
+                const descMatch = p["DESCRIPCION DEL PRODUCTO"] && p["DESCRIPCION DEL PRODUCTO"].toLowerCase().includes(searchTerm);
+                const eanMatch = p["EAN-VALOR"] && String(p["EAN-VALOR"]).toLowerCase().includes(searchTerm);
+                const internoMatch = p["INTERNO"] && String(p["INTERNO"]).toLowerCase().includes(searchTerm);
+                return descMatch || eanMatch || internoMatch;
+            });
+        }
+        currentPage = 1; renderProducts(); renderPaginationControls();
+    };
+
+    const showView = (viewId) => {
+        productView.classList.replace('view-visible', 'view-hidden'); cartView.classList.replace('view-visible', 'view-hidden'); productDetailView.classList.replace('view-visible', 'view-hidden');
+        const viewToShow = document.getElementById(viewId); if (viewToShow) { viewToShow.classList.replace('view-hidden', 'view-visible'); } window.scrollTo(0, 0);
+    };
+
+    const showToast = (message) => {
+        document.querySelectorAll('.toast-notification').forEach(t => t.remove()); const toast = document.createElement('div'); toast.textContent = message;
+        toast.className = 'toast-notification fixed bottom-4 right-4 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg transition-opacity duration-300 z-50 opacity-0'; document.body.appendChild(toast);
+        void toast.offsetWidth; toast.style.opacity = '1';
+        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => { if (document.body.contains(toast)) { document.body.removeChild(toast); } }, 300); }, 3000);
+    };
+
+    if (emailjsPublicKey && emailjsPublicKey !== 'YOUR_PUBLIC_KEY' && emailjsServiceId && emailjsTemplateId) {
+        try { emailjs.init({ publicKey: emailjsPublicKey }); }
+        catch (error) { showToast("Error al inicializar el sistema de correo."); }
+    } else { if (checkoutButton) checkoutButton.disabled = true; }
+
+    const handleCheckout = (event) => {
+        event.preventDefault();
+        if (!emailjsServiceId || !emailjsTemplateId || !emailjsPublicKey || emailjsServiceId === 'YOUR_SERVICE_ID' || emailjsTemplateId === 'YOUR_TEMPLATE_ID' || emailjsPublicKey === 'YOUR_PUBLIC_KEY') {
+            showToast("La configuración de EmailJS está incompleta."); return;
+        }
+        const customerEmail = customerEmailInput.value.trim();
+        if (!customerEmail) { showToast("Por favor, ingresa tu correo electrónico."); customerEmailInput.focus(); return; }
+        if (cart.length === 0) { showToast("Tu carrito está vacío."); return; }
+        checkoutButton.disabled = true; checkoutButtonText.textContent = 'Enviando...'; checkoutButton.classList.add('button-loading');
+        let orderItemsDetails = []; let totalNetoGeneral = 0;
+        cart.forEach(item => {
+            if (!item.product) return;
+            const producto = item.product; const cantidad = item.quantity;
+            const itemNetoUnitarioNumerico = parseFloat(producto.NETO_NUMERICO) || 0;
+            const itemTotalNetoLineaNumerico = itemNetoUnitarioNumerico * cantidad;
+            const itemTotalFinalConIvaPorLinea = calculatePriceWithVAT(itemNetoUnitarioNumerico) * cantidad;
+            totalNetoGeneral += itemTotalNetoLineaNumerico; const productDescription = producto["DESCRIPCION DEL PRODUCTO"] || "Producto";
+            orderItemsDetails.push({
+                name: productDescription, units: cantidad,
+                price: formatCurrency(itemTotalFinalConIvaPorLinea), total_neto_linea: formatCurrencyWithSymbol(itemTotalNetoLineaNumerico),
+                image_url: `https://placehold.co/64x64/e0e7ff/374151?text=${encodeURIComponent(productDescription.substring(0,10))}`,
+                ean: producto["EAN-VALOR"] || 'N/A', interno: producto.INTERNO || 'N/A',
+                laboratorio: producto.LABORATORIO || 'N/A', vence: producto.VENCE_ORIGINAL, neto_unitario: producto.NETO_ORIGINAL,
+            });
+        });
+        const totalIVAGeneral = totalNetoGeneral * 0.19; const totalFinalGeneral = totalNetoGeneral + totalIVAGeneral;
+        const orderId = `DMH-${Date.now()}`;
+        const templateParams = {
+            order_id: orderId, orders: orderItemsDetails,
+            cost: { shipping: "0", tax: formatCurrency(totalIVAGeneral), total: formatCurrency(totalFinalGeneral), subtotal_neto: formatCurrency(totalNetoGeneral) },
+            email: customerEmail, from_name: "Drogueria Manufharm", reply_to: customerEmail, pharmacy_email: farmaciaEmail,
+        };
+        emailjs.send(emailjsServiceId, emailjsTemplateId, templateParams)
+            .then((response) => { showToast('Pedido enviado por correo con éxito!'); },
+                (error) => { let errorText = 'Error desconocido al enviar el correo.'; if (error && typeof error === 'object' && error.text) { errorText = `Error: ${error.text}`; } else if (typeof error === 'string') { errorText = `Error: ${error}`; } showToast(errorText); })
+            .finally(() => {
+                checkoutButton.disabled = cart.length === 0;
+                checkoutButtonText.innerHTML = '<i class="fas fa-envelope mr-2"></i>Enviar Pedido por Correo';
+                checkoutButton.classList.remove('button-loading');
+            });
+    };
+
+    searchInput.addEventListener('input', filterProducts);
+    cartButton.addEventListener('click', () => { showView('cart-view'); updateCart(); });
+    backToProductsCartButton.addEventListener('click', () => showView('product-view'));
+    backToProductsDetailButton.addEventListener('click', () => showView('product-view'));
+    checkoutForm.addEventListener('submit', handleCheckout);
+    detailAddToCartBtn.addEventListener('click', () => {
+        const eanString = detailAddToCartBtn.dataset.ean; if (!eanString) { showToast("Error: No se pudo identificar el producto."); return; }
+        const quantity = parseInt(detailQuantityInput.value); if (isNaN(quantity) || quantity <= 0) { showToast("Por favor, ingrese una cantidad válida."); detailQuantityInput.focus(); return; }
+        const productToAdd = allProducts.find(p => String(p["EAN-VALOR"]) === eanString);
+        if (productToAdd) {
+            const existingCartItem = cart.find(item => String(item.product["EAN-VALOR"]) === eanString);
+            if (existingCartItem) { existingCartItem.quantity += quantity; } else { cart.push({ product: { ...productToAdd }, quantity: quantity }); }
+        updateCart(); showToast(`${productToAdd["DESCRIPCION DEL PRODUCTO"]} agregado al carrito (${quantity} unidad/es).`);
+        } else { showToast("Error al agregar el producto al carrito."); }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => { fetchProducts(); updateCart(); });
+</script>
+</body>
+</html>

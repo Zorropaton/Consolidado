@@ -6,7 +6,7 @@
     <title>Drogueria Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -30,10 +30,10 @@
             @apply opacity-50 cursor-not-allowed;
         }
         input:required:invalid {
-            border-color: #fecaca;
+            border-color: #fecaca; /* Tailwind red-300 */
         }
         input:required:valid {
-            border-color: #bbf7d0;
+            border-color: #bbf7d0; /* Tailwind green-300 */
         }
         .button-loading::after {
             content: '';
@@ -55,27 +55,27 @@
         }
         #search-input {
             width: 100%;
-            padding-left: 2.5rem;
+            padding-left: 2.5rem; /* Espacio para el ícono */
             padding-right: 1rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.5rem;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            border: 1px solid #d1d5db; /* Tailwind gray-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
             font-size: 1rem;
             line-height: 1.5rem;
-            color: #374151;
+            color: #374151; /* Tailwind gray-700 */
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
         #search-input:focus {
             outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+            border-color: #2563eb; /* Tailwind blue-600 */
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); /* Anillo de foco azul */
         }
         .search-icon {
             position: absolute;
             left: 0.75rem;
             top: 50%;
             transform: translateY(-50%);
-            color: #6b7280;
+            color: #6b7280; /* Tailwind gray-500 */
         }
         .table-container-no-scroll {
             width: 100%;
@@ -87,33 +87,33 @@
             border-collapse: collapse;
         }
         th, td {
-            padding: 0.5rem 0.4rem;
+            padding: 0.5rem 0.4rem; /* Ajustado para más compactibilidad */
             text-align: left;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb; /* Tailwind gray-200 */
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
         th {
-            position: sticky;
+            position: sticky; /* Para que el encabezado se mantenga fijo al hacer scroll vertical */
             top: 0;
-            background-color: #f0f9ff;
-            z-index: 5;
-            font-size: 0.75rem;
-            line-height: 1.25rem;
-            font-weight: 500;
-            color: #6b7280;
+            background-color: #f0f9ff; /* Tailwind sky-100, un poco más claro */
+            z-index: 5; /* Para que el encabezado esté sobre el contenido de la tabla */
+            font-size: 0.75rem; /* 12px */
+            line-height: 1.25rem; /* 20px */
+            font-weight: 500; /* medium */
+            color: #6b7280; /* Tailwind gray-500 */
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
         td {
-            font-size: 0.9rem;
+            font-size: 0.9rem; /* Un poco más grande para mejor lectura */
             line-height: 1.4rem;
-            color: #374151;
+            color: #374151; /* Tailwind gray-700 */
         }
         .product-quantity-input {
             width: 100%;
-            max-width: 65px;
-            margin: 0 auto;
+            max-width: 65px; /* Ancho máximo para el input de cantidad */
+            margin: 0 auto; /* Centrado si es más angosto que la celda */
             box-sizing: border-box;
             text-align: center;
         }
@@ -125,39 +125,38 @@
         /* Estilos para pantallas más pequeñas (móviles) */
         @media (max-width: 768px) {
             .table-container-no-scroll {
-                overflow-x: auto;
+                overflow-x: auto; /* Permite scroll horizontal si la tabla es muy ancha */
             }
             table {
-                display: block;
+                display: block; /* Cambia el display para permitir que los elementos internos se reorganicen */
                 width: 100%;
             }
             thead {
-                display: none;
+                display: none; /* Oculta el encabezado de la tabla tradicional */
             }
             tbody {
                 display: block;
             }
             tr {
                 display: block;
-                margin-bottom: 1rem;
-                border-bottom: 1px solid #e5e7eb;
+                margin-bottom: 1rem; /* Espacio entre "tarjetas" de producto */
+                border-bottom: 1px solid #e5e7eb; /* Borde para separar tarjetas */
             }
             td {
-                display: flex;
-                flex-direction: column;
-                border: none;
-                padding-left: 0;
+                display: flex; /* Usar flex para alinear etiqueta y valor */
+                flex-direction: column; /* Apila la etiqueta y el valor */
+                border: none; /* Quita bordes internos de celdas */
+                padding-left: 0; /* Ajusta padding para el nuevo layout */
                 padding-right: 0;
-                width: 100%;
+                width: 100%; /* Asegura que ocupe todo el ancho */
             }
             td:before {
-                content: attr(data-label);
+                content: attr(data-label); /* Muestra la etiqueta de la columna */
                 font-weight: bold;
                 margin-bottom: 0.25rem;
                 display: block;
-                color: #6b7280;
+                color: #6b7280; /* Tailwind gray-500 */
             }
-
             /* Mueve el botón Agregar al final de la tarjeta en móviles */
             td:last-child {
                 order: 10; /* Asegura que "Acción" (el botón) sea el último elemento */
@@ -167,9 +166,9 @@
                 margin-bottom: 0;
             }
              .product-quantity-input{
-               max-width: 100%;
-               width: auto;
-             }
+                max-width: 100%; /* Permite que el input ocupe más espacio si es necesario */
+                width: auto; /* Ajusta el ancho automáticamente */
+            }
         }
 
         /* Estilos para pantallas de escritorio */
@@ -180,30 +179,31 @@
             table {
                 table-layout: auto;  /* Mantiene el comportamiento de tabla en pantallas grandes */
             }
-            thead {
-               display: table-header-group;
-             }
-             tbody{
-                display: table-row-group;
-             }
-            tr{
-               display: table-row;
-             }
-            td{
-                display: table-cell;
-                border: none;
-                padding-left: 0.5rem;
-                padding-right: 0.4rem;
-            }
-            th:nth-child(1), td:nth-child(1) { width: 60px; }
-            th:nth-child(2), td:nth-child(2) { width: 28%; }
-            th:nth-child(3), td:nth-child(3) { width: 12%; }
-            th:nth-child(4), td:nth-child(4) { width: 12%; }
-            th:nth-child(5), td:nth-child(5) { width: 10%; }
-            th:nth-child(6), td:nth-child(6) { width: 9%; text-align: right; }
-            th:nth-child(7), td:nth-child(7) { width: 10%; text-align: center; }
-            th:nth-child(8), td:nth-child(8) { width: 75px; text-align: center; }
-            th:last-child, td:last-child { width: 90px; text-align: center; }
+           thead {
+               display: table-header-group; /* Restaura el display de thead */
+           }
+           tbody{
+               display: table-row-group; /* Restaura el display de tbody */
+           }
+           tr{
+               display: table-row; /* Restaura el display de tr */
+           }
+           td{
+               display: table-cell; /* Restaura el display de td */
+               border: none; /* Asegura que no haya bordes dobles si se heredan */
+               padding-left: 0.5rem; /* Restaura padding original */
+               padding-right: 0.4rem;
+           }
+            /* Definición de anchos de columna para escritorio */
+            th:nth-child(1), td:nth-child(1) { width: 60px; } /* Imagen */
+            th:nth-child(2), td:nth-child(2) { width: 28%; }  /* Descripción */
+            th:nth-child(3), td:nth-child(3) { width: 12%; }  /* Laboratorio */
+            th:nth-child(4), td:nth-child(4) { width: 12%; }  /* EAN/Ref */
+            th:nth-child(5), td:nth-child(5) { width: 10%; }  /* Interno */
+            th:nth-child(6), td:nth-child(6) { width: 9%; text-align: right; } /* Precio Neto */
+            th:nth-child(7), td:nth-child(7) { width: 10%; text-align: center; } /* Vence */
+            th:nth-child(8), td:nth-child(8) { width: 75px; text-align: center; } /* Cantidad */
+            th:last-child, td:last-child { width: 90px; text-align: center; } /* Acción */
         }
     </style>
 </head>
@@ -227,17 +227,15 @@
         <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Nuestros Productos</h1>
         <div class="mb-6 search-input-container">
             <label for="search-input" class="sr-only">Buscar remedio</label>
-            <input type="text" id="search-input" placeholder="Buscar remedio por descripción o EAN/Interno..." class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition duration-300">
+            <input type="text" id="search-input" placeholder="Buscar remedio por descripción o EAN/Interno..." class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300">
             <i class="fas fa-search search-icon"></i>
         </div>
         <p id="loading-message" class="text-center text-blue-600 my-4">Cargando productos...</p>
         <p id="error-message" class="text-center text-red-600 my-4 hidden"></p>
 
         <div class="bg-white shadow-md rounded-lg overflow-hidden table-container-no-scroll">
-            <div>
-                <table class="divide-y divide-gray-200">
-                    <thead class="bg-sky-100">
-                        <tr>
+            <div> <table class="divide-y divide-gray-200">
+                    <thead class="bg-sky-100"> <tr>
                             <th>Imagen</th>
                             <th>Descripción (Click para ver detalle)</th>
                             <th>Laboratorio</th>
@@ -250,13 +248,13 @@
                         </tr>
                     </thead>
                     <tbody id="product-table-body" class="bg-white divide-y divide-gray-200">
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
         <p id="no-results" class="text-center text-gray-500 mt-4 hidden">No se encontraron productos.</p>
         <div id="pagination-controls" class="flex justify-center items-center space-x-1 mt-6">
-        </div>
+            </div>
     </section>
 
     <section id="product-detail-view" class="view-hidden">
@@ -271,8 +269,7 @@
                 <div>
                     <img id="detail-img" src="https://placehold.co/400x400/e0e7ff/374151?text=Producto" alt="Imagen del Producto" class="w-full h-auto object-cover rounded-lg shadow-sm mb-4 md:mb-0" onerror="this.src='https://placehold.co/400x400/e0e7ff/374151?text=Error'">
                 </div>
-                <div class="flex flex-col justify-between h-full">
-                    <div>
+                <div class="flex flex-col justify-between h-full"> <div>
                         <h2 id="detail-desc" class="text-2xl font-semibold text-gray-800 mb-2">Nombre del Producto</h2>
                         <p class="text-sm text-gray-500 mb-1">Código EAN/Ref.: <span id="detail-ean" class="font-medium">0000000000000</span></p>
                         <p class="text-sm text-gray-500 mb-4">Código Interno: <span id="detail-interno" class="font-medium">N/A</span></p>
@@ -284,9 +281,8 @@
                         </p>
                         <p class="text-sm text-gray-500 mb-4">Fecha de Vencimiento: <span id="detail-vence" class="font-medium">DD/MM/AAAA</span></p>
                     </div>
-                    <div class="flex items-center space-x-4 mt-4">
-                        <label for="detail-quantity" class="block text-sm font-medium text-gray-700">Cantidad:</label>
-                        <input type="number" id="detail-quantity" value="1" min="1" class="w-24 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:border-transparent transition duration-300">
+                    <div class="flex items-center space-x-4 mt-4"> <label for="detail-quantity" class="block text-sm font-medium text-gray-700">Cantidad:</label>
+                        <input type="number" id="detail-quantity" value="1" min="1" class="w-24 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300">
                         <button id="detail-add-to-cart-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 text-sm" data-ean="">
                             <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
                         </button>
@@ -316,9 +312,16 @@
                     <span class="text-lg font-semibold text-gray-700">IVA (19%):</span>
                     <span id="cart-tax" class="text-xl font-bold text-gray-900">$0</span>
                 </div>
-                <div class="flex justify-between items-center mb-6"> <span class="text-lg font-semibold text-gray-700">Total Final:</span>
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-lg font-semibold text-gray-700">Total Final:</span>
                     <span id="cart-grand-total" class="text-xl font-bold text-gray-900">$0</span>
                 </div>
+
+                <div id="rut-section" class="mb-4 hidden">
+                    <label for="customer-rut" class="block text-sm font-medium text-gray-700 mb-1">R.U.T. Empresa (para factura):</label>
+                    <input type="text" id="customer-rut" name="customer-rut" required placeholder="Ej: 76.123.456-K" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 transition duration-150">
+                </div>
+
                 <div id="email-section" class="mb-4 hidden">
                     <label for="customer-email" class="block text-sm font-medium text-gray-700 mb-1">Tu correo electrónico (para copia del pedido):</label>
                     <input type="email" id="customer-email" name="customer-email" required placeholder="tu.correo@ejemplo.com" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 transition duration-150">
@@ -334,22 +337,26 @@
 
 <footer class="bg-gray-800 text-white mt-10 py-6">
     <div class="container mx-auto px-4 text-center">
-        <p>© 2025 Drogueria Manufharm. Todos los derechos reservados.</p>
+        <p>&copy; 2025 Drogueria Manufharm. Todos los derechos reservados.</p>
         <p class="text-sm text-gray-400 mt-1">Diseñado con <i class="fas fa-heart text-red-500"></i></p>
     </div>
 </footer>
 
 <script>
-    let allProducts = [];
-    let displayProducts = [];
-    let cart = [];
-    let currentPage = 1;
-    const itemsPerPage = 10;
-    const farmaciaEmail = "quimico@manufharm.com";
-    const emailjsServiceId = 'service_q06m7o8';
-    const emailjsTemplateId = 'template_62zn036';
-    const emailjsPublicKey = 'zC5iSodo0VsHC4LbD';
+    // Variables globales
+    let allProducts = []; // Almacena todos los productos cargados del CSV
+    let displayProducts = []; // Almacena los productos filtrados y paginados para mostrar
+    let cart = []; // Almacena los productos en el carrito
+    let currentPage = 1; // Página actual para la paginación
+    const itemsPerPage = 10; // Número de productos por página
+    const farmaciaEmail = "quimico@manufharm.com"; // Email de la farmacia para recibir pedidos
 
+    // Configuración de EmailJS (reemplazar con tus claves reales)
+    const emailjsServiceId = 'service_q06m7o8'; // Reemplazar con tu Service ID de EmailJS
+    const emailjsTemplateId = 'template_62zn036'; // Reemplazar con tu Template ID de EmailJS
+    const emailjsPublicKey = 'zC5iSodo0VsHC4LbD'; // Reemplazar con tu Public Key de EmailJS
+
+    // Elementos del DOM
     const productTableBody = document.getElementById('product-table-body');
     const searchInput = document.getElementById('search-input');
     const cartButton = document.getElementById('cart-button');
@@ -366,6 +373,8 @@
     const checkoutButtonText = document.getElementById('checkout-button-text');
     const customerEmailInput = document.getElementById('customer-email');
     const emailSection = document.getElementById('email-section');
+    const customerRutInput = document.getElementById('customer-rut'); // NUEVO: Input R.U.T.
+    const rutSection = document.getElementById('rut-section'); // NUEVO: Contenedor del input R.U.T.
     const backToProductsCartButton = document.getElementById('back-to-products-cart');
     const backToProductsDetailButton = document.getElementById('back-to-products-detail');
     const emptyCartMessage = document.getElementById('empty-cart-message');
@@ -373,6 +382,8 @@
     const paginationControls = document.getElementById('pagination-controls');
     const loadingMessage = document.getElementById('loading-message');
     const errorMessage = document.getElementById('error-message');
+
+    // Elementos del DOM para la vista de detalle del producto
     const detailImg = document.getElementById('detail-img');
     const detailDesc = document.getElementById('detail-desc');
     const detailEan = document.getElementById('detail-ean');
@@ -384,292 +395,421 @@
     const detailQuantityInput = document.getElementById('detail-quantity');
     const detailExtraDesc = document.getElementById('detail-extra-desc');
 
+    // Mapeo de meses para parsear fechas de vencimiento
     const meses = { 'ene': 0, 'feb': 1, 'mar': 2, 'abr': 3, 'may': 4, 'jun': 5, 'jul': 6, 'ago': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dic': 11 };
 
+    /**
+     * Convierte una cadena de fecha de lote (ej. 'dic-24') a un timestamp.
+     * La fecha se considera el último día del mes.
+     * @param {string} fecloteStr - La cadena de fecha del lote.
+     * @returns {number|null} Timestamp o null si el formato es inválido.
+     */
     const parseFecloteToTimestamp = (fecloteStr) => {
         if (!fecloteStr || typeof fecloteStr !== 'string') return null;
         const parts = fecloteStr.toLowerCase().split('-');
         if (parts.length !== 2) return null;
+
         const mesStr = parts[0];
         const anioStr = parts[1];
         const mesNum = meses[mesStr];
+
         if (typeof mesNum === 'undefined') return null;
-        const anioCompleto = parseInt(anioStr, 10) + 2000;
+
+        const anioCompleto = parseInt(anioStr, 10) + 2000; // Asume años 20xx
         if (isNaN(anioCompleto)) return null;
+
+        // Crear fecha para el último día de ese mes
+        // Si es Diciembre (mesNum 11), el siguiente mes es Enero (0) del próximo año.
+        // new Date(año, mesSiguiente, 0) da el último día del mes actual.
         let fecha;
-        if (mesNum === 11) { fecha = new Date(anioCompleto + 1, 0, 0); } else { fecha = new Date(anioCompleto, mesNum + 1, 0); }
-        if (isNaN(fecha.getTime())) return null;
+        if (mesNum === 11) { // Diciembre
+            fecha = new Date(anioCompleto + 1, 0, 0); // Último día de Diciembre
+        } else {
+            fecha = new Date(anioCompleto, mesNum + 1, 0); // Último día del mes especificado
+        }
+
+        if (isNaN(fecha.getTime())) return null; // Fecha inválida
         return fecha.getTime();
     };
 
+    /**
+     * Parsea el texto CSV de productos y lo convierte en un array de objetos.
+     * @param {string} csvText - El contenido del archivo CSV.
+     * @returns {Array<Object>} Array de productos.
+     */
     const parseCSV = (csvText) => {
-        const lines = csvText.trim().split(/\r\n|\n/);
-        if (lines.length <= 1) return [];
-        const headers = lines[0].split(';').map(header => header.trim().toUpperCase());
-        const products = [];
-        const idxBarra = headers.indexOf('BARRA');
-        const idxProducto = headers.indexOf('PRODUCTO');
-        const idxDescProd = headers.indexOf('DESCPROD');
-        const idxLaboratorio = headers.indexOf('LABORATORIO');
-        const idxFecLote = headers.indexOf('FECLOTE');
-        const idxNeto = headers.indexOf('NETO');
+        const lines = csvText.trim().split(/\r\n|\n/); // Divide por nueva línea, compatible con Windows y Unix
+        if (lines.length <= 1) return []; // No hay datos o solo encabezados
 
+        const headers = lines[0].split(';').map(header => header.trim().toUpperCase()); // Normaliza encabezados
+        const products = [];
+
+        // Índices de columnas requeridas (normalizados a mayúsculas)
+        const idxBarra = headers.indexOf('BARRA'); // Código EAN o de referencia
+        const idxProducto = headers.indexOf('PRODUCTO'); // Código interno
+        const idxDescProd = headers.indexOf('DESCPROD'); // Descripción del producto
+        const idxLaboratorio = headers.indexOf('LABORATORIO');
+        const idxFecLote = headers.indexOf('FECLOTE'); // Fecha de vencimiento del lote
+        const idxNeto = headers.indexOf('NETO'); // Precio neto
+
+        // Validación de encabezados
         if (idxDescProd === -1 || idxNeto === -1 || idxProducto === -1 || idxBarra === -1 || idxFecLote === -1 || idxLaboratorio === -1 ) {
             errorMessage.textContent = "Error: El formato del archivo CSV de productos no es el esperado. Faltan columnas esenciales (BARRA, PRODUCTO, DESCPROD, LABORATORIO, FECLOTE, NETO).";
             errorMessage.classList.remove('hidden');
             return [];
         }
+
         for (let i = 1; i < lines.length; i++) {
             const lineValues = lines[i].split(';');
-            if (lineValues.length < headers.length) continue;
+            if (lineValues.length < headers.length) continue; // Línea incompleta, saltar
+
             const values = {};
-            headers.forEach((header, index) => { values[header] = lineValues[index] ? lineValues[index].trim() : ''; });
+            headers.forEach((header, index) => {
+                values[header] = lineValues[index] ? lineValues[index].trim() : '';
+            });
+
+            // Procesamiento de valores específicos
             const rawEan = values['BARRA'];
             const codigoInterno = values['PRODUCTO'];
-            let eanValor;
+            let eanValor; // Será el identificador único del producto
+
+            // Usar BARRA si es un número válido y largo, sino usar PRODUCTO, sino generar uno.
             const parsedEan = parseInt(rawEan);
-            if (!isNaN(parsedEan) && parsedEan !== 0 && String(parsedEan).length > 5) { eanValor = parsedEan; } else { eanValor = codigoInterno || `REF-${Date.now()}-${i}`; }
+            if (!isNaN(parsedEan) && parsedEan !== 0 && String(parsedEan).length > 5) { // Considerar EAN si es numérico y tiene más de 5 dígitos
+                eanValor = parsedEan;
+            } else {
+                eanValor = codigoInterno || `REF-${Date.now()}-${i}`; // Usar código interno o generar uno si BARRA no es EAN válido
+            }
+
             const descripcion = values['DESCPROD'];
-            const cleanedDescripcion = descripcion.replace(/\s{2,}/g, ' ').trim();
-            const netoOriginalStr = values['NETO'] || '$0';
-            const netoNumericoStr = netoOriginalStr.replace(/\$/g, '').replace(/\./g, '').replace(',', '.');
+            const cleanedDescripcion = descripcion.replace(/\s{2,}/g, ' ').trim(); // Limpia espacios extra
+
+            const netoOriginalStr = values['NETO'] || '$0'; // Precio neto como string
+            const netoNumericoStr = netoOriginalStr.replace(/\$/g, '').replace(/\./g, '').replace(',', '.'); // Limpia para convertir a número
             const netoNum = parseFloat(netoNumericoStr);
-            const fecloteOriginalStr = values['FECLOTE'] || '';
-            const venceTimestamp = parseFecloteToTimestamp(fecloteOriginalStr);
+
+            const fecloteOriginalStr = values['FECLOTE'] || ''; // Fecha de vencimiento como string
+            const venceTimestamp = parseFecloteToTimestamp(fecloteOriginalStr); // Convierte a timestamp
+
+            // Solo agregar producto si tiene descripción, precio válido y fecha de vencimiento
             if (cleanedDescripcion && !isNaN(netoNum) && netoNum >= 0 && fecloteOriginalStr) {
                 products.push({
-                    "EAN-VALOR": eanValor, "INTERNO": codigoInterno, "DESCRIPCION DEL PRODUCTO": cleanedDescripcion,
-                    "LABORATORIO": values['LABORATORIO'] || 'N/A', "VENCE_ORIGINAL": fecloteOriginalStr,
-                    "VENCE_TIMESTAMP": venceTimestamp, "NETO_ORIGINAL": netoOriginalStr, "NETO_NUMERICO": netoNum,
+                    "EAN-VALOR": eanValor, // Identificador único (EAN o Interno)
+                    "INTERNO": codigoInterno,
+                    "DESCRIPCION DEL PRODUCTO": cleanedDescripcion,
+                    "LABORATORIO": values['LABORATORIO'] || 'N/A',
+                    "VENCE_ORIGINAL": fecloteOriginalStr, // Guardar formato original para mostrar
+                    "VENCE_TIMESTAMP": venceTimestamp, // Para ordenar o filtrar por fecha si es necesario
+                    "NETO_ORIGINAL": netoOriginalStr, // Guardar formato original para mostrar
+                    "NETO_NUMERICO": netoNum, // Para cálculos
                 });
             }
         }
         return products;
     };
 
+    /**
+     * Carga los productos desde el archivo CSV.
+     */
     const fetchProducts = async () => {
-        loadingMessage.classList.remove('hidden'); errorMessage.classList.add('hidden');
-        productTableBody.innerHTML = ''; paginationControls.innerHTML = '';
+        loadingMessage.classList.remove('hidden');
+        errorMessage.classList.add('hidden');
+        productTableBody.innerHTML = ''; // Limpiar tabla antes de cargar
+        paginationControls.innerHTML = ''; // Limpiar paginación
+
         try {
-            const response = await fetch('productos_pag.csv');
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status} al cargar productos_pag.csv`);
+            const response = await fetch('productos_pag.csv'); // Nombre del archivo CSV
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status} al cargar productos_pag.csv`);
+            }
             const csvText = await response.text();
             allProducts = parseCSV(csvText);
-            if (!Array.isArray(allProducts)) throw new Error("La función parseCSV no devolvió un array.");
-            if (allProducts.length === 0 && errorMessage.classList.contains('hidden')) console.warn("No se procesaron productos.");
-            displayProducts = [...allProducts]; currentPage = 1;
-            renderProducts(); renderPaginationControls(); loadingMessage.classList.add('hidden');
-        } catch (error) {
+
+            if (!Array.isArray(allProducts)) {
+                 throw new Error("La función parseCSV no devolvió un array.");
+            }
+
+            if (allProducts.length === 0 && errorMessage.classList.contains('hidden')) {
+                // Si parseCSV ya mostró un error de formato, no mostrar este.
+                console.warn("No se procesaron productos. El CSV podría estar vacío o todas las filas fueron inválidas.");
+            }
+
+            displayProducts = [...allProducts]; // Inicialmente mostrar todos
+            currentPage = 1;
+            renderProducts();
+            renderPaginationControls();
             loadingMessage.classList.add('hidden');
-            errorMessage.textContent = `Error al cargar los productos: ${error.message}.`;
+        } catch (error) {
+            console.error("Error en fetchProducts:", error);
+            loadingMessage.classList.add('hidden');
+            errorMessage.textContent = `Error al cargar los productos: ${error.message}. Verifica que el archivo 'productos_pag.csv' exista y tenga el formato correcto.`;
             errorMessage.classList.remove('hidden');
-            allProducts = []; displayProducts = []; renderProducts(); renderPaginationControls();
+            allProducts = []; // Asegurar que esté vacío en caso de error
+            displayProducts = [];
+            renderProducts(); // Renderizará el mensaje de "no productos"
+            renderPaginationControls();
         }
     };
 
+    // Funciones de formato y cálculo
     const formatCurrency = (amount) => { const roundedAmount = Math.round(parseFloat(amount) || 0); return roundedAmount.toLocaleString('es-CL'); };
     const formatCurrencyWithSymbol = (amount) => { const roundedAmount = Math.round(parseFloat(amount) || 0); return `$${roundedAmount.toLocaleString('es-CL')}`; }
     const calculatePriceWithVAT = (netAmount) => (parseFloat(netAmount) || 0) * 1.19;
 
+
+    /**
+     * Renderiza los productos en la tabla.
+     */
     const renderProducts = () => {
-        productTableBody.innerHTML = ''; noResultsMessage.classList.add('hidden');
+        productTableBody.innerHTML = ''; // Limpiar antes de renderizar
+        noResultsMessage.classList.add('hidden');
+
         if (displayProducts.length === 0) {
-            if (allProducts.length > 0 && errorMessage.classList.contains('hidden')) {
+            if (allProducts.length > 0 && errorMessage.classList.contains('hidden')) { // Si hay productos cargados pero la búsqueda no da resultados
                 noResultsMessage.textContent = 'No se encontraron productos que coincidan con la búsqueda.';
                 noResultsMessage.classList.remove('hidden');
-            } else if (errorMessage.classList.contains('hidden') && loadingMessage.classList.contains('hidden')) {
+            } else if (errorMessage.classList.contains('hidden') && loadingMessage.classList.contains('hidden')) { // Si no hay productos cargados y no hay error de carga
                 noResultsMessage.textContent = 'No hay productos disponibles o el archivo CSV está mal formateado.';
                 noResultsMessage.classList.remove('hidden');
             }
-            paginationControls.innerHTML = ''; return;
+            paginationControls.innerHTML = ''; // No mostrar paginación si no hay resultados
+            return;
         }
+
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         const productsToRender = displayProducts.slice(startIndex, endIndex);
-        if (productsToRender.length === 0 && currentPage > 1) { currentPage--; renderProducts(); renderPaginationControls(); return; }
+
+        // Si la página actual queda vacía (ej. después de borrar items de la última página), retroceder.
+        if (productsToRender.length === 0 && currentPage > 1) {
+            currentPage--;
+            renderProducts();
+            renderPaginationControls();
+            return;
+        }
+
         productsToRender.forEach(product => {
-            if (!product || typeof product["DESCRIPCION DEL PRODUCTO"] !== 'string' || (typeof product["EAN-VALOR"] !== 'number' && typeof product["EAN-VALOR"] !== 'string')) return;
-            const row = document.createElement('tr'); row.classList.add('hover:bg-gray-50', 'transition', 'duration-150');
-            row.dataset.ean = String(product["EAN-VALOR"]);
+            // Validar que el producto y sus propiedades esenciales existan
+            if (!product || typeof product["DESCRIPCION DEL PRODUCTO"] !== 'string' || (typeof product["EAN-VALOR"] !== 'number' && typeof product["EAN-VALOR"] !== 'string')) {
+                console.warn("Producto inválido o con datos faltantes:", product);
+                return; // Saltar este producto
+            }
+
+            const row = document.createElement('tr');
+            row.classList.add('hover:bg-gray-50', 'transition', 'duration-150');
+            row.dataset.ean = String(product["EAN-VALOR"]); // Para identificar la fila
+
             row.innerHTML = `
                 <td data-label="Imagen"><img src="https://placehold.co/50x50/e0e7ff/374151?text=Med" alt="${product["DESCRIPCION DEL PRODUCTO"]}" class="h-10 w-10 rounded-md object-cover mx-auto" onerror="this.src='https://placehold.co/50x50/e0e7ff/374151?text=Error'"></td>
-                <td data-label="Descripción" class="product-description-cell" data-ean="${String(product["EAN-VALOR"])}"><div class="text-sm font-medium text-gray-900">${product["DESCRIPCION DEL PRODUCTO"]}</div><div class="text-xs text-gray-500">Vence: ${product.VENCE_ORIGINAL || 'N/A'}</div></td>
+                <td data-label="Descripción" class="product-description-cell cursor-pointer hover:text-blue-600" data-ean="${String(product["EAN-VALOR"])}"><div class="text-sm font-medium text-gray-900">${product["DESCRIPCION DEL PRODUCTO"]}</div><div class="text-xs text-gray-500">Vence: ${product.VENCE_ORIGINAL || 'N/A'}</div></td>
                 <td data-label="Laboratorio" class="text-sm text-gray-500">${product.LABORATORIO || 'N/A'}</td>
                 <td data-label="Código EAN/Ref." class="text-sm text-gray-500">${product["EAN-VALOR"]}</td>
                 <td data-label="Código Interno" class="text-sm text-gray-500">${product.INTERNO || 'N/A'}</td>
                 <td data-label="Precio Neto" class="text-sm text-gray-700 font-semibold">${formatCurrencyWithSymbol(product.NETO_NUMERICO)}</td>
                 <td data-label="Fecha Vencimiento" class="text-sm text-gray-500">${product.VENCE_ORIGINAL || 'N/A'}</td>
-                <td data-label="Cantidad" class="text-center text-sm"><input type="number" value="1" min="1" class="product-quantity-input p-2 border border-gray-300 rounded-md shadow-sm" data-ean="${String(product["EAN-VALOR"])}"></td>
-                <td data-label="Acción" class="text-center text-sm font-medium"><button class="add-to-cart-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-lg transition duration-300 text-xs" data-ean="${String(product["EAN-VALOR"])}"><i class="fas fa-cart-plus mr-1 sm:mr-1"></i><span class="hidden sm:inline"> Agregar</span></button></td>`;
+                <td data-label="Cantidad" class="text-center text-sm"><input type="number" value="1" min="1" class="product-quantity-input p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" data-ean="${String(product["EAN-VALOR"])}"></td>
+                <td data-label="Acción" class="text-center text-sm font-medium"><button class="add-to-cart-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-lg transition duration-300 text-xs" data-ean="${String(product["EAN-VALOR"])}"><i class="fas fa-cart-plus mr-1 sm:mr-1"></i><span class="hidden sm:inline"> Agregar</span></button></td>
+            `;
             productTableBody.appendChild(row);
         });
+
+        // Añadir event listeners a los nuevos botones y celdas
         document.querySelectorAll('.add-to-cart-btn').forEach(button => button.addEventListener('click', handleAddToCart));
         document.querySelectorAll('.product-description-cell').forEach(cell => cell.addEventListener('click', showProductDetail));
     };
 
+    /**
+     * Renderiza los controles de paginación.
+     */
     const renderPaginationControls = () => {
-        paginationControls.innerHTML = ''; const totalPages = Math.ceil(displayProducts.length / itemsPerPage); if (totalPages <= 1) return;
-        const prevButton = document.createElement('button'); prevButton.innerHTML = `<i class="fas fa-chevron-left fa-xs mr-1"></i> Anterior`; prevButton.classList.add('pagination-btn'); prevButton.disabled = currentPage === 1;
-        prevButton.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderProducts(); renderPaginationControls(); window.scrollTo(0, productView.offsetTop); } }); paginationControls.appendChild(prevButton);
-        const maxPagesToShow = 5; let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2)); let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
-        if (endPage === totalPages && totalPages > maxPagesToShow) { startPage = totalPages - maxPagesToShow + 1; } else if (startPage + maxPagesToShow -1 > totalPages) { startPage = Math.max(1, totalPages - maxPagesToShow + 1); }
-        if (startPage > 1) { const firstButton = document.createElement('button'); firstButton.textContent = '1'; firstButton.classList.add('pagination-btn'); firstButton.addEventListener('click', () => changePage(1)); paginationControls.appendChild(firstButton); if (startPage > 2) { const ellipsis = document.createElement('span'); ellipsis.textContent = '...'; ellipsis.classList.add('px-3', 'py-1', 'text-sm', 'text-gray-500'); paginationControls.appendChild(ellipsis); } }
-        for (let i = startPage; i <= endPage; i++) { const pageButton = document.createElement('button'); pageButton.textContent = i; pageButton.classList.add('pagination-btn'); if (i === currentPage) { pageButton.classList.add('active'); pageButton.setAttribute('aria-current', 'page'); } pageButton.addEventListener('click', () => changePage(i)); paginationControls.appendChild(pageButton); }
-        if (endPage < totalPages) { if (endPage < totalPages - 1) { const ellipsis = document.createElement('span'); ellipsis.textContent = '...'; ellipsis.classList.add('px-3', 'py-1', 'text-sm', 'text-gray-500'); paginationControls.appendChild(ellipsis); } const lastButton = document.createElement('button'); lastButton.textContent = totalPages; lastButton.classList.add('pagination-btn'); lastButton.addEventListener('click', () => changePage(totalPages)); paginationControls.appendChild(lastButton); }
-        const nextButton = document.createElement('button'); nextButton.innerHTML = `Siguiente <i class="fas fa-chevron-right fa-xs ml-1"></i>`; nextButton.classList.add('pagination-btn'); nextButton.disabled = currentPage === totalPages;
-        nextButton.addEventListener('click', () => { if (currentPage < totalPages) { currentPage++; renderProducts(); renderPaginationControls(); window.scrollTo(0, productView.offsetTop); } }); paginationControls.appendChild(nextButton);
+        paginationControls.innerHTML = ''; // Limpiar controles existentes
+        const totalPages = Math.ceil(displayProducts.length / itemsPerPage);
+
+        if (totalPages <= 1) return; // No mostrar paginación si hay 1 o menos páginas
+
+        // Botón "Anterior"
+        const prevButton = document.createElement('button');
+        prevButton.innerHTML = `<i class="fas fa-chevron-left fa-xs mr-1"></i> Anterior`;
+        prevButton.classList.add('pagination-btn');
+        prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderProducts();
+                renderPaginationControls(); // Re-render para actualizar estado de botones
+                window.scrollTo(0, productView.offsetTop - 70); // Scroll al inicio de la tabla (considerando el header sticky)
+            }
+        });
+        paginationControls.appendChild(prevButton);
+
+        // Lógica para mostrar números de página (ej. 1 ... 4 5 6 ... 10)
+        const maxPagesToShow = 5; // Máximo de botones de página visibles (sin contar prev/next/first/last)
+        let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+        let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+        // Ajustar si el rango calculado es menor que maxPagesToShow y estamos cerca del final
+        if (endPage === totalPages && totalPages > maxPagesToShow) {
+            startPage = totalPages - maxPagesToShow + 1;
+        } else if (startPage + maxPagesToShow -1 > totalPages) { // Ajustar si el rango se pasa del total
+             startPage = Math.max(1, totalPages - maxPagesToShow + 1);
+        }
+
+
+        // Botón "Primera página" y elipsis si es necesario
+        if (startPage > 1) {
+            const firstButton = document.createElement('button');
+            firstButton.textContent = '1';
+            firstButton.classList.add('pagination-btn');
+            firstButton.addEventListener('click', () => changePage(1));
+            paginationControls.appendChild(firstButton);
+            if (startPage > 2) { // Mostrar elipsis si hay más de una página entre "1" y startPage
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = '...';
+                ellipsis.classList.add('px-3', 'py-1', 'text-sm', 'text-gray-500');
+                paginationControls.appendChild(ellipsis);
+            }
+        }
+
+        // Botones de página numerados
+        for (let i = startPage; i <= endPage; i++) {
+            const pageButton = document.createElement('button');
+            pageButton.textContent = i;
+            pageButton.classList.add('pagination-btn');
+            if (i === currentPage) {
+                pageButton.classList.add('active'); // Estilo para página actual
+                pageButton.setAttribute('aria-current', 'page');
+            }
+            pageButton.addEventListener('click', () => changePage(i));
+            paginationControls.appendChild(pageButton);
+        }
+
+        // Botón "Última página" y elipsis si es necesario
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) { // Mostrar elipsis si hay más de una página entre endPage y "totalPages"
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = '...';
+                ellipsis.classList.add('px-3', 'py-1', 'text-sm', 'text-gray-500');
+                paginationControls.appendChild(ellipsis);
+            }
+            const lastButton = document.createElement('button');
+            lastButton.textContent = totalPages;
+            lastButton.classList.add('pagination-btn');
+            lastButton.addEventListener('click', () => changePage(totalPages));
+            paginationControls.appendChild(lastButton);
+        }
+
+        // Botón "Siguiente"
+        const nextButton = document.createElement('button');
+        nextButton.innerHTML = `Siguiente <i class="fas fa-chevron-right fa-xs ml-1"></i>`;
+        nextButton.classList.add('pagination-btn');
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderProducts();
+                renderPaginationControls(); // Re-render para actualizar estado de botones
+                window.scrollTo(0, productView.offsetTop - 70); // Scroll al inicio de la tabla
+            }
+        });
+        paginationControls.appendChild(nextButton);
     };
 
-    const changePage = (pageNumber) => { if (pageNumber === currentPage) return; currentPage = pageNumber; renderProducts(); renderPaginationControls(); window.scrollTo(0, productView.offsetTop); };
+    /**
+     * Cambia a una página específica.
+     * @param {number} pageNumber - El número de página al que cambiar.
+     */
+    const changePage = (pageNumber) => {
+        if (pageNumber === currentPage) return; // No hacer nada si ya está en esa página
+        currentPage = pageNumber;
+        renderProducts();
+        renderPaginationControls(); // Actualizar botones de paginación
+        window.scrollTo(0, productView.offsetTop - 70); // Scroll al inicio de la tabla
+    };
 
+    /**
+     * Muestra la vista de detalle de un producto.
+     * @param {Event} event - El evento click.
+     */
     const showProductDetail = (event) => {
-        const eanFromCell = event.currentTarget.dataset.ean; const product = allProducts.find(p => String(p["EAN-VALOR"]) === eanFromCell);
+        const eanFromCell = event.currentTarget.dataset.ean; // EAN del producto desde el atributo data-ean de la celda
+        const product = allProducts.find(p => String(p["EAN-VALOR"]) === eanFromCell);
+
         if (product) {
-            detailImg.src = `https://placehold.co/400x400/e0e7ff/374151?text=${encodeURIComponent(product["DESCRIPCION DEL PRODUCTO"].substring(0,15))}`;
-            detailImg.alt = product["DESCRIPCION DEL PRODUCTO"]; detailDesc.textContent = product["DESCRIPCION DEL PRODUCTO"];
-            detailEan.textContent = product["EAN-VALOR"]; detailInterno.textContent = product.INTERNO || 'N/A';
-            detailLaboratorio.textContent = product.LABORATORIO || 'N/A'; detailPrice.textContent = formatCurrencyWithSymbol(product.NETO_NUMERICO);
-            detailVence.textContent = product.VENCE_ORIGINAL || 'N/A'; detailQuantityInput.value = "1";
-            detailAddToCartBtn.dataset.ean = String(product["EAN-VALOR"]);
-            detailExtraDesc.textContent = `Este es un ${product["DESCRIPCION DEL PRODUCTO"]}. Válido hasta ${product.VENCE_ORIGINAL || 'N/A'}.`;
+            detailImg.src = `https://placehold.co/400x400/e0e7ff/374151?text=${encodeURIComponent(product["DESCRIPCION DEL PRODUCTO"].substring(0,15))}`; // Placeholder con nombre corto
+            detailImg.alt = product["DESCRIPCION DEL PRODUCTO"];
+            detailDesc.textContent = product["DESCRIPCION DEL PRODUCTO"];
+            detailEan.textContent = product["EAN-VALOR"];
+            detailInterno.textContent = product.INTERNO || 'N/A';
+            detailLaboratorio.textContent = product.LABORATORIO || 'N/A';
+            detailPrice.textContent = formatCurrencyWithSymbol(product.NETO_NUMERICO);
+            detailVence.textContent = product.VENCE_ORIGINAL || 'N/A';
+            detailQuantityInput.value = "1"; // Resetear cantidad a 1
+            detailAddToCartBtn.dataset.ean = String(product["EAN-VALOR"]); // Guardar EAN en el botón de agregar
+            detailExtraDesc.textContent = `Este es un ${product["DESCRIPCION DEL PRODUCTO"]}. Válido hasta ${product.VENCE_ORIGINAL || 'N/A'}. Ideal para tus necesidades.`; // Descripción de ejemplo
             showView('product-detail-view');
-        } else { showToast("Error: No se pudo encontrar el detalle del producto."); }
+        } else {
+            showToast("Error: No se pudo encontrar el detalle del producto.");
+        }
     };
 
+
+    /**
+     * Maneja el evento de agregar un producto al carrito desde la tabla principal.
+     * @param {Event} event - El evento click.
+     */
     const handleAddToCart = (event) => {
-        const eanFromButton = event.target.closest('button').dataset.ean; if (!eanFromButton) { showToast("Error al identificar el producto."); return; }
-        const quantityInput = event.target.closest('tr').querySelector('.product-quantity-input'); const quantity = parseInt(quantityInput.value);
-        if (isNaN(quantity) || quantity <= 0) { showToast("Por favor, ingrese una cantidad válida."); if(quantityInput) quantityInput.focus(); return; }
+        const eanFromButton = event.target.closest('button').dataset.ean;
+        if (!eanFromButton) {
+            showToast("Error al identificar el producto.");
+            return;
+        }
+
+        // Encontrar el input de cantidad asociado a este botón (en la misma fila)
+        const quantityInput = event.target.closest('tr').querySelector('.product-quantity-input');
+        const quantity = parseInt(quantityInput.value);
+
+        if (isNaN(quantity) || quantity <= 0) {
+            showToast("Por favor, ingrese una cantidad válida.");
+            if(quantityInput) quantityInput.focus();
+            return;
+        }
+
         const productToAdd = allProducts.find(p => String(p["EAN-VALOR"]) === eanFromButton);
         if (productToAdd) {
             const existingCartItem = cart.find(item => String(item.product["EAN-VALOR"]) === eanFromButton);
-            if (existingCartItem) { existingCartItem.quantity += quantity; } else { cart.push({ product: { ...productToAdd }, quantity: quantity }); }
-        updateCart(); showToast(`${productToAdd["DESCRIPCION DEL PRODUCTO"]} agregado al carrito.`);
-        } else { showToast("Error al agregar el producto al carrito."); }
+            if (existingCartItem) {
+                existingCartItem.quantity += quantity;
+            } else {
+                cart.push({ product: { ...productToAdd }, quantity: quantity });
+            }
+            updateCart();
+            showToast(`${productToAdd["DESCRIPCION DEL PRODUCTO"]} agregado al carrito.`);
+        } else {
+            showToast("Error al agregar el producto al carrito.");
+        }
     };
 
+    // Funciones para manejar el carrito (remover, decrementar, incrementar)
     const handleRemoveFromCart = (event) => { const ean = event.target.closest('button').dataset.ean; cart = cart.filter(item => String(item.product["EAN-VALOR"]) !== ean); updateCart(); };
     const handleDecreaseQuantity = (event) => { const ean = event.target.closest('button').dataset.ean; const cartItem = cart.find(item => String(item.product["EAN-VALOR"]) === ean); if (cartItem) { cartItem.quantity -= 1; if (cartItem.quantity <= 0) { cart = cart.filter(item => String(item.product["EAN-VALOR"]) !== ean); } updateCart(); } };
     const handleIncreaseQuantity = (event) => { const ean = event.target.closest('button').dataset.ean; const cartItem = cart.find(item => String(item.product["EAN-VALOR"]) === ean); if (cartItem) { cartItem.quantity += 1; updateCart(); } };
 
+    /**
+     * Actualiza la visualización del carrito y los totales.
+     */
     const updateCart = () => {
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        cartCount.textContent = totalItems; cartCount.classList.toggle('hidden', totalItems === 0);
-        cartItemsContainer.innerHTML = ''; let totalNeto = 0;
-        if (cart.length === 0) { emptyCartMessage.classList.remove('hidden'); checkoutButton.disabled = true; emailSection.classList.add('hidden'); }
-        else {
-            emptyCartMessage.classList.add('hidden'); emailSection.classList.remove('hidden');
-            cart.forEach(item => {
-                if (!item.product) return;
-                const itemTotalNeto = (parseFloat(item.product.NETO_NUMERICO) || 0) * item.quantity; totalNeto += itemTotalNeto;
-                const itemElement = document.createElement('div'); itemElement.classList.add('py-4', 'flex', 'justify-between', 'items-center', 'flex-wrap');
-                itemElement.innerHTML = `
-                    <div class="flex items-center space-x-3 mb-2 sm:mb-0"><img src="https://placehold.co/40x40/e0e7ff/374151?text=Med" alt="${item.product["DESCRIPCION DEL PRODUCTO"]}" class="h-10 w-10 rounded-md object-cover flex-shrink-0" onerror="this.src='https://placehold.co/40x40/e0e7ff/374151?text=Error'"><div><p class="text-sm font-medium text-gray-900">${item.product["DESCRIPCION DEL PRODUCTO"]}</p><p class="text-xs text-gray-500">Vence: ${item.product.VENCE_ORIGINAL || 'N/A'}</p><p class="text-xs text-gray-500">${formatCurrencyWithSymbol(item.product.NETO_NUMERICO)} c/u (Neto)</p></div></div>
-                    <div class="flex items-center space-x-2"><button class="decrease-quantity-btn text-red-500 hover:text-red-700 px-2 py-1 rounded border border-red-300" data-ean="${String(item.product["EAN-VALOR"])}"><i class="fas fa-minus fa-xs"></i></button><span class="text-sm font-semibold w-8 text-center">${item.quantity}</span><button class="increase-quantity-btn text-green-500 hover:text-green-700 px-2 py-1 rounded border border-green-300" data-ean="${String(item.product["EAN-VALOR"])}"><i class="fas fa-plus fa-xs"></i></button><span class="text-sm font-semibold w-20 text-right">${formatCurrencyWithSymbol(itemTotalNeto)}</span><button class="remove-from-cart-btn text-gray-400 hover:text-red-600 ml-2" data-ean="${String(item.product["EAN-VALOR"])}"><i class="fas fa-trash-alt fa-sm"></i></button></div>`;
-                cartItemsContainer.appendChild(itemElement);
-            });
-            document.querySelectorAll('.remove-from-cart-btn').forEach(button => button.addEventListener('click', handleRemoveFromCart));
-            document.querySelectorAll('.decrease-quantity-btn').forEach(button => button.addEventListener('click', handleDecreaseQuantity));
-            document.querySelectorAll('.increase-quantity-btn').forEach(button => button.addEventListener('click', handleIncreaseQuantity));
-            checkoutButton.disabled = false;
-        }
-        const tax = totalNeto * 0.19; const grandTotal = totalNeto + tax;
-        cartTotalElement.textContent = formatCurrencyWithSymbol(totalNeto);
-        cartTaxElement.textContent = formatCurrencyWithSymbol(tax);
-        cartGrandTotalElement.textContent = formatCurrencyWithSymbol(grandTotal);
-    };
+        cartCount.textContent = totalItems;
+        cartCount.classList.toggle('hidden', totalItems === 0); // Ocultar contador si es 0
 
-    const filterProducts = () => {
-        const searchTerm = searchInput.value.toLowerCase().trim();
-        if (!searchTerm) { displayProducts = [...allProducts]; }
-        else {
-            displayProducts = allProducts.filter(p => {
-                if (!p) return false;
-                const descMatch = p["DESCRIPCION DEL PRODUCTO"] && p["DESCRIPCION DEL PRODUCTO"].toLowerCase().includes(searchTerm);
-                const eanMatch = p["EAN-VALOR"] && String(p["EAN-VALOR"]).toLowerCase().includes(searchTerm);
-                const internoMatch = p["INTERNO"] && String(p["INTERNO"]).toLowerCase().includes(searchTerm);
-                return descMatch || eanMatch || internoMatch;
-            });
-        }
-        currentPage = 1; renderProducts(); renderPaginationControls();
-    };
+        cartItemsContainer.innerHTML = ''; // Limpiar items existentes
+        let totalNeto = 0;
 
-    const showView = (viewId) => {
-        productView.classList.replace('view-visible', 'view-hidden'); cartView.classList.replace('view-visible', 'view-hidden'); productDetailView.classList.replace('view-visible', 'view-hidden');
-        const viewToShow = document.getElementById(viewId); if (viewToShow) { viewToShow.classList.replace('view-hidden', 'view-visible'); } window.scrollTo(0, 0);
-    };
-
-    const showToast = (message) => {
-        document.querySelectorAll('.toast-notification').forEach(t => t.remove()); const toast = document.createElement('div'); toast.textContent = message;
-        toast.className = 'toast-notification fixed bottom-4 right-4 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg transition-opacity duration-300 z-50 opacity-0'; document.body.appendChild(toast);
-        void toast.offsetWidth; toast.style.opacity = '1';
-        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => { if (document.body.contains(toast)) { document.body.removeChild(toast); } }, 300); }, 3000);
-    };
-
-    if (emailjsPublicKey && emailjsPublicKey !== 'YOUR_PUBLIC_KEY' && emailjsServiceId && emailjsTemplateId) {
-        try { emailjs.init({ publicKey: emailjsPublicKey }); }
-        catch (error) { showToast("Error al inicializar el sistema de correo."); }
-    } else { if (checkoutButton) checkoutButton.disabled = true; }
-
-    const handleCheckout = (event) => {
-        event.preventDefault();
-        if (!emailjsServiceId || !emailjsTemplateId || !emailjsPublicKey || emailjsServiceId === 'YOUR_SERVICE_ID' || emailjsTemplateId === 'YOUR_TEMPLATE_ID' || emailjsPublicKey === 'YOUR_PUBLIC_KEY') {
-            showToast("La configuración de EmailJS está incompleta."); return;
-        }
-        const customerEmail = customerEmailInput.value.trim();
-        if (!customerEmail) { showToast("Por favor, ingresa tu correo electrónico."); customerEmailInput.focus(); return; }
-        if (cart.length === 0) { showToast("Tu carrito está vacío."); return; }
-        checkoutButton.disabled = true; checkoutButtonText.textContent = 'Enviando...'; checkoutButton.classList.add('button-loading');
-        let orderItemsDetails = []; let totalNetoGeneral = 0;
-        cart.forEach(item => {
-            if (!item.product) return;
-            const producto = item.product; const cantidad = item.quantity;
-            const itemNetoUnitarioNumerico = parseFloat(producto.NETO_NUMERICO) || 0;
-            const itemTotalNetoLineaNumerico = itemNetoUnitarioNumerico * cantidad;
-            const itemTotalFinalConIvaPorLinea = calculatePriceWithVAT(itemNetoUnitarioNumerico) * cantidad;
-            totalNetoGeneral += itemTotalNetoLineaNumerico; const productDescription = producto["DESCRIPCION DEL PRODUCTO"] || "Producto";
-            orderItemsDetails.push({
-                name: productDescription, units: cantidad,
-                price: formatCurrency(itemTotalFinalConIvaPorLinea), total_neto_linea: formatCurrencyWithSymbol(itemTotalNetoLineaNumerico),
-                image_url: `https://placehold.co/64x64/e0e7ff/374151?text=${encodeURIComponent(productDescription.substring(0,10))}`,
-                ean: producto["EAN-VALOR"] || 'N/A', interno: producto.INTERNO || 'N/A',
-                laboratorio: producto.LABORATORIO || 'N/A', vence: producto.VENCE_ORIGINAL, neto_unitario: producto.NETO_ORIGINAL,
-            });
-        });
-        const totalIVAGeneral = totalNetoGeneral * 0.19; const totalFinalGeneral = totalNetoGeneral + totalIVAGeneral;
-        const orderId = `DMH-${Date.now()}`;
-        const templateParams = {
-            order_id: orderId, orders: orderItemsDetails,
-            cost: { shipping: "0", tax: formatCurrency(totalIVAGeneral), total: formatCurrency(totalFinalGeneral), subtotal_neto: formatCurrency(totalNetoGeneral) },
-            email: customerEmail, from_name: "Drogueria Manufharm", reply_to: customerEmail, pharmacy_email: farmaciaEmail,
-        };
-        emailjs.send(emailjsServiceId, emailjsTemplateId, templateParams)
-            .then((response) => { showToast('Pedido enviado por correo con éxito!'); },
-                (error) => { let errorText = 'Error desconocido al enviar el correo.'; if (error && typeof error === 'object' && error.text) { errorText = `Error: ${error.text}`; } else if (typeof error === 'string') { errorText = `Error: ${error}`; } showToast(errorText); })
-            .finally(() => {
-                checkoutButton.disabled = cart.length === 0;
-                checkoutButtonText.innerHTML = '<i class="fas fa-envelope mr-2"></i>Enviar Pedido por Correo';
-                checkoutButton.classList.remove('button-loading');
-            });
-    };
-
-    searchInput.addEventListener('input', filterProducts);
-    cartButton.addEventListener('click', () => { showView('cart-view'); updateCart(); });
-    backToProductsCartButton.addEventListener('click', () => showView('product-view'));
-    backToProductsDetailButton.addEventListener('click', () => showView('product-view'));
-    checkoutForm.addEventListener('submit', handleCheckout);
-    detailAddToCartBtn.addEventListener('click', () => {
-        const eanString = detailAddToCartBtn.dataset.ean; if (!eanString) { showToast("Error: No se pudo identificar el producto."); return; }
-        const quantity = parseInt(detailQuantityInput.value); if (isNaN(quantity) || quantity <= 0) { showToast("Por favor, ingrese una cantidad válida."); detailQuantityInput.focus(); return; }
-        const productToAdd = allProducts.find(p => String(p["EAN-VALOR"]) === eanString);
-        if (productToAdd) {
-            const existingCartItem = cart.find(item => String(item.product["EAN-VALOR"]) === eanString);
-            if (existingCartItem) { existingCartItem.quantity += quantity; } else { cart.push({ product: { ...productToAdd }, quantity: quantity }); }
-        updateCart(); showToast(`${productToAdd["DESCRIPCION DEL PRODUCTO"]} agregado al carrito (${quantity} unidad/es).`);
-        } else { showToast("Error al agregar el producto al carrito."); }
-    });
-
-    document.addEventListener('DOMContentLoaded', () => { fetchProducts(); updateCart(); });
-</script>
-</body>
-</html>
+        if (cart.length === 0) {
+            emptyCartMessage.classList.remove('hidden');
+            checkoutButton.disabled = true;
+            emailSection.classList.add('hidden');
+            rutSection.classList.add('hidden'); // NUEVO: Ocultar sección R.U.T. si el carrito está vacío
+        } else {
+            emptyCartMessage.classList.add('hidden');
+            emailSect

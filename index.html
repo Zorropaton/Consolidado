@@ -329,6 +329,12 @@
                     <label for="customer-email" class="block text-sm font-medium text-gray-700 mb-1">Tu correo electrónico (para copia del pedido):</label>
                     <input type="email" id="customer-email" name="customer-email" required placeholder="tu.correo@ejemplo.com" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 transition duration-150">
                 </div>
+
+                <div id="rut-section" class="mb-4 hidden">
+                    <label for="customer-rut" class="block text-sm font-medium text-gray-700 mb-1">R.U.T. Empresa (Ej: 12345678-K):</label>
+                    <input type="text" id="customer-rut" name="customer-rut" required placeholder="12345678-K" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 transition duration-150">
+                </div>
+
                 <button id="checkout-button" type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center" disabled>
                     <span id="checkout-button-text"><i class="fas fa-envelope mr-2"></i>Enviar Pedido por Correo</span>
                 </button>
@@ -375,6 +381,8 @@
     const checkoutButtonText = document.getElementById('checkout-button-text');
     const customerEmailInput = document.getElementById('customer-email');
     const emailSection = document.getElementById('email-section');
+    const customerRutInput = document.getElementById('customer-rut'); // Nuevo: Input R.U.T.
+    const rutSection = document.getElementById('rut-section'); // Nuevo: Contenedor del R.U.T.
     const backToProductsCartButton = document.getElementById('back-to-products-cart');
     const backToProductsDetailButton = document.getElementById('back-to-products-detail');
     const emptyCartMessage = document.getElementById('empty-cart-message');
@@ -492,7 +500,6 @@
         productTableBody.innerHTML = '';
         paginationControls.innerHTML = '';
         try {
-            // Usar la URL raw de GitHub
             const csvUrl = 'https://raw.githubusercontent.com/Zorropaton/Consolidado/main/productos_pag.csv';
             console.log(`[DEBUG] Fetching CSV from: ${csvUrl}`);
             const response = await fetch(csvUrl); 
@@ -693,9 +700,11 @@
             emptyCartMessage.classList.remove('hidden');
             checkoutButton.disabled = true;
             emailSection.classList.add('hidden');
+            rutSection.classList.add('hidden'); // Ocultar R.U.T. si el carrito está vacío
         } else {
             emptyCartMessage.classList.add('hidden');
             emailSection.classList.remove('hidden');
+            rutSection.classList.remove('hidden'); // Mostrar R.U.T. si hay items
             cart.forEach(item => {
                 if (!item.product) return;
                 const itemTotalNeto = (parseFloat(item.product.NETO_NUMERICO) || 0) * item.quantity;
@@ -774,6 +783,26 @@
         }, 3000);
     };
 
+    // Función para validar el R.U.T. chileno
+    const validateRut = (rutCompleto) => {
+        if (!/^[0-9]{7,8}-[0-9kK]{1}$/.test(rutCompleto)) { // Permite 7 u 8 dígitos antes del guion
+            return false;
+        }
+        var tmp = rutCompleto.split('-');
+        var digv = tmp[1].toLowerCase(); // Convertir a minúscula para 'k'
+        var rut = tmp[0];
+        
+        // Cálculo del dígito verificador
+        var M = 0, S = 1;
+        for (; rut; rut = Math.floor(rut / 10)) {
+            S = (S + rut % 10 * (9 - M++ % 6)) % 11;
+        }
+        const calculatedDv = S ? S - 1 : 'k';
+        
+        return calculatedDv == digv;
+    };
+
+
     if (emailjsPublicKey && emailjsPublicKey !== 'YOUR_PUBLIC_KEY' && 
         emailjsServiceId && emailjsServiceId !== 'YOUR_SERVICE_ID' && 
         emailjsTemplateId && emailjsTemplateId !== 'YOUR_TEMPLATE_ID') {
@@ -792,11 +821,23 @@
             return;
         }
         const customerEmail = customerEmailInput.value.trim();
-        
+        const customerRut = customerRutInput.value.trim(); 
+
         if (!customerEmailInput.checkValidity() || !customerEmail) { 
             showToast("Por favor, ingresa un correo electrónico válido.", 'warning'); 
             customerEmailInput.focus(); 
             return; 
+        }
+        
+        if (!customerRut) {
+            showToast("Por favor, ingresa el R.U.T. de la empresa.", 'warning');
+            customerRutInput.focus();
+            return;
+        }
+        if (!validateRut(customerRut)) {
+            showToast("El R.U.T. ingresado no es válido. Formato esperado: XXXXXXXX-X (Ej: 12345678-K).", 'warning');
+            customerRutInput.focus();
+            return;
         }
                 
         if (cart.length === 0) { showToast("Tu carrito está vacío. Agrega productos antes de enviar el pedido.", 'warning'); return; }
@@ -833,6 +874,7 @@
             order_id: orderId, orders: orderItemsDetails,
             cost: { shipping: "0", tax: formatCurrency(totalIVAGeneral), total: formatCurrency(totalFinalGeneral), subtotal_neto: formatCurrency(totalNetoGeneral) },
             email: customerEmail, 
+            customer_rut: customerRut, // Incluir R.U.T. en los parámetros
             from_name: "Drogueria Manufharm", reply_to: customerEmail, pharmacy_email: farmaciaEmail
         };
         emailjs.send(emailjsServiceId, emailjsTemplateId, templateParams)

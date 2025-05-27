@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drogueria Online - Precios Consolidados</title>
+    <title>Precios personas</title> {/* TITULO ACTUALIZADO */}
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> {/* CORREGIDO xintegrity */}
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -18,7 +18,7 @@
             display: block;
         }
         header {
-            z-index: 10; /* Asegura que el header esté sobre otros elementos si es necesario */
+            z-index: 10; 
         }
         .pagination-btn {
             @apply inline-flex items-center justify-center px-3 py-1 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition ease-in-out duration-150;
@@ -30,10 +30,10 @@
             @apply opacity-50 cursor-not-allowed;
         }
         input:required:invalid {
-            border-color: #fecaca; /* Tailwind red-200 for invalid required inputs */
+            border-color: #fecaca; 
         }
         input:required:valid {
-            border-color: #bbf7d0; /* Tailwind green-200 for valid required inputs */
+            border-color: #bbf7d0; 
         }
         .button-loading::after {
             content: '';
@@ -55,162 +55,169 @@
         }
         #search-input {
             width: 100%;
-            padding-left: 2.5rem; /* Espacio para el ícono de búsqueda */
+            padding-left: 2.5rem; 
             padding-right: 1rem;
-            border: 1px solid #d1d5db; /* Tailwind border-gray-300 */
-            border-radius: 0.5rem; /* Tailwind rounded-lg */
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Tailwind shadow-sm */
+            border: 1px solid #d1d5db; 
+            border-radius: 0.5rem; 
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); 
             font-size: 1rem;
             line-height: 1.5rem;
-            color: #374151; /* Tailwind text-gray-700 */
+            color: #374151; 
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
         #search-input:focus {
             outline: none;
-            border-color: #2563eb; /* Tailwind focus:border-blue-500 */
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); /* Tailwind focus:ring-blue-500 with opacity */
+            border-color: #2563eb; 
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); 
         }
         .search-icon {
             position: absolute;
             left: 0.75rem;
             top: 50%;
             transform: translateY(-50%);
-            color: #6b7280; /* Tailwind text-gray-500 */
+            color: #6b7280; 
         }
-        .table-container-no-scroll { /* Renombrado para claridad, ya que el scroll se maneja en media queries */
+        .table-container-no-scroll { 
             width: 100%;
-            overflow-x: auto; /* Habilitar scroll horizontal por defecto, se ajusta en media queries */
+            overflow-x: auto; 
         }
         table {
             width: 100%;
-            table-layout: auto; /* Permite que el navegador ajuste el ancho de las columnas */
+            table-layout: auto; 
             border-collapse: collapse;
         }
         th, td {
-            padding: 0.5rem 0.4rem; /* Ajuste de padding */
+            padding: 0.5rem 0.4rem; 
             text-align: left;
-            border-bottom: 1px solid #e5e7eb; /* Tailwind border-gray-200 */
+            border-bottom: 1px solid #e5e7eb; 
             word-wrap: break-word;
-            overflow-wrap: break-word; /* Para mejor manejo de texto largo */
+            overflow-wrap: break-word; 
         }
         th {
-            position: sticky; /* Encabezados fijos al hacer scroll vertical */
+            position: sticky; 
             top: 0;
-            background-color: #f0f9ff; /* Tailwind bg-sky-100 */
-            z-index: 5; /* Para que el encabezado se mantenga sobre el contenido al hacer scroll */
-            font-size: 0.75rem; /* Tailwind text-xs */
+            background-color: #f0f9ff; 
+            z-index: 5; 
+            font-size: 0.75rem; 
             line-height: 1.25rem;
-            font-weight: 500; /* Tailwind font-medium */
-            color: #6b7280; /* Tailwind text-gray-500 */
+            font-weight: 500; 
+            color: #6b7280; 
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
         td {
-            font-size: 0.9rem; /* Un poco más grande para mejor legibilidad */
+            font-size: 0.9rem; 
             line-height: 1.4rem;
-            color: #374151; /* Tailwind text-gray-700 */
+            color: #374151; 
         }
-        .product-quantity-input {
-            width: 100%; /* Ocupa el ancho disponible en móviles */
-            max-width: 65px; /* Limita el ancho en escritorio */
-            margin: 0 auto; /* Centrado en escritorio */
+        .product-quantity-input { /* Estilo para el input de cantidad en la tabla */
+            width: 100%;
+            max-width: 65px; 
+            margin: 0 auto; 
             box-sizing: border-box;
             text-align: center;
+            padding: 0.25rem; /* Padding más pequeño para el input en la tabla */
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem; /* rounded-md */
         }
-        img { /* Estilos base para imágenes */
+        img { 
             max-width: 100%;
             height: auto;
-            display: block; /* Evita espacio extra debajo de la imagen */
+            display: block; 
         }
 
-        /* Estilos para pantallas más pequeñas (móviles) */
+        /* Estilos para pantallas más pequeñas (móviles) - Basado en tu HTML original */
         @media (max-width: 768px) {
-            .table-container-no-scroll { /* En móviles, el scroll horizontal es necesario */
+            .table-container-no-scroll { 
                 overflow-x: auto;
             }
-            table { /* Transforma la tabla en un layout de "tarjetas" */
+            table { 
                 display: block;
                 width: 100%;
             }
-            thead { /* Oculta los encabezados de tabla tradicionales */
+            thead { 
                 display: none;
             }
             tbody {
                 display: block;
             }
-            tr { /* Cada fila se convierte en un bloque */
+            tr { 
                 display: block;
-                margin-bottom: 1rem; /* Espacio entre "tarjetas" */
-                border-bottom: 1px solid #e5e7eb; /* Tailwind border-b */
-                padding-bottom: 1rem; /* Espacio interno inferior */
+                margin-bottom: 1rem; 
+                border-bottom: 1px solid #e5e7eb; 
+                padding-bottom: 1rem; 
             }
-            td { /* Cada celda se apila verticalmente */
-                display: flex; /* Usar flex para alinear el label y el contenido */
-                flex-direction: column; /* Apilar label sobre contenido */
-                border: none; /* Quitar bordes individuales de celdas */
-                padding-left: 0; /* Resetear padding */
+            td { 
+                display: flex; 
+                flex-direction: column; 
+                border: none; 
+                padding-left: 0; 
                 padding-right: 0;
-                width: 100%; /* Ocupar todo el ancho */
-                margin-bottom: 0.5rem; /* Espacio entre "campos" de la tarjeta */
+                width: 100%; 
+                margin-bottom: 0.5rem; 
             }
-            td:before { /* Añade el "label" del encabezado antes del contenido de la celda */
+            td:before { 
                 content: attr(data-label);
-                font-weight: bold; /* Tailwind font-bold */
-                margin-bottom: 0.25rem; /* Tailwind mb-1 */
+                font-weight: bold; 
+                margin-bottom: 0.25rem; 
                 display: block;
-                color: #6b7280; /* Tailwind text-gray-500 */
-                font-size: 0.75rem; /* Más pequeño para el label */
+                color: #6b7280; 
+                font-size: 0.75rem; 
             }
-            /* Mueve el botón Agregar al final de la tarjeta en móviles */
-            td:last-child { /* Específicamente la celda de "Acción" */
-                order: 10; /* Asegura que "Acción" (el botón) sea el último elemento visualmente */
-                margin-top: 0.5rem; /* Espacio antes del botón */
+            /* Estilo específico para el input de cantidad en la tarjeta móvil */
+            td[data-label="Cantidad"] .product-quantity-input {
+                max-width: 100px; /* Un poco más ancho en la tarjeta móvil */
+                width: auto;
+                padding: 0.5rem;
+                margin: 0; /* Sin margen auto para que se alinee a la izquierda */
+            }
+            td[data-label="Acción"] { 
+                order: 10; 
+                margin-top: 0.5rem; 
             }
             .add-to-cart-btn {
-                width: 100%; /* Botón ocupa todo el ancho en móviles */
-                margin-top: 0; /* Resetear margen superior si td:last-child ya lo maneja */
+                width: 100%; 
+                margin-top: 0; 
             }
-             .product-quantity-input{ /* Input de cantidad ocupa más espacio en móviles */
-               max-width: 100%;
-               width: auto; /* Permite que crezca según el contenido o padding */
-               padding: 0.5rem; /* Más padding para facilitar el toque */
-             }
         }
 
-        /* Estilos para pantallas de escritorio */
+        /* Estilos para pantallas de escritorio (restaurando la tabla normal) */
         @media (min-width: 769px) {
             .table-container-no-scroll {
-                overflow-x: auto;  /* Mantiene el scroll horizontal si el contenido es muy ancho */
+                overflow-x: auto;  
             }
-            table { /* Restaura el comportamiento de tabla */
-                table-layout: auto;
+            table { 
+                display: table; 
+                table-layout: auto; 
             }
             thead {
-               display: table-header-group;
-             }
-             tbody{
-                display: table-row-group;
-             }
-            tr{
-               display: table-row;
-             }
-            td{ /* Restaura celdas de tabla */
-                display: table-cell;
-                border: none; /* El borde inferior ya está en th, td global */
-                padding-left: 0.5rem;
-                padding-right: 0.4rem;
-                vertical-align: middle; /* Alineación vertical */
+                display: table-header-group; 
             }
-            /* Ajustes de ancho de columna específicos para escritorio */
-            th:nth-child(1), td:nth-child(1) { width: 60px; text-align: center;} /* Imagen */
-            th:nth-child(2), td:nth-child(2) { width: 28%; }  /* Descripción */
+            tbody{
+                display: table-row-group; 
+            }
+            tr{
+                display: table-row; 
+            }
+            td{ 
+                display: table-cell;
+                border-bottom: 1px solid #e5e7eb; 
+                vertical-align: middle; 
+            }
+            td:before { 
+                display: none;
+            }
+            /* Ajustes de ancho de columna específicos para escritorio (10 columnas ahora) */
+            th:nth-child(1), td:nth-child(1) { width: 50px; text-align: center;} /* Imagen */
+            th:nth-child(2), td:nth-child(2) { width: 25%; }  /* Descripción */
             th:nth-child(3), td:nth-child(3) { width: 12%; }  /* Laboratorio */
-            th:nth-child(4), td:nth-child(4) { width: 12%; }  /* Código EAN/Ref. */
+            th:nth-child(4), td:nth-child(4) { width: 11%; }  /* Código EAN/Ref. */
             th:nth-child(5), td:nth-child(5) { width: 10%; }  /* Código Interno */
             th:nth-child(6), td:nth-child(6) { width: 9%; text-align: right; }   /* Precio Neto */
-            th:nth-child(7), td:nth-child(7) { width: 10%; text-align: center; } /* Fecha Vencimiento */
-            th:nth-child(8), td:nth-child(8) { width: 75px; text-align: center; }/* Cantidad */
-            th:last-child, td:last-child { width: 90px; text-align: center;} /* Acción */
+            th:nth-child(7), td:nth-child(7) { width: 9%; text-align: center; } /* Fecha Vencimiento */
+            th:nth-child(8), td:nth-child(8) { width: 7%; text-align: center; } /* Stock */
+            th:nth-child(9), td:nth-child(9) { width: 65px; text-align: center; }/* Cantidad */
+            th:nth-child(10), td:nth-child(10) { width: 80px; text-align: center;} /* Acción */
         }
     </style>
 </head>
@@ -231,7 +238,7 @@
 <main class="container mx-auto p-4">
 
     <section id="product-view" class="view-visible">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Nuestros Productos - Lista Consolidada</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Nuestros Productos - Precios Personas</h1> {/* H1 ACTUALIZADO */}
         <div class="mb-6 search-input-container">
             <label for="search-input" class="sr-only">Buscar remedio</label>
             <input type="text" id="search-input" placeholder="Buscar remedio por descripción o EAN/Interno..." class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300">
@@ -250,7 +257,8 @@
                             <th>Código Interno</th>
                             <th>Precio Neto</th>
                             <th>Fecha Vencimiento</th>
-                            <th>Cantidad</th>
+                            <th>Stock</th>
+                            <th>Cantidad</th> 
                             <th>Acción</th>
                         </tr>
                     </thead>
@@ -279,15 +287,16 @@
                 <div class="flex flex-col justify-between h-full">
                     <div>
                         <h2 id="detail-desc" class="text-2xl font-semibold text-gray-800 mb-2">Nombre del Producto</h2>
-                        <p class="text-sm text-gray-500 mb-1">Código EAN/Ref.: <span id="detail-ean" class="font-medium">0000000000000</span></p>
-                        <p class="text-sm text-gray-500 mb-4">Código Interno: <span id="detail-interno" class="font-medium">N/A</span></p>
-                        <p class="text-sm text-gray-500 mb-4">Laboratorio: <span id="detail-laboratorio" class="font-medium">N/A</span></p>
+                        <p class="text-sm text-gray-500 mb-1">Código EAN/Ref.: <span id="detail-ean" class="font-medium text-gray-700">0000000000000</span></p>
+                        <p class="text-sm text-gray-500 mb-4">Código Interno: <span id="detail-interno" class="font-medium text-gray-700">N/A</span></p>
+                        <p class="text-sm text-gray-500 mb-4">Laboratorio: <span id="detail-laboratorio" class="font-medium text-gray-700">N/A</span></p>
                         <p class="text-3xl font-bold text-blue-600 mb-4" id="detail-price">$0</p>
                         <p class="text-gray-700 mb-4">
                             <span class="font-semibold">Descripción adicional:</span>
                             <span id="detail-extra-desc"> Aquí iría una descripción más detallada del producto si estuviera disponible. Por ahora es texto de ejemplo.</span>
                         </p>
-                        <p class="text-sm text-gray-500 mb-4">Fecha de Vencimiento: <span id="detail-vence" class="font-medium">DD/MM/AAAA</span></p>
+                        <p class="text-sm text-gray-500 mb-4">Fecha de Vencimiento: <span id="detail-vence" class="font-medium text-gray-700">DD/MM/AAAA</span></p>
+                        <p class="text-sm text-gray-500 mb-4">Stock Disponible: <span id="detail-stock" class="font-medium text-gray-700">N/A</span></p> {/* Stock en detalle */}
                     </div>
                     <div class="flex items-center space-x-4 mt-4">
                         <label for="detail-quantity" class="block text-sm font-medium text-gray-700">Cantidad:</label>
@@ -352,11 +361,11 @@
     let currentPage = 1; // Página actual para la paginación
     const itemsPerPage = 10; // Número de productos por página
     
-    // Configuración de EmailJS 
+    // Configuración de EmailJS (reemplazar con tus claves reales si las tienes)
     const farmaciaEmail = "quimico@manufharm.com"; // Email de la farmacia para recibir pedidos
-    const emailjsServiceId = 'service_l0sv8a5'; // NUEVO Service ID de EmailJS
-    const emailjsTemplateId = 'template_62zn036'; // Template ID de EmailJS (sin cambios)
-    const emailjsPublicKey = 'zC5iSodo0VsHC4LbD'; // Public Key de EmailJS (sin cambios)
+    const emailjsServiceId = 'service_q06m7o8'; // Tu Service ID de EmailJS
+    const emailjsTemplateId = 'template_62zn036'; // Tu Template ID de EmailJS
+    const emailjsPublicKey = 'zC5iSodo0VsHC4LbD'; // Tu Public Key de EmailJS
 
     // Referencias a elementos del DOM para fácil acceso
     const productTableBody = document.getElementById('product-table-body');
@@ -372,7 +381,7 @@
     const cartGrandTotalElement = document.getElementById('cart-grand-total');
     const checkoutForm = document.getElementById('checkout-form');
     const checkoutButton = document.getElementById('checkout-button');
-    const checkoutButtonText = document.getElementById('checkout-button-text'); 
+    const checkoutButtonText = document.getElementById('checkout-button-text'); // Para el texto del botón de envío
     const customerEmailInput = document.getElementById('customer-email');
     const emailSection = document.getElementById('email-section');
     const backToProductsCartButton = document.getElementById('back-to-products-cart');
@@ -391,6 +400,7 @@
     const detailLaboratorio = document.getElementById('detail-laboratorio');
     const detailPrice = document.getElementById('detail-price');
     const detailVence = document.getElementById('detail-vence');
+    const detailStock = document.getElementById('detail-stock'); // Para mostrar stock en detalle
     const detailAddToCartBtn = document.getElementById('detail-add-to-cart-btn');
     const detailQuantityInput = document.getElementById('detail-quantity');
     const detailExtraDesc = document.getElementById('detail-extra-desc');
@@ -407,25 +417,26 @@
     const parseFecloteToTimestamp = (fecloteStr) => {
         if (!fecloteStr || typeof fecloteStr !== 'string') return null;
         const parts = fecloteStr.toLowerCase().split('-');
-        if (parts.length !== 2) return null; 
+        if (parts.length !== 2) return null; // Formato esperado: mes-aa
 
         const mesStr = parts[0];
         const anioStr = parts[1];
         const mesNum = meses[mesStr];
 
-        if (typeof mesNum === 'undefined') return null; 
+        if (typeof mesNum === 'undefined') return null; // Mes no reconocido
 
-        const anioCompleto = parseInt(anioStr, 10) + 2000; 
+        const anioCompleto = parseInt(anioStr, 10) + 2000; // Asume años 20xx
         if (isNaN(anioCompleto)) return null;
 
         let fecha;
-        if (mesNum === 11) { 
+        // Para la fecha de vencimiento, se considera el último día del mes.
+        if (mesNum === 11) { // Diciembre
             fecha = new Date(anioCompleto, mesNum, 31); 
         } else {
             fecha = new Date(anioCompleto, mesNum + 1, 0); 
         }
         
-        if (isNaN(fecha.getTime())) return null; 
+        if (isNaN(fecha.getTime())) return null; // Fecha inválida
         return fecha.getTime();
     };
 
@@ -447,9 +458,10 @@
         const idxLaboratorio = headers.indexOf('LABORATORIO');
         const idxFecLote = headers.indexOf('FECLOTE'); 
         const idxNeto = headers.indexOf('NETO'); 
+        const idxSaldo = headers.indexOf('SALDO'); 
 
-        if (idxDescProd === -1 || idxNeto === -1 || idxProducto === -1 || idxBarra === -1 || idxFecLote === -1 || idxLaboratorio === -1 ) {
-            errorMessage.textContent = "Error: El formato del archivo CSV de productos no es el esperado. Faltan columnas esenciales (BARRA, PRODUCTO, DESCPROD, LABORATORIO, FECLOTE, NETO).";
+        if (idxDescProd === -1 || idxNeto === -1 || idxProducto === -1 || idxBarra === -1 || idxFecLote === -1 || idxLaboratorio === -1 || idxSaldo === -1 ) { 
+            errorMessage.textContent = "Error: El formato del archivo CSV de productos no es el esperado. Faltan columnas esenciales (BARRA, PRODUCTO, DESCPROD, LABORATORIO, FECLOTE, NETO, SALDO).";
             errorMessage.classList.remove('hidden');
             return []; 
         }
@@ -483,6 +495,9 @@
 
             const fecloteOriginalStr = values['FECLOTE'] || ''; 
             const venceTimestamp = parseFecloteToTimestamp(fecloteOriginalStr);
+            
+            const stockStr = values['SALDO'] || '0'; 
+            const stockNum = parseInt(stockStr, 10); 
 
             if (cleanedDescripcion && !isNaN(netoNum) && netoNum >= 0 && fecloteOriginalStr) {
                 products.push({
@@ -494,6 +509,7 @@
                     "VENCE_TIMESTAMP": venceTimestamp, 
                     "NETO_ORIGINAL": netoOriginalStr, 
                     "NETO_NUMERICO": netoNum, 
+                    "STOCK": isNaN(stockNum) ? 0 : stockNum 
                 });
             }
         }
@@ -502,6 +518,7 @@
 
     /**
      * Carga los productos desde el archivo CSV.
+     * AHORA CARGA consolidado60.csv desde GitHub.
      */
     const fetchProducts = async () => {
         loadingMessage.classList.remove('hidden'); 
@@ -509,12 +526,12 @@
         productTableBody.innerHTML = ''; 
         paginationControls.innerHTML = ''; 
 
+        const githubCsvUrl = 'https://raw.githubusercontent.com/Zorropaton/Consolidado/main/consolidado60.csv'; // URL ACTUALIZADA
+
         try {
-            // Nombre del archivo CSV a cargar
-            const response = await fetch('consolidado60.csv'); // CAMBIO AQUÍ
-            // Mensaje de error específico para este archivo
+            const response = await fetch(githubCsvUrl); 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status} al cargar consolidado60.csv`); // CAMBIO AQUÍ
+                throw new Error(`HTTP error! status: ${response.status} al cargar ${githubCsvUrl}`);
             }
             const csvText = await response.text();
             allProducts = parseCSV(csvText); 
@@ -530,7 +547,7 @@
             loadingMessage.classList.add('hidden'); 
         } catch (error) {
             loadingMessage.classList.add('hidden');
-            errorMessage.textContent = `Error al cargar los productos: ${error.message}. Por favor, verifica el archivo CSV (consolidado60.csv) y su formato.`; // CAMBIO AQUÍ
+            errorMessage.textContent = `Error al cargar los productos: ${error.message}. Por favor, verifica el archivo CSV (consolidado60.csv desde GitHub) y su formato.`; // MENSAJE ACTUALIZADO
             errorMessage.classList.remove('hidden');
             allProducts = []; 
             displayProducts = [];
@@ -542,7 +559,7 @@
     // Funciones de utilidad para formatear moneda y calcular IVA
     const formatCurrency = (amount) => { const roundedAmount = Math.round(parseFloat(amount) || 0); return roundedAmount.toLocaleString('es-CL'); };
     const formatCurrencyWithSymbol = (amount) => { const roundedAmount = Math.round(parseFloat(amount) || 0); return `$${roundedAmount.toLocaleString('es-CL')}`; }
-    const calculatePriceWithVAT = (netAmount) => (parseFloat(netAmount) || 0) * 1.19; 
+    const calculatePriceWithVAT = (netAmount) => (parseFloat(netAmount) || 0) * 1.19; // IVA 19%
 
     /**
      * Renderiza los productos en la tabla HTML.
@@ -594,6 +611,7 @@
                 <td data-label="Código Interno" class="text-sm text-gray-500">${product.INTERNO || 'N/A'}</td>
                 <td data-label="Precio Neto" class="text-sm text-gray-700 font-semibold text-right">${formatCurrencyWithSymbol(product.NETO_NUMERICO)}</td>
                 <td data-label="Fecha Vencimiento" class="text-sm text-gray-500 text-center">${product.VENCE_ORIGINAL || 'N/A'}</td>
+                <td data-label="Stock" class="text-sm text-gray-500 text-center">${product.STOCK !== undefined ? product.STOCK : 'N/A'}</td>
                 <td data-label="Cantidad" class="text-center text-sm"><input type="number" value="1" min="1" class="product-quantity-input p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" data-ean="${String(product["EAN-VALOR"])}"></td>
                 <td data-label="Acción" class="text-center text-sm font-medium"><button class="add-to-cart-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-lg transition duration-300 text-xs" data-ean="${String(product["EAN-VALOR"])}"><i class="fas fa-cart-plus mr-1 sm:mr-1"></i><span class="hidden sm:inline"> Agregar</span></button></td>`;
             productTableBody.appendChild(row);
@@ -721,6 +739,7 @@
             detailLaboratorio.textContent = product.LABORATORIO || 'N/A';
             detailPrice.textContent = formatCurrencyWithSymbol(product.NETO_NUMERICO);
             detailVence.textContent = product.VENCE_ORIGINAL || 'N/A';
+            detailStock.textContent = product.STOCK !== undefined ? product.STOCK : 'N/A'; // Mostrar Stock
             detailQuantityInput.value = "1"; 
             detailAddToCartBtn.dataset.ean = String(product["EAN-VALOR"]); 
             detailExtraDesc.textContent = `Este es un ${product["DESCRIPCION DEL PRODUCTO"]}. Válido hasta ${product.VENCE_ORIGINAL || 'N/A'}. Más detalles pueden ir aquí si estuvieran disponibles en el CSV.`;
@@ -733,6 +752,7 @@
     
     /**
      * Maneja el evento de agregar un producto al carrito desde la lista principal.
+     * La cantidad ahora se toma del input de la fila de la tabla.
      * @param {Event} event - El evento click en el botón "Agregar".
      */
     const handleAddToCart = (event) => {
@@ -741,20 +761,35 @@
             showToast("Error al identificar el producto.", 'error');
             return;
         }
-        const quantityInput = event.target.closest('tr').querySelector('.product-quantity-input');
-        const quantity = parseInt(quantityInput.value);
+        
+        // Encontrar el input de cantidad asociado a esta fila
+        const quantityInputInRow = event.target.closest('tr').querySelector('.product-quantity-input');
+        const quantity = parseInt(quantityInputInRow.value);
 
         if (isNaN(quantity) || quantity <= 0) {
             showToast("Por favor, ingrese una cantidad válida.", 'warning');
-            if(quantityInput) quantityInput.focus();
+            if(quantityInputInRow) quantityInputInRow.focus();
             return;
         }
 
         const productToAdd = allProducts.find(p => String(p["EAN-VALOR"]) === eanFromButton);
         if (productToAdd) {
+            // Comprobación de stock
+            if (productToAdd.STOCK !== undefined && quantity > productToAdd.STOCK) {
+                showToast(`No hay suficiente stock para ${productToAdd["DESCRIPCION DEL PRODUCTO"]}. Disponible: ${productToAdd.STOCK}.`, 'warning');
+                if(quantityInputInRow) quantityInputInRow.value = productToAdd.STOCK > 0 ? productToAdd.STOCK : 1; 
+                return;
+            }
+
             const existingCartItem = cart.find(item => String(item.product["EAN-VALOR"]) === eanFromButton);
             if (existingCartItem) {
-                existingCartItem.quantity += quantity;
+                const newQuantity = existingCartItem.quantity + quantity;
+                if (productToAdd.STOCK !== undefined && newQuantity > productToAdd.STOCK) {
+                    showToast(`No puedes agregar más ${productToAdd["DESCRIPCION DEL PRODUCTO"]}. Stock disponible: ${productToAdd.STOCK}. Ya tienes ${existingCartItem.quantity} en el carrito.`, 'warning');
+                    if(quantityInputInRow) quantityInputInRow.value = 1; 
+                    return;
+                }
+                existingCartItem.quantity = newQuantity;
             } else {
                 cart.push({ product: { ...productToAdd }, quantity: quantity });
             }
@@ -768,7 +803,19 @@
     // Funciones para manejar acciones en el carrito
     const handleRemoveFromCart = (event) => { const ean = event.target.closest('button').dataset.ean; cart = cart.filter(item => String(item.product["EAN-VALOR"]) !== ean); updateCart(); };
     const handleDecreaseQuantity = (event) => { const ean = event.target.closest('button').dataset.ean; const cartItem = cart.find(item => String(item.product["EAN-VALOR"]) === ean); if (cartItem) { cartItem.quantity -= 1; if (cartItem.quantity <= 0) { cart = cart.filter(item => String(item.product["EAN-VALOR"]) !== ean); } updateCart(); } };
-    const handleIncreaseQuantity = (event) => { const ean = event.target.closest('button').dataset.ean; const cartItem = cart.find(item => String(item.product["EAN-VALOR"]) === ean); if (cartItem) { cartItem.quantity += 1; updateCart(); } };
+    const handleIncreaseQuantity = (event) => { 
+        const ean = event.target.closest('button').dataset.ean; 
+        const cartItem = cart.find(item => String(item.product["EAN-VALOR"]) === ean); 
+        if (cartItem) {
+            const productInAll = allProducts.find(p => String(p["EAN-VALOR"]) === ean); 
+            if (productInAll && productInAll.STOCK !== undefined && cartItem.quantity + 1 > productInAll.STOCK) {
+                showToast(`No hay más stock disponible para ${cartItem.product["DESCRIPCION DEL PRODUCTO"]}. Disponible: ${productInAll.STOCK}.`, 'warning');
+                return;
+            }
+            cartItem.quantity += 1; 
+            updateCart(); 
+        } 
+    };
 
     /**
      * Actualiza la visualización del carrito y los totales.
@@ -803,7 +850,7 @@
                         <img src="https://placehold.co/40x40/e0e7ff/374151?text=${placeholderTextCart}" alt="${item.product["DESCRIPCION DEL PRODUCTO"]}" class="h-10 w-10 rounded-md object-cover flex-shrink-0" onerror="this.src='https://placehold.co/40x40/e0e7ff/374151?text=Error'">
                         <div>
                             <p class="text-sm font-medium text-gray-900">${item.product["DESCRIPCION DEL PRODUCTO"]}</p>
-                            <p class="text-xs text-gray-500">Vence: ${item.product.VENCE_ORIGINAL || 'N/A'}</p>
+                            <p class="text-xs text-gray-500">Vence: ${item.product.VENCE_ORIGINAL || 'N/A'} / Stock: ${item.product.STOCK !== undefined ? item.product.STOCK : 'N/A'}</p>
                             <p class="text-xs text-gray-500">${formatCurrencyWithSymbol(item.product.NETO_NUMERICO)} c/u (Neto)</p>
                         </div>
                     </div>
@@ -896,7 +943,7 @@
         }, 3000); 
     };
 
-    // Inicializar EmailJS 
+    // Inicializar EmailJS si las claves están presentes y no son placeholders
     if (emailjsPublicKey && emailjsPublicKey !== 'YOUR_PUBLIC_KEY' && 
         emailjsServiceId && emailjsServiceId !== 'YOUR_SERVICE_ID' && 
         emailjsTemplateId && emailjsTemplateId !== 'YOUR_TEMPLATE_ID') {
@@ -967,6 +1014,7 @@
                 laboratorio: producto.LABORATORIO || 'N/A',
                 vence: producto.VENCE_ORIGINAL || 'N/A',
                 neto_unitario: producto.NETO_ORIGINAL || '$0', 
+                stock: producto.STOCK !== undefined ? product.STOCK : 'N/A' // Incluir stock en el correo
             });
         });
 
@@ -1030,9 +1078,23 @@
         }
         const productToAdd = allProducts.find(p => String(p["EAN-VALOR"]) === eanString);
         if (productToAdd) {
+            // Comprobación de stock para vista de detalle
+            if (productToAdd.STOCK !== undefined && quantity > productToAdd.STOCK) {
+                showToast(`No hay suficiente stock para ${productToAdd["DESCRIPCION DEL PRODUCTO"]}. Disponible: ${productToAdd.STOCK}.`, 'warning');
+                detailQuantityInput.value = productToAdd.STOCK > 0 ? productToAdd.STOCK : 1;
+                return;
+            }
+
             const existingCartItem = cart.find(item => String(item.product["EAN-VALOR"]) === eanString);
             if (existingCartItem) {
-                existingCartItem.quantity += quantity;
+                const newQuantity = existingCartItem.quantity + quantity;
+                // Comprobar stock si se aumenta cantidad de item existente
+                 if (productToAdd.STOCK !== undefined && newQuantity > productToAdd.STOCK) {
+                    showToast(`No puedes agregar más ${productToAdd["DESCRIPCION DEL PRODUCTO"]}. Stock disponible: ${productToAdd.STOCK}. Ya tienes ${existingCartItem.quantity} en el carrito.`, 'warning');
+                    detailQuantityInput.value = 1; // Resetear input
+                    return;
+                }
+                existingCartItem.quantity = newQuantity;
             } else {
                 cart.push({ product: { ...productToAdd }, quantity: quantity });
             }

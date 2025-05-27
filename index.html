@@ -111,6 +111,7 @@
             color: #374151;
         }
         /* Define column widths for desktop view */
+        /* 10 columns: Imagen, Descripción, Lab, EAN, Interno, Neto, Vence, Stock, Cant, Acción */
         th:nth-child(1), td:nth-child(1) { width: 50px; } /* Imagen */
         th:nth-child(2), td:nth-child(2) { width: 25%; }  /* Descripción */
         th:nth-child(3), td:nth-child(3) { width: 12%; }  /* Laboratorio */
@@ -134,7 +135,7 @@
             height: auto;
         }
 
-        /* Responsive styles for smaller screens (mobile) - Based on original index.txt logic */
+        /* Responsive styles for smaller screens (mobile) - Reverted to original index.txt logic */
         @media (max-width: 768px) {
             .table-container-no-scroll {
                 overflow-x: auto;
@@ -142,7 +143,7 @@
             table {
                  table-layout: auto; /* As per original index.txt */
             }
-            /* Columns to HIDE on mobile (original logic) */
+            /* Columns to HIDE on mobile (original logic + Stock column) */
             /* Desktop columns: 1.Img, 2.Desc, 3.Lab, 4.EAN, 5.Interno, 6.Neto, 7.Vence, 8.Stock, 9.Cant, 10.Accion */
             th:nth-child(6), td:nth-child(6), /* 6. Precio Neto */
             th:nth-child(7), td:nth-child(7), /* 7. Vencimiento */
@@ -171,7 +172,7 @@
 
         /* General Mobile Styles (from original index.txt, slightly adapted) */
         @media (max-width: 768px) {
-            body { /* This rule might be duplicated, ensure it's defined once or merged */
+            body { /* This rule might be duplicated, ensure it's defined once or merged if styles conflict */
                 font-size: 0.9rem;
                 line-height: 1.4;
             }
@@ -204,7 +205,7 @@
             .search-icon {
                 font-size: 1rem;
             }
-            .bg-white {
+            .bg-white { /* Applies to product list container, detail view, cart view */
                 border-radius: 0.5rem;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.08);
                 margin-bottom: 1.5rem;

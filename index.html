@@ -89,11 +89,10 @@
         }
         table {
             width: 100%;
-            table-layout: auto; /* Let content define column widths, better for mobile */
             border-collapse: collapse;
         }
         th, td {
-            padding: 0.5rem 0.4rem; /* Reduced padding for mobile */
+            padding: 0.5rem 0.4rem; 
             text-align: left;
             border-bottom: 1px solid #e5e7eb; /* Tailwind gray-200 */
             word-wrap: break-word;
@@ -144,12 +143,14 @@
         /* Responsive styles for smaller screens (mobile) */
         @media (max-width: 768px) {
             .table-container-no-scroll {
-                overflow-x: auto; /* Ensure horizontal scrolling for the table */
+                overflow-x: auto; 
             }
             table {
-                table-layout: auto; /* Important: Let content determine column width */
+                 table-layout: auto; 
             }
             /* Hide non-essential columns on mobile */
+            th:nth-child(5), /* Código Interno */
+            td:nth-child(5),
             th:nth-child(6), /* Precio Neto */
             td:nth-child(6),
             th:nth-child(7), /* Fecha Vencimiento */
@@ -163,54 +164,76 @@
                 display: none;
             }
             /* Adjust widths for visible columns on mobile */
-            th:nth-child(1), td:nth-child(1) { width: auto; } /* Imagen */
-            th:nth-child(2), td:nth-child(2) { width: 60%; }  /* Descripción takes more space */
-            th:nth-child(3), td:nth-child(3) { width: auto; } /* Laboratorio */
-            th:nth-child(4), td:nth-child(4) { width: auto; } /* Código EAN/Ref. */
-            th:nth-child(5), td:nth-child(5) { width: auto; } /* Código Interno */
+            th:nth-child(1), td:nth-child(1) { width: 20%; min-width: 55px; text-align: center; } /* Imagen */
+            th:nth-child(2), td:nth-child(2) { width: 50%; }  /* Descripción */
+            th:nth-child(3), td:nth-child(3) { width: 30%; } /* Laboratorio */
+            /* Column 4 (Código EAN/Ref.) will take remaining space or can be explicitly set if needed */
+             th:nth-child(4), td:nth-child(4) { display:none; } /* Código EAN/Ref. - Hidden on mobile to simplify more */
+
 
             .product-description-cell {
-                font-size: 0.9rem; /* Ensure description is readable */
+                font-size: 0.85rem; 
+            }
+            td { 
+                font-size: 0.85rem; 
+            }
+            th, td {
+                padding: 0.5rem 0.2rem; /* Reduced horizontal padding */
+            }
+        }
+
+        @media (max-width: 480px) { /* Even smaller screens */
+            th:nth-child(3), td:nth-child(3) { /* Ocultar Laboratorio en pantallas muy pequeñas si es necesario */
+                 /* display: none; */ /* Descomentar para ocultar Laboratorio */
+            }
+            th:nth-child(2), td:nth-child(2) { /* Permitir que Descripción ocupe más espacio si Laboratorio se oculta */
+                /* width: 70%; */ 
+            }
+             #search-input {
+                font-size: 0.8rem;
+            }
+            .container {
+                padding-left: 0.25rem; 
+                padding-right: 0.25rem;
             }
         }
 
         /* Additional styles to improve overall appearance on mobile (optional) */
         @media (max-width: 768px) {
             body {
-                font-size: 0.9rem;  /* Larger base font size on mobile */
+                font-size: 0.9rem;
                 line-height: 1.4;
             }
             h1 {
-                font-size: 1.8rem; /* Smaller headings on mobile */
+                font-size: 1.8rem; 
             }
-            .container {
-                padding-left: 1rem; /* Less padding on the sides on mobile */
-                padding-right: 1rem;
+            .container { /* Padding already adjusted above for mobile specifically */
+                /* padding-left: 0.5rem;  */
+                /* padding-right: 0.5rem; */
             }
             .pagination-btn {
-                font-size: 0.8rem; /* Smaller pagination buttons on mobile */
-                padding: 0.5rem 1rem;
+                font-size: 0.8rem; 
+                padding: 0.4rem 0.8rem;
             }
             #cart-button {
-                font-size: 1.2rem;  /* Larger cart icon on mobile */
+                font-size: 1.2rem;  
             }
             #cart-count {
-                font-size: 0.7rem;  /* Smaller cart count */
+                font-size: 0.7rem;  
                 height: 1.2rem;
                 width: 1.2rem;
             }
             .search-input-container {
-                margin-bottom: 1.5rem; /* More margin below search on mobile */
+                margin-bottom: 1.5rem; 
             }
-            #search-input {
-                font-size: 0.9rem;  /* Smaller search input */
-                padding: 0.75rem 2.5rem 0.75rem 2.5rem; /* Adjust padding for icon */
+            #search-input { /* Padding already adjusted above for mobile specifically */
+                /* font-size: 0.9rem;  */
+                /* padding: 0.75rem 2.5rem 0.75rem 2.5rem; */
             }
             .search-icon {
-                font-size: 1rem; /* Adjust search icon size */
+                font-size: 1rem; 
             }
-            /* Add subtle shadow and rounded corners to main content blocks for better separation */
-            .bg-white {
+            .bg-white { 
                 border-radius: 0.5rem;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.08);
                 margin-bottom: 1.5rem;
@@ -244,9 +267,7 @@
         <p id="loading-message" class="text-center text-blue-600 my-4">Cargando productos...</p>
         <p id="error-message" class="text-center text-red-600 my-4 hidden"></p>
 
-        <div class="bg-white shadow-md rounded-lg overflow-hidden table-container-no-scroll">
-            <div>
-                <table class="divide-y divide-gray-200">
+        <div class="bg-white shadow-md rounded-lg"> <div class="table-container-no-scroll"> <table class="divide-y divide-gray-200">
                     <thead class="bg-sky-100">
                         <tr>
                             <th>Imagen</th>

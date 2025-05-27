@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drogueria Online - Precios Normal</title>
+    <title>Drogueria Online - Despacho inmediato</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -18,7 +18,7 @@
             display: block;
         }
         header {
-            z-index: 10; /* Asegura que el header esté sobre otros elementos si es necesario */
+            z-index: 10; 
         }
         .pagination-btn {
             @apply inline-flex items-center justify-center px-3 py-1 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition ease-in-out duration-150;
@@ -30,10 +30,10 @@
             @apply opacity-50 cursor-not-allowed;
         }
         input:required:invalid {
-            border-color: #fecaca; /* Tailwind red-200 for invalid required inputs */
+            border-color: #fecaca; 
         }
         input:required:valid {
-            border-color: #bbf7d0; /* Tailwind green-200 for valid required inputs */
+            border-color: #bbf7d0; 
         }
         .button-loading::after {
             content: '';
@@ -55,27 +55,27 @@
         }
         #search-input {
             width: 100%;
-            padding-left: 2.5rem; /* Espacio para el ícono de búsqueda */
+            padding-left: 2.5rem; 
             padding-right: 1rem;
-            border: 1px solid #d1d5db; /* Tailwind border-gray-300 */
-            border-radius: 0.5rem; /* Tailwind rounded-lg */
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Tailwind shadow-sm */
+            border: 1px solid #d1d5db; 
+            border-radius: 0.5rem; 
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); 
             font-size: 1rem;
             line-height: 1.5rem;
-            color: #374151; /* Tailwind text-gray-700 */
+            color: #374151; 
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
         #search-input:focus {
             outline: none;
-            border-color: #2563eb; /* Tailwind focus:border-blue-500 */
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); /* Tailwind focus:ring-blue-500 with opacity */
+            border-color: #2563eb; 
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); 
         }
         .search-icon {
             position: absolute;
             left: 0.75rem;
             top: 50%;
             transform: translateY(-50%);
-            color: #6b7280; /* Tailwind text-gray-500 */
+            color: #6b7280; 
         }
         .table-container-no-scroll { 
             width: 100%;
@@ -109,6 +109,16 @@
             font-size: 0.9rem; 
             line-height: 1.4rem;
             color: #374151; 
+        }
+        .product-quantity-input { /* Estilo para el input de cantidad en la tabla */
+            width: 100%;
+            max-width: 65px; 
+            margin: 0 auto; 
+            box-sizing: border-box;
+            text-align: center;
+            padding: 0.25rem; /* Padding más pequeño para el input en la tabla */
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem; /* rounded-md */
         }
         img { 
             max-width: 100%;
@@ -154,7 +164,13 @@
                 color: #6b7280; 
                 font-size: 0.75rem; 
             }
-            /* El botón "Acción" se manejará con su data-label */
+            /* Estilo específico para el input de cantidad en la tarjeta móvil */
+            td[data-label="Cantidad"] .product-quantity-input {
+                max-width: 100px; /* Un poco más ancho en la tarjeta móvil */
+                width: auto;
+                padding: 0.5rem;
+                margin: 0; /* Sin margen auto para que se alinee a la izquierda */
+            }
             td[data-label="Acción"] { 
                 order: 10; 
                 margin-top: 0.5rem; 
@@ -191,17 +207,17 @@
             td:before { 
                 display: none;
             }
-            /* Ajustes de ancho de columna específicos para escritorio (9 columnas ahora) */
-            /* Imagen, Descripción, Lab, EAN, Interno, Neto, Vence, Stock, Acción */
+            /* Ajustes de ancho de columna específicos para escritorio (10 columnas ahora) */
             th:nth-child(1), td:nth-child(1) { width: 50px; text-align: center;} /* Imagen */
-            th:nth-child(2), td:nth-child(2) { width: 28%; }  /* Descripción */
-            th:nth-child(3), td:nth-child(3) { width: 13%; }  /* Laboratorio */
-            th:nth-child(4), td:nth-child(4) { width: 12%; }  /* Código EAN/Ref. */
+            th:nth-child(2), td:nth-child(2) { width: 25%; }  /* Descripción */
+            th:nth-child(3), td:nth-child(3) { width: 12%; }  /* Laboratorio */
+            th:nth-child(4), td:nth-child(4) { width: 11%; }  /* Código EAN/Ref. */
             th:nth-child(5), td:nth-child(5) { width: 10%; }  /* Código Interno */
             th:nth-child(6), td:nth-child(6) { width: 9%; text-align: right; }   /* Precio Neto */
             th:nth-child(7), td:nth-child(7) { width: 9%; text-align: center; } /* Fecha Vencimiento */
-            th:nth-child(8), td:nth-child(8) { width: 9%; text-align: center; } /* Stock */
-            th:nth-child(9), td:nth-child(9) { width: 90px; text-align: center;} /* Acción */
+            th:nth-child(8), td:nth-child(8) { width: 7%; text-align: center; } /* Stock */
+            th:nth-child(9), td:nth-child(9) { width: 65px; text-align: center; }/* Cantidad */
+            th:nth-child(10), td:nth-child(10) { width: 80px; text-align: center;} /* Acción */
         }
     </style>
 </head>
@@ -222,7 +238,7 @@
 <main class="container mx-auto p-4">
 
     <section id="product-view" class="view-visible">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Nuestros Productos - Lista Normal</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Productos despacho inmediato </h1>
         <div class="mb-6 search-input-container">
             <label for="search-input" class="sr-only">Buscar remedio</label>
             <input type="text" id="search-input" placeholder="Buscar remedio por descripción o EAN/Interno..." class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300">
@@ -242,6 +258,7 @@
                             <th>Precio Neto</th>
                             <th>Fecha Vencimiento</th>
                             <th>Stock</th>
+                            <th>Cantidad</th> 
                             <th>Acción</th>
                         </tr>
                     </thead>
@@ -597,6 +614,7 @@
                 <td data-label="Precio Neto" class="text-sm text-gray-700 font-semibold text-right">${formatCurrencyWithSymbol(product.NETO_NUMERICO)}</td>
                 <td data-label="Fecha Vencimiento" class="text-sm text-gray-500 text-center">${product.VENCE_ORIGINAL || 'N/A'}</td>
                 <td data-label="Stock" class="text-sm text-gray-500 text-center">${product.STOCK !== undefined ? product.STOCK : 'N/A'}</td>
+                <td data-label="Cantidad" class="text-center text-sm"><input type="number" value="1" min="1" class="product-quantity-input p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" data-ean="${String(product["EAN-VALOR"])}"></td>
                 <td data-label="Acción" class="text-center text-sm font-medium"><button class="add-to-cart-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-lg transition duration-300 text-xs" data-ean="${String(product["EAN-VALOR"])}"><i class="fas fa-cart-plus mr-1 sm:mr-1"></i><span class="hidden sm:inline"> Agregar</span></button></td>`;
             productTableBody.appendChild(row);
         });
@@ -736,7 +754,7 @@
     
     /**
      * Maneja el evento de agregar un producto al carrito desde la lista principal.
-     * La cantidad siempre será 1 desde la tabla, ya que no hay input.
+     * La cantidad ahora se toma del input de la fila de la tabla.
      * @param {Event} event - El evento click en el botón "Agregar".
      */
     const handleAddToCart = (event) => {
@@ -746,13 +764,22 @@
             return;
         }
         
-        const quantity = 1; // Siempre se agrega 1 unidad desde la tabla principal
+        // Encontrar el input de cantidad asociado a esta fila
+        const quantityInputInRow = event.target.closest('tr').querySelector('.product-quantity-input');
+        const quantity = parseInt(quantityInputInRow.value);
+
+        if (isNaN(quantity) || quantity <= 0) {
+            showToast("Por favor, ingrese una cantidad válida.", 'warning');
+            if(quantityInputInRow) quantityInputInRow.focus();
+            return;
+        }
 
         const productToAdd = allProducts.find(p => String(p["EAN-VALOR"]) === eanFromButton);
         if (productToAdd) {
             // Comprobación de stock
             if (productToAdd.STOCK !== undefined && quantity > productToAdd.STOCK) {
                 showToast(`No hay suficiente stock para ${productToAdd["DESCRIPCION DEL PRODUCTO"]}. Disponible: ${productToAdd.STOCK}.`, 'warning');
+                if(quantityInputInRow) quantityInputInRow.value = productToAdd.STOCK > 0 ? productToAdd.STOCK : 1; 
                 return;
             }
 
@@ -761,6 +788,7 @@
                 const newQuantity = existingCartItem.quantity + quantity;
                 if (productToAdd.STOCK !== undefined && newQuantity > productToAdd.STOCK) {
                     showToast(`No puedes agregar más ${productToAdd["DESCRIPCION DEL PRODUCTO"]}. Stock disponible: ${productToAdd.STOCK}. Ya tienes ${existingCartItem.quantity} en el carrito.`, 'warning');
+                    if(quantityInputInRow) quantityInputInRow.value = 1; 
                     return;
                 }
                 existingCartItem.quantity = newQuantity;

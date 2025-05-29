@@ -6,7 +6,7 @@
     <title>Drogueria Online - Precios Nacionales</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> {/* CORREGIDO xintegrity */}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -209,7 +209,7 @@
             th:nth-child(3), td:nth-child(3) { width: 12%; }  
             th:nth-child(4), td:nth-child(4) { width: 11%; }  
             th:nth-child(5), td:nth-child(5) { width: 10%; }  
-            th:nth-child(6), td:nth-child(6) { width: 9%; text-align: right; }   
+            th:nth-child(6), td:nth-child(6) { width: 9%; text-align: right; }  
             th:nth-child(7), td:nth-child(7) { width: 9%; text-align: center; } 
             th:nth-child(8), td:nth-child(8) { width: 7%; text-align: center; } 
             th:nth-child(9), td:nth-child(9) { width: 55px; text-align: center; }
@@ -346,7 +346,6 @@
                         <option value="Farmacia Nacional 2">Farmacia Nacional 2</option>
                     </select>
                 </div>
-
 
                 <button id="checkout-button" type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center" disabled>
                     <span id="checkout-button-text"><i class="fas fa-envelope mr-2"></i>Enviar Pedido por Correo</span>
@@ -602,7 +601,6 @@
         }
     }
 
-
     const renderPaginationControls = () => {
         paginationControls.innerHTML = ''; 
         const totalPages = Math.ceil(displayProducts.length / itemsPerPage);
@@ -748,7 +746,7 @@
             if (quantityToAdd > 0 || (productToAdd.STOCK === 0 && requestedQuantity > 0) ) { 
                 const existingCartItem = cart.find(item => String(item.product["EAN-VALOR"]) === eanFromButton);
                 if (existingCartItem) {
-                    let newTotalQuantityInCart = existingCartItem.quantity + quantityToAdd;
+                    let newTotalQuantityInCart = existingCartItem.quantity + quantityToAdd; // Usa quantityToAdd que considera el stock
                     if (productToAdd.STOCK > 0 && newTotalQuantityInCart > productToAdd.STOCK) {
                         const canAddMore = productToAdd.STOCK - existingCartItem.quantity;
                         if (canAddMore > 0) {
@@ -808,7 +806,6 @@
             emailSection.classList.remove('hidden'); 
             rutSection.classList.remove('hidden');
             pharmacySelectionSection.classList.remove('hidden');
-
 
             cart.forEach(item => {
                 if (!item.product) return; 
@@ -905,6 +902,7 @@
         }, 3000); 
     };
 
+    // Inicialización de EmailJS
     if (emailjsPublicKey && emailjsPublicKey !== 'YOUR_PUBLIC_KEY' && 
         emailjsServiceId && emailjsServiceId !== 'YOUR_SERVICE_ID' && 
         emailjsTemplateId && emailjsTemplateId !== 'YOUR_TEMPLATE_ID') {
@@ -951,7 +949,6 @@
             return;
         }
         
-
         if (cart.length === 0) {
             showToast("Tu carrito está vacío. Agrega productos antes de enviar el pedido.", 'warning');
             return;
@@ -986,7 +983,7 @@
                 laboratorio: producto.LABORATORIO || 'N/A',
                 vence: producto.VENCE_ORIGINAL || 'N/A',
                 neto_unitario: producto.NETO_ORIGINAL || '$0', 
-                stock: producto.STOCK !== undefined ? product.STOCK : 'N/A'
+                stock: producto.STOCK !== undefined ? producto.STOCK : 'N/A'
             });
         });
 
@@ -1004,7 +1001,7 @@
                 subtotal_neto: formatCurrency(totalNetoGeneral)
             },
             email: customerEmail, 
-            rut: customerRutRaw, // Enviar el RUT como fue ingresado (con formato)
+            customer_rut: customerRutRaw, // Envía el RUT como 'customer_rut' para que coincida con la plantilla
             pharmacy_selection: selectedPharmacy, 
             from_name: "Drogueria Manufharm", 
             reply_to: customerEmail, 
@@ -1014,6 +1011,10 @@
         emailjs.send(emailjsServiceId, emailjsTemplateId, templateParams)
             .then((response) => {
                 showToast('Pedido enviado por correo con éxito!');
+                // Opcional: Limpiar carrito y formulario después de un envío exitoso
+                // cart = [];
+                // updateCart();
+                // checkoutForm.reset(); 
             }, (error) => {
                 let errorText = 'Error desconocido al enviar el correo.';
                 if (error && typeof error === 'object' && error.text) {
@@ -1022,6 +1023,7 @@
                     errorText = `Error: ${error}`;
                 }
                 showToast(errorText, 'error');
+                console.error('Error al enviar con EmailJS:', error); // Log detallado del error en consola
             })
             .finally(() => {
                 checkoutButton.disabled = cart.length === 0; 
@@ -1061,10 +1063,10 @@
             if (existingCartItem) {
                 const newQuantity = existingCartItem.quantity + quantity;
                  if (productToAdd.STOCK !== undefined && newQuantity > productToAdd.STOCK) {
-                    showToast(`No puedes agregar más ${productToAdd["DESCRIPCION DEL PRODUCTO"]}. Stock disponible: ${productToAdd.STOCK}. Ya tienes ${existingCartItem.quantity} en el carrito.`, 'warning');
-                    detailQuantityInput.value = 1; 
-                    return;
-                }
+                     showToast(`No puedes agregar más ${productToAdd["DESCRIPCION DEL PRODUCTO"]}. Stock disponible: ${productToAdd.STOCK}. Ya tienes ${existingCartItem.quantity} en el carrito.`, 'warning');
+                     detailQuantityInput.value = 1; 
+                     return;
+                 }
                 existingCartItem.quantity = newQuantity;
             } else {
                 cart.push({ product: { ...productToAdd }, quantity: quantity });

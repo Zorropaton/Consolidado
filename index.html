@@ -110,13 +110,13 @@
             line-height: 1.4rem;
             color: #374151; 
         }
-        .product-quantity-input { /* Estilo para el input de cantidad en la tabla */
+        .product-quantity-input { /* Style for quantity input in the table */
             width: 100%;
             max-width: 65px; 
             margin: 0 auto; 
             box-sizing: border-box;
             text-align: center;
-            padding: 0.25rem; /* Padding más pequeño para el input en la tabla */
+            padding: 0.25rem; /* Smaller padding for input in table */
             border: 1px solid #d1d5db;
             border-radius: 0.375rem; /* rounded-md */
         }
@@ -126,7 +126,7 @@
             display: block; 
         }
 
-        /* Estilos para pantallas más pequeñas (móviles) - Basado en tu HTML original */
+        /* Styles for smaller screens (mobile) - Based on your original HTML */
         @media (max-width: 768px) {
             .table-container-no-scroll { 
                 overflow-x: auto;
@@ -164,12 +164,12 @@
                 color: #6b7280; 
                 font-size: 0.75rem; 
             }
-            /* Estilo específico para el input de cantidad en la tarjeta móvil */
+            /* Specific style for quantity input in mobile card view */
             td[data-label="Cantidad"] .product-quantity-input {
-                max-width: 100px; /* Un poco más ancho en la tarjeta móvil */
+                max-width: 100px; /* A bit wider in mobile card */
                 width: auto;
                 padding: 0.5rem;
-                margin: 0; /* Sin margen auto para que se alinee a la izquierda */
+                margin: 0; /* No auto margin to align left */
             }
             td[data-label="Acción"] { 
                 order: 10; 
@@ -181,7 +181,7 @@
             }
         }
 
-        /* Estilos para pantallas de escritorio (restaurando la tabla normal) */
+        /* Styles for desktop screens (restoring normal table) */
         @media (min-width: 769px) {
             .table-container-no-scroll {
                 overflow-x: auto;  
@@ -207,17 +207,17 @@
             td:before { 
                 display: none;
             }
-            /* Ajustes de ancho de columna específicos para escritorio (10 columnas ahora) */
-            th:nth-child(1), td:nth-child(1) { width: 50px; text-align: center;} /* Imagen */
-            th:nth-child(2), td:nth-child(2) { width: 25%; }  /* Descripción */
-            th:nth-child(3), td:nth-child(3) { width: 12%; }  /* Laboratorio */
-            th:nth-child(4), td:nth-child(4) { width: 11%; }  /* Código EAN/Ref. */
-            th:nth-child(5), td:nth-child(5) { width: 10%; }  /* Código Interno */
-            th:nth-child(6), td:nth-child(6) { width: 9%; text-align: right; }   /* Precio Neto */
-            th:nth-child(7), td:nth-child(7) { width: 9%; text-align: center; } /* Fecha Vencimiento */
+            /* Specific column width adjustments for desktop (10 columns now) */
+            th:nth-child(1), td:nth-child(1) { width: 50px; text-align: center;} /* Image */
+            th:nth-child(2), td:nth-child(2) { width: 25%; }  /* Description */
+            th:nth-child(3), td:nth-child(3) { width: 12%; }  /* Laboratory */
+            th:nth-child(4), td:nth-child(4) { width: 11%; }  /* EAN/Ref. Code */
+            th:nth-child(5), td:nth-child(5) { width: 10%; }  /* Internal Code */
+            th:nth-child(6), td:nth-child(6) { width: 9%; text-align: right; }   /* Net Price */
+            th:nth-child(7), td:nth-child(7) { width: 9%; text-align: center; } /* Expiry Date */
             th:nth-child(8), td:nth-child(8) { width: 7%; text-align: center; } /* Stock */
-            th:nth-child(9), td:nth-child(9) { width: 65px; text-align: center; }/* Cantidad */
-            th:nth-child(10), td:nth-child(10) { width: 80px; text-align: center;} /* Acción */
+            th:nth-child(9), td:nth-child(9) { width: 65px; text-align: center; }/* Quantity */
+            th:nth-child(10), td:nth-child(10) { width: 80px; text-align: center;} /* Action */
         }
     </style>
 </head>
@@ -263,13 +263,15 @@
                         </tr>
                     </thead>
                     <tbody id="product-table-body" class="bg-white divide-y divide-gray-200">
-                        </tbody>
+                        <!-- Product rows will be inserted here by JavaScript -->
+                    </tbody>
                 </table>
             </div>
         </div>
         <p id="no-results" class="text-center text-gray-500 mt-4 hidden">No se encontraron productos.</p>
         <div id="pagination-controls" class="flex justify-center items-center space-x-1 mt-6">
-            </div>
+            <!-- Pagination controls will be inserted here by JavaScript -->
+        </div>
     </section>
 
     <section id="product-detail-view" class="view-hidden">
@@ -296,7 +298,7 @@
                             <span id="detail-extra-desc"> Aquí iría una descripción más detallada del producto si estuviera disponible. Por ahora es texto de ejemplo.</span>
                         </p>
                         <p class="text-sm text-gray-500 mb-4">Fecha de Vencimiento: <span id="detail-vence" class="font-medium text-gray-700">DD/MM/AAAA</span></p>
-                        <p class="text-sm text-gray-500 mb-4">Stock Disponible: <span id="detail-stock" class="font-medium text-gray-700">N/A</span></p> {/* Stock en detalle */}
+                        <p class="text-sm text-gray-500 mb-4">Stock Disponible: <span id="detail-stock" class="font-medium text-gray-700">N/A</span></p> {/* Stock in detail view */}
                     </div>
                     <div class="flex items-center space-x-4 mt-4">
                         <label for="detail-quantity" class="block text-sm font-medium text-gray-700">Cantidad:</label>
@@ -319,8 +321,9 @@
         </div>
         <div class="bg-white shadow-md rounded-lg p-6">
             <div id="cart-items" class="mb-6 divide-y divide-gray-200">
+                <!-- Cart items will be inserted here by JavaScript -->
                 <p id="empty-cart-message" class="text-center text-gray-500 py-4">Tu carrito está vacío.</p>
-                </div>
+            </div>
             <form id="checkout-form" class="border-t border-gray-200 pt-4">
                 <div class="flex justify-between items-center mb-4">
                     <span class="text-lg font-semibold text-gray-700">Total Neto:</span>
@@ -354,20 +357,20 @@
 </footer>
 
 <script>
-    // Variables globales para almacenar productos, carrito y estado de la aplicación
-    let allProducts = []; // Todos los productos cargados del CSV
-    let displayProducts = []; // Productos que se muestran actualmente (después de filtrar/paginar)
-    let cart = []; // Array para almacenar los productos en el carrito
-    let currentPage = 1; // Página actual para la paginación
-    const itemsPerPage = 10; // Número de productos por página
+    // Global variables to store products, cart, and application state
+    let allProducts = []; // All products loaded from CSV
+    let displayProducts = []; // Products currently displayed (after filtering/pagination)
+    let cart = []; // Array to store products in the cart
+    let currentPage = 1; // Current page for pagination
+    const itemsPerPage = 10; // Number of products per page
     
-    // Configuración de EmailJS (reemplazar con tus claves reales si las tienes)
-    const farmaciaEmail = "quimico@manufharm.com"; // Email de la farmacia para recibir pedidos
-    const emailjsServiceId = 'service_q06m7o8'; // Tu Service ID de EmailJS
-    const emailjsTemplateId = 'template_62zn036'; // Tu Template ID de EmailJS
-    const emailjsPublicKey = 'zC5iSodo0VsHC4LbD'; // Tu Public Key de EmailJS
+    // EmailJS configuration (Updated with new Service ID)
+    const farmaciaEmail = "quimico@manufharm.com"; // Pharmacy email to receive orders
+    const emailjsServiceId = 'service_l0sv8a5'; // UPDATED Service ID
+    const emailjsTemplateId = 'template_62zn036'; // Your EmailJS Template ID
+    const emailjsPublicKey = 'zC5iSodo0VsHC4LbD'; // Your EmailJS Public Key
 
-    // Referencias a elementos del DOM para fácil acceso
+    // DOM element references for easy access
     const productTableBody = document.getElementById('product-table-body');
     const searchInput = document.getElementById('search-input');
     const cartButton = document.getElementById('cart-button');
@@ -381,7 +384,7 @@
     const cartGrandTotalElement = document.getElementById('cart-grand-total');
     const checkoutForm = document.getElementById('checkout-form');
     const checkoutButton = document.getElementById('checkout-button');
-    const checkoutButtonText = document.getElementById('checkout-button-text'); // Para el texto del botón de envío
+    const checkoutButtonText = document.getElementById('checkout-button-text'); // For the send button text
     const customerEmailInput = document.getElementById('customer-email');
     const emailSection = document.getElementById('email-section');
     const backToProductsCartButton = document.getElementById('back-to-products-cart');
@@ -392,7 +395,7 @@
     const loadingMessage = document.getElementById('loading-message');
     const errorMessage = document.getElementById('error-message');
 
-    // Referencias a elementos del DOM para la vista de detalle del producto
+    // DOM element references for the product detail view
     const detailImg = document.getElementById('detail-img');
     const detailDesc = document.getElementById('detail-desc');
     const detailEan = document.getElementById('detail-ean');
@@ -400,50 +403,50 @@
     const detailLaboratorio = document.getElementById('detail-laboratorio');
     const detailPrice = document.getElementById('detail-price');
     const detailVence = document.getElementById('detail-vence');
-    const detailStock = document.getElementById('detail-stock'); // Para mostrar stock en detalle
+    const detailStock = document.getElementById('detail-stock'); // To display stock in detail view
     const detailAddToCartBtn = document.getElementById('detail-add-to-cart-btn');
     const detailQuantityInput = document.getElementById('detail-quantity');
     const detailExtraDesc = document.getElementById('detail-extra-desc');
 
-    // Mapeo de meses para parsear fechas (ej: 'ene-24')
+    // Month mapping for parsing dates (e.g., 'ene-24')
     const meses = { 'ene': 0, 'feb': 1, 'mar': 2, 'abr': 3, 'may': 4, 'jun': 5, 'jul': 6, 'ago': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dic': 11 };
 
     /**
-     * Parsea una cadena de fecha en formato 'mes-año' (ej: 'jul-24') a un timestamp.
-     * Considera el último día del mes para la fecha de vencimiento.
-     * @param {string} fecloteStr - La cadena de fecha a parsear.
-     * @returns {number|null} Timestamp de la fecha o null si el formato es inválido.
+     * Parses a date string in 'month-year' format (e.g., 'jul-24') to a timestamp.
+     * Considers the last day of the month for the expiry date.
+     * @param {string} fecloteStr - The date string to parse.
+     * @returns {number|null} Timestamp of the date or null if the format is invalid.
      */
     const parseFecloteToTimestamp = (fecloteStr) => {
         if (!fecloteStr || typeof fecloteStr !== 'string') return null;
         const parts = fecloteStr.toLowerCase().split('-');
-        if (parts.length !== 2) return null; // Formato esperado: mes-aa
+        if (parts.length !== 2) return null; // Expected format: month-yy
 
         const mesStr = parts[0];
         const anioStr = parts[1];
         const mesNum = meses[mesStr];
 
-        if (typeof mesNum === 'undefined') return null; // Mes no reconocido
+        if (typeof mesNum === 'undefined') return null; // Unrecognized month
 
-        const anioCompleto = parseInt(anioStr, 10) + 2000; // Asume años 20xx
+        const anioCompleto = parseInt(anioStr, 10) + 2000; // Assumes 20xx years
         if (isNaN(anioCompleto)) return null;
 
         let fecha;
-        // Para la fecha de vencimiento, se considera el último día del mes.
-        if (mesNum === 11) { // Diciembre
+        // For the expiry date, the last day of the month is considered.
+        if (mesNum === 11) { // December
             fecha = new Date(anioCompleto, mesNum, 31); 
         } else {
             fecha = new Date(anioCompleto, mesNum + 1, 0); 
         }
         
-        if (isNaN(fecha.getTime())) return null; // Fecha inválida
+        if (isNaN(fecha.getTime())) return null; // Invalid date
         return fecha.getTime();
     };
 
     /**
-     * Parsea el texto de un archivo CSV de productos.
-     * @param {string} csvText - El contenido del archivo CSV como texto.
-     * @returns {Array<Object>} Un array de objetos de producto.
+     * Parses the text of a product CSV file.
+     * @param {string} csvText - The content of the CSV file as text.
+     * @returns {Array<Object>} An array of product objects.
      */
     const parseCSV = (csvText) => {
         const lines = csvText.trim().split(/\r\n|\n/); 
@@ -517,8 +520,8 @@
     };
 
     /**
-     * Carga los productos desde el archivo CSV.
-     * AHORA CARGA productos_pag.csv desde GitHub.
+     * Loads products from the CSV file.
+     * NOW LOADS productos_pag.csv from GitHub.
      */
     const fetchProducts = async () => {
         loadingMessage.classList.remove('hidden'); 
@@ -531,13 +534,13 @@
         try {
             const response = await fetch(githubCsvUrl); 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status} al cargar ${githubCsvUrl}`);
+                throw new Error(`HTTP error! status: ${response.status} when loading ${githubCsvUrl}`);
             }
             const csvText = await response.text();
             allProducts = parseCSV(csvText); 
 
             if (!Array.isArray(allProducts)) { 
-                throw new Error("La función parseCSV no devolvió un array.");
+                throw new Error("The parseCSV function did not return an array.");
             }
             
             displayProducts = [...allProducts]; 
@@ -556,13 +559,13 @@
         }
     };
 
-    // Funciones de utilidad para formatear moneda y calcular IVA
+    // Utility functions to format currency and calculate VAT
     const formatCurrency = (amount) => { const roundedAmount = Math.round(parseFloat(amount) || 0); return roundedAmount.toLocaleString('es-CL'); };
     const formatCurrencyWithSymbol = (amount) => { const roundedAmount = Math.round(parseFloat(amount) || 0); return `$${roundedAmount.toLocaleString('es-CL')}`; }
-    const calculatePriceWithVAT = (netAmount) => (parseFloat(netAmount) || 0) * 1.19; // IVA 19%
+    const calculatePriceWithVAT = (netAmount) => (parseFloat(netAmount) || 0) * 1.19; // 19% VAT
 
     /**
-     * Renderiza los productos en la tabla HTML.
+     * Renders products in the HTML table.
      */
     const renderProducts = () => {
         productTableBody.innerHTML = ''; 
@@ -594,7 +597,7 @@
         productsToRender.forEach(product => {
             if (!product || typeof product["DESCRIPCION DEL PRODUCTO"] !== 'string' || 
                 (typeof product["EAN-VALOR"] !== 'number' && typeof product["EAN-VALOR"] !== 'string')) {
-                console.warn("Producto omitido por datos incompletos:", product);
+                console.warn("Product skipped due to incomplete data:", product);
                 return;
             }
 
@@ -603,8 +606,8 @@
             row.dataset.ean = String(product["EAN-VALOR"]); 
 
             const placeholderText = encodeURIComponent(product["DESCRIPCION DEL PRODUCTO"].substring(0,3)); 
-            // Los data-label son para la vista móvil estilo "tarjeta"
-            // La celda de Cantidad y su input han sido eliminados.
+            // data-label attributes are for the "card" style mobile view
+            // The Quantity cell and its input have been removed.
             row.innerHTML = `
                 <td data-label="Imagen"><img src="https://placehold.co/50x50/e0e7ff/374151?text=${placeholderText}" alt="${product["DESCRIPCION DEL PRODUCTO"]}" class="h-10 w-10 rounded-md object-cover mx-auto" onerror="this.src='https://placehold.co/50x50/e0e7ff/374151?text=Error'"></td>
                 <td data-label="Descripción" class="product-description-cell cursor-pointer hover:text-blue-600" data-ean="${String(product["EAN-VALOR"])}"><div class="text-sm font-medium text-gray-900">${product["DESCRIPCION DEL PRODUCTO"]}</div><div class="text-xs text-gray-500">Vence: ${product.VENCE_ORIGINAL || 'N/A'}</div></td>
@@ -624,7 +627,7 @@
     };
 
     /**
-     * Renderiza los controles de paginación.
+     * Renders pagination controls.
      */
     const renderPaginationControls = () => {
         paginationControls.innerHTML = ''; 
@@ -713,8 +716,8 @@
     };
 
     /**
-     * Cambia a una página específica.
-     * @param {number} pageNumber - El número de página al que cambiar.
+     * Changes to a specific page.
+     * @param {number} pageNumber - The page number to change to.
      */
     const changePage = (pageNumber) => {
         if (pageNumber === currentPage) return;
@@ -725,8 +728,8 @@
     };
 
     /**
-     * Muestra la vista de detalle de un producto.
-     * @param {Event} event - El evento click en la celda de descripción.
+     * Shows the detail view of a product.
+     * @param {Event} event - The click event on the description cell.
      */
     const showProductDetail = (event) => {
         const eanFromCell = event.currentTarget.dataset.ean; 
@@ -741,7 +744,7 @@
             detailLaboratorio.textContent = product.LABORATORIO || 'N/A';
             detailPrice.textContent = formatCurrencyWithSymbol(product.NETO_NUMERICO);
             detailVence.textContent = product.VENCE_ORIGINAL || 'N/A';
-            detailStock.textContent = product.STOCK !== undefined ? product.STOCK : 'N/A'; // Mostrar Stock
+            detailStock.textContent = product.STOCK !== undefined ? product.STOCK : 'N/A'; // Display Stock
             detailQuantityInput.value = "1"; 
             detailAddToCartBtn.dataset.ean = String(product["EAN-VALOR"]); 
             detailExtraDesc.textContent = `Este es un ${product["DESCRIPCION DEL PRODUCTO"]}. Válido hasta ${product.VENCE_ORIGINAL || 'N/A'}. Más detalles pueden ir aquí si estuvieran disponibles en el CSV.`;
@@ -753,9 +756,9 @@
     };
     
     /**
-     * Maneja el evento de agregar un producto al carrito desde la lista principal.
-     * La cantidad ahora se toma del input de la fila de la tabla.
-     * @param {Event} event - El evento click en el botón "Agregar".
+     * Handles the event of adding a product to the cart from the main list.
+     * The quantity is now taken from the input in the table row.
+     * @param {Event} event - The click event on the "Add" button.
      */
     const handleAddToCart = (event) => {
         const eanFromButton = event.target.closest('button').dataset.ean;
@@ -764,7 +767,7 @@
             return;
         }
         
-        // Encontrar el input de cantidad asociado a esta fila
+        // Find the quantity input associated with this row
         const quantityInputInRow = event.target.closest('tr').querySelector('.product-quantity-input');
         const quantity = parseInt(quantityInputInRow.value);
 
@@ -776,7 +779,7 @@
 
         const productToAdd = allProducts.find(p => String(p["EAN-VALOR"]) === eanFromButton);
         if (productToAdd) {
-            // Comprobación de stock
+            // Stock check
             if (productToAdd.STOCK !== undefined && quantity > productToAdd.STOCK) {
                 showToast(`No hay suficiente stock para ${productToAdd["DESCRIPCION DEL PRODUCTO"]}. Disponible: ${productToAdd.STOCK}.`, 'warning');
                 if(quantityInputInRow) quantityInputInRow.value = productToAdd.STOCK > 0 ? productToAdd.STOCK : 1; 
@@ -802,7 +805,7 @@
         }
     };
 
-    // Funciones para manejar acciones en el carrito
+    // Functions to handle actions in the cart
     const handleRemoveFromCart = (event) => { const ean = event.target.closest('button').dataset.ean; cart = cart.filter(item => String(item.product["EAN-VALOR"]) !== ean); updateCart(); };
     const handleDecreaseQuantity = (event) => { const ean = event.target.closest('button').dataset.ean; const cartItem = cart.find(item => String(item.product["EAN-VALOR"]) === ean); if (cartItem) { cartItem.quantity -= 1; if (cartItem.quantity <= 0) { cart = cart.filter(item => String(item.product["EAN-VALOR"]) !== ean); } updateCart(); } };
     const handleIncreaseQuantity = (event) => { 
@@ -820,7 +823,7 @@
     };
 
     /**
-     * Actualiza la visualización del carrito y los totales.
+     * Updates the cart display and totals.
      */
     const updateCart = () => {
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -880,7 +883,7 @@
     };
 
     /**
-     * Filtra los productos según el término de búsqueda.
+     * Filters products based on the search term.
      */
     const filterProducts = () => {
         const searchTerm = searchInput.value.toLowerCase().trim();
@@ -901,8 +904,8 @@
     };
 
     /**
-     * Cambia la vista visible (productos, carrito, detalle).
-     * @param {string} viewId - El ID de la sección a mostrar.
+     * Changes the visible view (products, cart, detail).
+     * @param {string} viewId - The ID of the section to show.
      */
     const showView = (viewId) => {
         productView.classList.replace('view-visible', 'view-hidden');
@@ -916,9 +919,9 @@
     };
 
     /**
-     * Muestra un mensaje toast (notificación temporal).
-     * @param {string} message - El mensaje a mostrar.
-     * @param {string} type - Tipo de toast: 'success', 'error', 'warning'.
+     * Shows a toast message (temporary notification).
+     * @param {string} message - The message to display.
+     * @param {string} type - Toast type: 'success', 'error', 'warning'.
      */
     const showToast = (message, type = 'success') => {
         document.querySelectorAll('.toast-notification').forEach(t => t.remove()); 
@@ -945,26 +948,26 @@
         }, 3000); 
     };
 
-    // Inicializar EmailJS si las claves están presentes y no son placeholders
+    // Initialize EmailJS if keys are present and not placeholders
     if (emailjsPublicKey && emailjsPublicKey !== 'YOUR_PUBLIC_KEY' && 
         emailjsServiceId && emailjsServiceId !== 'YOUR_SERVICE_ID' && 
         emailjsTemplateId && emailjsTemplateId !== 'YOUR_TEMPLATE_ID') {
         try {
             emailjs.init({ publicKey: emailjsPublicKey });
         } catch (error) {
-            console.error("Error al inicializar EmailJS:", error);
+            console.error("Error initializing EmailJS:", error);
             showToast("Error al inicializar el sistema de correo.", 'error');
         }
     } else {
-        console.warn("EmailJS no configurado. El envío de pedidos por correo no funcionará.");
+        console.warn("EmailJS not configured. Sending orders by email will not work.");
         if (checkoutButton) { 
             checkoutButton.title = "La configuración de envío de correos está incompleta.";
         }
     }
 
     /**
-     * Maneja el proceso de checkout (envío del pedido por correo).
-     * @param {Event} event - El evento submit del formulario.
+     * Handles the checkout process (sending the order by email).
+     * @param {Event} event - The form submit event.
      */
     const handleCheckout = (event) => {
         event.preventDefault(); 
@@ -996,7 +999,7 @@
 
         cart.forEach(item => {
             if (!item.product) return;
-            const producto = item.product;
+            const producto = item.product; // Correctly using 'producto' which is defined from item.product
             const cantidad = item.quantity;
             const itemNetoUnitarioNumerico = parseFloat(producto.NETO_NUMERICO) || 0;
             const itemTotalNetoLineaNumerico = itemNetoUnitarioNumerico * cantidad;
@@ -1016,7 +1019,7 @@
                 laboratorio: producto.LABORATORIO || 'N/A',
                 vence: producto.VENCE_ORIGINAL || 'N/A',
                 neto_unitario: producto.NETO_ORIGINAL || '$0', 
-                stock: producto.STOCK !== undefined ? product.STOCK : 'N/A' // Incluir stock en el correo
+                stock: producto.STOCK !== undefined ? producto.STOCK : 'N/A' // Corrected: using producto.STOCK
             });
         });
 
@@ -1050,6 +1053,7 @@
                     errorText = `Error: ${error}`;
                 }
                 showToast(errorText, 'error');
+                console.error("EmailJS send error:", error); // Added console.error for better debugging
             })
             .finally(() => {
                 checkoutButton.disabled = cart.length === 0; 
@@ -1058,14 +1062,14 @@
             });
     };
 
-    // Event Listeners principales
+    // Main Event Listeners
     searchInput.addEventListener('input', filterProducts);
     cartButton.addEventListener('click', () => { showView('cart-view'); updateCart(); });
     backToProductsCartButton.addEventListener('click', () => showView('product-view'));
     backToProductsDetailButton.addEventListener('click', () => showView('product-view'));
     checkoutForm.addEventListener('submit', handleCheckout);
 
-    // Event listener para el botón "Agregar al carrito" en la vista de detalle
+    // Event listener for the "Add to cart" button in the detail view
     detailAddToCartBtn.addEventListener('click', () => {
         const eanString = detailAddToCartBtn.dataset.ean;
         if (!eanString) {
@@ -1080,7 +1084,7 @@
         }
         const productToAdd = allProducts.find(p => String(p["EAN-VALOR"]) === eanString);
         if (productToAdd) {
-            // Comprobación de stock para vista de detalle
+            // Stock check for detail view
             if (productToAdd.STOCK !== undefined && quantity > productToAdd.STOCK) {
                 showToast(`No hay suficiente stock para ${productToAdd["DESCRIPCION DEL PRODUCTO"]}. Disponible: ${productToAdd.STOCK}.`, 'warning');
                 detailQuantityInput.value = productToAdd.STOCK > 0 ? productToAdd.STOCK : 1;
@@ -1090,10 +1094,10 @@
             const existingCartItem = cart.find(item => String(item.product["EAN-VALOR"]) === eanString);
             if (existingCartItem) {
                 const newQuantity = existingCartItem.quantity + quantity;
-                // Comprobar stock si se aumenta cantidad de item existente
+                // Check stock if increasing quantity of existing item
                  if (productToAdd.STOCK !== undefined && newQuantity > productToAdd.STOCK) {
                     showToast(`No puedes agregar más ${productToAdd["DESCRIPCION DEL PRODUCTO"]}. Stock disponible: ${productToAdd.STOCK}. Ya tienes ${existingCartItem.quantity} en el carrito.`, 'warning');
-                    detailQuantityInput.value = 1; // Resetear input
+                    detailQuantityInput.value = 1; // Reset input
                     return;
                 }
                 existingCartItem.quantity = newQuantity;
@@ -1107,7 +1111,7 @@
         }
     });
 
-    // Cargar productos y actualizar carrito cuando el DOM esté listo
+    // Load products and update cart when DOM is ready
     document.addEventListener('DOMContentLoaded', () => {
         fetchProducts();
         updateCart(); 

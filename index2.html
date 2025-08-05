@@ -50,7 +50,7 @@
         .offer-carousel {
             display: flex;
             gap: 1rem;
-            animation: scroll 40s linear infinite;
+            animation: scroll 80s linear infinite;
         }
         .offer-carousel-wrapper:hover .offer-carousel {
             animation-play-state: paused;
@@ -65,10 +65,12 @@
             overflow: hidden;
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
         }
         .offer-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 4px 8px 0 rgb(0 0 0 / 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px 0 rgb(0 0 0 / 0.1);
         }
         .offer-card img {
             width: 100%;
@@ -77,23 +79,35 @@
             background-color: #fff;
             padding: 0.25rem;
         }
-        .offer-card-info { padding: 0.5rem; text-align: center; }
+        .offer-card-info { 
+            padding: 0.5rem; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            flex-grow: 1;
+        }
         .offer-card-name {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             color: #374151;
-            height: 38px;
-            line-height: 1.2;
+            line-height: 1.3;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
+            margin-bottom: 0.25rem;
         }
         .offer-card-price {
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 900;
             color: var(--color-primary-dark);
-            margin-top: 0.25rem;
+        }
+        .offer-card-expiry {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: #9ca3af; /* text-gray-400 */
+            margin-top: 2px;
         }
 
         .why-us-card {
@@ -189,7 +203,6 @@
             th:nth-child(6), td:nth-child(6) { width: 10%; text-align: right; }
         }
 
-        /* Botón de Agregar al Carrito Mejorado */
         .add-to-cart-btn {
             background-color: var(--color-action);
             color: white;
@@ -268,27 +281,52 @@
     </section>
 
     <section id="product-detail-view" class="view-hidden">
-        <!-- Contenido original de la vista de detalle -->
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Detalle del Producto</h1>
+            <button id="back-to-products-detail" class="text-blue-600 hover:text-blue-800 transition duration-300">
+                <i class="fas fa-arrow-left mr-2"></i>Volver a Productos
+            </button>
+        </div>
+        <div class="bg-white shadow-md rounded-lg p-6 md:p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
+                <div>
+                    <img id="detail-img" src="https://placehold.co/400x400/e0e7ff/374151?text=Producto" alt="Imagen del Producto" class="w-full h-auto object-cover rounded-lg shadow-sm mb-4 md:mb-0" onerror="this.src='https://placehold.co/400x400/e0e7ff/374151?text=Error en Img'">
+                </div>
+                <div class="flex flex-col justify-between h-full">
+                    <div>
+                        <h2 id="detail-desc" class="text-2xl font-semibold text-gray-800 mb-2">Nombre del Producto</h2>
+                        <p class="text-sm text-gray-500 mb-1">Código EAN/Ref.: <span id="detail-ean" class="font-medium text-gray-700">0000000000000</span></p>
+                        <p class="text-sm text-gray-500 mb-4">Código Interno: <span id="detail-interno" class="font-medium text-gray-700">N/A</span></p>
+                        <p class="text-sm text-gray-500 mb-4">Laboratorio: <span id="detail-laboratorio" class="font-medium text-gray-700">N/A</span></p>
+                        <p class="text-3xl font-bold text-blue-600 mb-4" id="detail-price">$0</p>
+                        <p class="text-gray-700 mb-4">
+                            <span class="font-semibold">Descripción adicional:</span>
+                            <span id="detail-extra-desc"> Aquí iría una descripción más detallada del producto si estuviera disponible.</span>
+                        </p>
+                        <p class="text-sm text-gray-500 mb-4">Fecha de Vencimiento: <span id="detail-vence" class="font-medium text-gray-700">DD/MM/AAAA</span></p>
+                        <p class="text-sm text-gray-500 mb-4">Stock Disponible: <span id="detail-stock" class="font-medium text-gray-700">N/A</span></p>
+                    </div>
+                    <div class="flex items-center space-x-4 mt-4">
+                        <label for="detail-quantity" class="block text-sm font-medium text-gray-700">Cantidad:</label>
+                        <input type="number" id="detail-quantity" value="1" min="1" class="w-24 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button id="detail-add-to-cart-btn" class="add-to-cart-btn" data-ean="">
+                            <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
+
     <section id="cart-view" class="view-hidden">
         <!-- Contenido original de la vista del carrito -->
     </section>
 
-    <section class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="why-us-card">
+    <section class="mt-12">
+        <div class="why-us-card max-w-2xl mx-auto">
             <div class="icon"><i class="fas fa-truck-fast"></i></div>
-            <h3 class="font-bold text-gray-800">Despacho Rápido</h3>
-            <p class="text-sm text-gray-600">Recibe tus productos en tiempo récord.</p>
-        </div>
-        <div class="why-us-card">
-            <div class="icon"><i class="fas fa-shield-halved"></i></div>
-            <h3 class="font-bold text-gray-800">Compra Segura</h3>
-            <p class="text-sm text-gray-600">Tus datos y tu compra están protegidos.</p>
-        </div>
-        <div class="why-us-card">
-            <div class="icon"><i class="fas fa-headset"></i></div>
-            <h3 class="font-bold text-gray-800">Atención Farmacéutica</h3>
-            <p class="text-sm text-gray-600">Asesoría profesional a tu disposición.</p>
+            <h3 class="font-bold text-gray-800">Despacho Rápido y Climatizado</h3>
+            <p class="text-sm text-gray-600">Según la norma, manteniendo la cadena de frío.</p>
         </div>
     </section>
 </main>
@@ -311,9 +349,9 @@
             <div>
                 <h3 class="uppercase">Contacto</h3>
                 <ul class="space-y-2 text-sm text-gray-400">
-                    <li><i class="fas fa-map-marker-alt fa-fw mr-2"></i>Av. Siempre Viva 742, Santiago</li>
-                    <li><i class="fas fa-phone fa-fw mr-2"></i>+56 9 1234 5678</li>
-                    <li><i class="fas fa-envelope fa-fw mr-2"></i>contacto@manufharm.com</li>
+                    <li><i class="fas fa-map-marker-alt fa-fw mr-2"></i>Av. Buzzeta 3558, Estación Central</li>
+                    <li><i class="fas fa-phone fa-fw mr-2"></i>+56 9 6617 7413</li>
+                    <li><i class="fas fa-envelope fa-fw mr-2"></i>contacto.manufharm@gmail.com</li>
                 </ul>
             </div>
         </div>
@@ -324,18 +362,30 @@
 </footer>
 
 <script>
-    // El JavaScript de la versión anterior se mantiene, ya que los cambios son solo de diseño.
-    // Se omiten las funciones de JS que no cambian para mantener la brevedad.
-    // El código completo de la versión anterior sigue siendo válido aquí.
     const bannerProducts = [
-        { name: "GLIBENCLAMIDA 5MG X60 COMP", price: 50, imageUrl: "https://www.farmaciasahumada.cl/dw/image/v2/BJVH_PRD/on/demandware.static/-/Sites-ahumada-master-catalog/default/dwc24c6761/images/products/84050/84050.jpg?sw=525&sh=525&sm=fit", ean: "7800007120410" },
-        { name: "METORENE COM 12,5MGX30", price: 2000, imageUrl: "https://www.farmaciasahumada.cl/dw/image/v2/BJVH_PRD/on/demandware.static/-/Sites-ahumada-master-catalog/default/dwaa4990f8/images/products/93409/93409.jpg?sw=525&sh=525&sm=fit", ean: "7800059006922" },
-        { name: "NISTATINA OVULOS 100.000 UI X 12", price: 1000, imageUrl: "https://www.laboratoriochile.cl/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2019/03/Nistatina_100000UI_12O_HD.jpg.webp", ean: "7800007142573" },
-        { name: "AZITROMICINA 200MG-5ML SUSP 15ML", price: 1100, imageUrl: "https://www.farmaciasahumada.cl/on/demandware.static/-/Sites-ahumada-master-catalog/default/dw16553406/images/products/89515/89515.jpg", ean: "7804640561388" },
-        { name: "LORATADINA JBE 5MG-5ML 90ML", price: 850, imageUrl: "https://www.farmaciasahumada.cl/on/demandware.static/-/Sites-ahumada-master-catalog/default/dwd8824c94/images/products/90385/90385.jpg", ean: "7800063130699" },
-        { name: "SERTRALINA 50MGX30 COMP", price: 260, imageUrl: "https://assets.farmaciameki.cl/images/093195d0-d484-48fe-8e4b-3db450c3804d/large.jpeg?u=1749217278615", ean: "7800007670595" },
-        { name: "TAPSIN ROJ-CAF X200 COMP", price: 5460, imageUrl: "https://assets.farmaciameki.cl/images/0e3ab861-4772-4aed-b376-d3e09eb2ec7a/large.jpeg?u=1722007631845", ean: "7800004000890" },
-        { name: "DOLORUB 5% CR 45G", price: 1800, imageUrl: "https://www.ecofarmacias.cl/wp-content/uploads/2019/07/Dolorub-45-g.jpg", ean: "7800004508594" }
+        { name: "GLIBENCLAMIDA 5MG X60 COMP", price: 50, imageUrl: "https://www.farmaciasahumada.cl/dw/image/v2/BJVH_PRD/on/demandware.static/-/Sites-ahumada-master-catalog/default/dwc24c6761/images/products/84050/84050.jpg?sw=525&sh=525&sm=fit", ean: "7800007120410", vence: "ago-25" },
+        { name: "METORENE COM 12,5MGX30 COM (megalabs)", price: 2000, imageUrl: "https://www.farmaciasahumada.cl/dw/image/v2/BJVH_PRD/on/demandware.static/-/Sites-ahumada-master-catalog/default/dwaa4990f8/images/products/93409/93409.jpg?sw=525&sh=525&sm=fit", ean: "7800059006922", vence: "sept-25" },
+        { name: "NISTATINA OVULOS 100.000 UI X 12", price: 1000, imageUrl: "https://www.laboratoriochile.cl/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2019/03/Nistatina_100000UI_12O_HD.jpg.webp", ean: "7800007142573", vence: "sept-25" },
+        { name: "AZITROMICINA 200MG-5ML SUSP 15ML (hospifarma)", price: 1100, imageUrl: "https://www.farmaciasahumada.cl/on/demandware.static/-/Sites-ahumada-master-catalog/default/dw16553406/images/products/89515/89515.jpg", ean: "7804640561388", vence: "oct-25" },
+        { name: "LORATADINA JBE 5MG-5ML 90ML (mintlab)", price: 850, imageUrl: "https://www.farmaciasahumada.cl/on/demandware.static/-/Sites-ahumada-master-catalog/default/dwd8824c94/images/products/90385/90385.jpg", ean: "7800063130699", vence: "oct-25" },
+        { name: "SERTRALINA 50MGX30 COMP (hetero)", price: 260, imageUrl: "https://assets.farmaciameki.cl/images/093195d0-d484-48fe-8e4b-3db450c3804d/large.jpeg?u=1749217278615", ean: "7800007670595", vence: "oct-25" },
+        { name: "CETIRIZINA CLORHIDRATO 10MGX30 COMP (cureaspring)", price: 550, imageUrl: "https://www.ecofarmacias.cl/wp-content/uploads/2024/06/cetirizina-clorhidrato-10-mg-x-30.jpg", ean: "7804673040362", vence: "oct-25" },
+        { name: "ASPIRINA FORTE 650MGX80 COMP (bayer)", price: 2441, imageUrl: "https://www.belgochilena.cl/wp-content/uploads/2023/05/aspirina-forte-650-mg-x-80-comp-bayer-860492_grande.jpg", ean: "7793640002543", vence: "nov-25" },
+        { name: "BALSAMO ANALGESICO UNGUENTO 15 G.", price: 880, imageUrl: "https://www.ecofarmacias.cl/wp-content/uploads/2021/01/balsamo-analgesico-pasteur-unguento-15-gr.jpg", ean: "7800068010415", vence: "nov-25" },
+        { name: "RIVOXA(B) 15MG 30 COMP", price: 31585, imageUrl: "https://static.salcobrandonline.cl/spree/products/128757/large_webp/580714_1.webp?1733411514", ean: "7800060163812", vence: "nov-25" },
+        { name: "(DM) ALGODÓN HIDRÓFILO PRENSADO ROLLO 1KG X 1 UNID.", price: 2800, imageUrl: "https://afchilespa.cl/wp-content/uploads/2022/10/DMAP000003.png", ean: "7804666063644", vence: "dic-25" },
+        { name: "CLORANFENICOL UNGÜENTO OFT 1% X3.5G.(hospifarma)", price: 934, imageUrl: "https://farmacia.araucomed.com/5717-large_default/cloranfenicol-1-unguento-oftalmico-35g-hospifarma.jpg", ean: "7804640560107", vence: "dic-25" },
+        { name: "TESTOSTERONA 250MG-MLx1 AMP (ethon)", price: 5000, imageUrl: "https://farmacia.araucomed.com/11975-large_default/testosterona-solucion-inyectable-250mg-1ml-x-1-ampolla-ethon.jpg", ean: "7804633500042", vence: "dic-25" },
+        { name: "VALAX 160MGX30COMP (saval)", price: 3667, imageUrl: "https://www.surfarma.cl/archivos/2020/11/30444_VALAX-160-MG-30-COM-1024x1024.jpg", ean: "7800060147102", vence: "dic-25" },
+        { name: "ZOPICLONA 7,5MGX30 COM REC (ascend)", price: 590, imageUrl: "https://assets.farmaciameki.cl/images/c3321932-28b0-4fb9-8105-4863f90c95de/thumb.png", ean: "7804650886020", vence: "dic-25" },
+        { name: "CLARIMIR F SOL OFT X15ml (andromaco)", price: 1900, imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRc9ymEwyu0A6nql1PFhqvKKi_0-1hlSh-Hsg&s", ean: "7800018000961", vence: "dic-25" },
+        { name: "ACUODE 50.000 UI SOL. ORAL CAJA X 2 SOBRES (COLECALCIFEROL)", price: 11750, imageUrl: "https://s3.us-east-2.amazonaws.com/basestack-publicbucketa6745c15-1ul2knuv6sta7/images/2cea5f0b-96e1-45ef-bace-1172c7e2834c/large.jpeg?u=1722007651771", ean: "7800026004791", vence: "ene-26" },
+        { name: "CLARAGINE X16 COMP (prater)", price: 700, imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfV82p89cNgxzC9OyrogLBkdOGh4BtlYJGAQ&s", ean: "7804918402054", vence: "ene-26" },
+        { name: "DOLORUB 5% CR 45G (maver)", price: 1800, imageUrl: "https://www.ecofarmacias.cl/wp-content/uploads/2019/07/Dolorub-45-g.jpg", ean: "7800004508594", vence: "ene-26" },
+        { name: "ESPIRONOLACTONA 25 MGX20 COMP BE", price: 608, imageUrl: "https://www.farmaciasahumada.cl/on/demandware.static/-/Sites-ahumada-master-catalog/default/dwf22ad1d2/images/products/1483/1483.jpg", ean: "7800034507567", vence: "ene-26" },
+        { name: "FORLIP 10 MG", price: 2570, imageUrl: "https://www.novasalud.cl/media/catalog/product/cache/1a10d735dfa619d2686c17030920c9f1/4/0/4004990.jpg", ean: "7804650882947", vence: "ene-26" },
+        { name: "ROSUVASTATINA [ES] 10MGX30 COMP REC (sevenpharma)", price: 1500, imageUrl: "https://farmex.cl/cdn/shop/files/rosuvastatina-10-mg-x-30-comp-recubiertos-seven-pharma-261717_1024x1024.jpg?v=1722573243", ean: "8903726193372", vence: "ene-26" },
+        { name: "TAPSIN ROJ-CAF X200 COMP (maver)", price: 5460, imageUrl: "https://assets.farmaciameki.cl/images/0e3ab861-4772-4aed-b376-d3e09eb2ec7a/large.jpeg?u=1722007631845", ean: "7800004000890", vence: "ene-26" }
     ];
 
     let allProducts = [], displayProducts = [], cart = [], currentPage = 1;
@@ -354,7 +404,10 @@
                 <img src="${product.imageUrl}" alt="${product.name}" onerror="this.src='https://placehold.co/150x100/e0e7ff/374151?text=Error'">
                 <div class="offer-card-info">
                     <div class="offer-card-name">${product.name}</div>
-                    <div class="offer-card-price">${formatCurrencyWithSymbol(product.price)}</div>
+                    <div>
+                        <div class="offer-card-price">${formatCurrencyWithSymbol(product.price)}</div>
+                        <div class="offer-card-expiry">Vence: ${product.vence}</div>
+                    </div>
                 </div>
             </div>
         `).join('');

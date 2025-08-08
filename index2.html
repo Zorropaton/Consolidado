@@ -782,44 +782,57 @@
         checkoutButtonText.textContent = 'Enviando...';
         
         let totalNetoGeneral = 0;
-        const orderItemsDetails = cart.map(item => {
+        
+        // Creamos una LISTA de productos (un array de objetos) que coincide con {{#orders}}
+        const orderItems = cart.map(item => {
             const itemTotalNeto = item.product.NETO_NUMERICO * item.quantity;
             totalNetoGeneral += itemTotalNeto;
-            return `
-                <tr>
-                    <td style="padding: 5px;">${item.product.DESCPROD}</td>
-                    <td style="padding: 5px; text-align: center;">${item.quantity}</td>
-                    <td style="padding: 5px; text-align: right;">${formatCurrencyWithSymbol(itemTotalNeto)}</td>
-                </tr>
-            `;
-        }).join('');
+            
+            // Cada objeto tiene los "valores" que tu plantilla necesita para cada producto
+            return {
+                image_url: item.product.IMAGEN || 'https://placehold.co/64x64/e0e7ff/374151?text=Med',
+                name: item.product.DESCPROD,
+                ean: item.product["EAN-VALOR"] || 'N/A',
+                interno: item.product.PRODUCTO || 'N/A',
+                laboratorio: item.product.LABORATORIO || 'N/A',
+                vence: item.product.FECLOTE || 'N/A',
+                units: item.quantity,
+                neto_unitario: formatCurrencyWithSymbol(item.product.NETO_NUMERICO),
+                total_neto_linea: formatCurrencyWithSymbol(itemTotalNeto)
+            };
+        });
         
         const totalIVAGeneral = totalNetoGeneral * 0.19;
         const totalFinalGeneral = totalNetoGeneral + totalIVAGeneral;
 
+        // Empaquetamos todos los datos para que coincidan con tu plantilla
         const templateParams = {
             order_id: `MFH-${Date.now()}`,
-            // --- CORRECCIÓN AQUÍ ---
-            // Ahora enviamos la variable "email" que tu plantilla espera.
             email: customerEmailValue, 
+            from_name: "Drogueria Manufharm",
+            reply_to: customerEmailValue,
+
+            // Aquí enviamos la lista de productos que creamos arriba
+            orders: orderItems,
             
-            // También enviamos el email de la farmacia por si lo necesitas en el futuro
-            pharmacy_email: farmaciaEmail, 
+            // Agrupamos los costos en un objeto "cost", como lo espera tu plantilla
+            cost: {
+                subtotal_neto: formatCurrencyWithSymbol(totalNetoGeneral),
+                shipping: "$0", // Puedes cambiar este valor si tienes costos de envío
+                tax: formatCurrencyWithSymbol(totalIVAGeneral),
+                total: formatCurrencyWithSymbol(totalFinalGeneral)
+            },
             
-            // Dejamos el resto de las variables como estaban
-            items_html: orderItemsDetails,
-            total_neto: formatCurrencyWithSymbol(totalNetoGeneral),
-            total_iva: formatCurrencyWithSymbol(totalIVAGeneral),
-            total_final: formatCurrencyWithSymbol(totalFinalGeneral),
-            from_name: "Drogueria Manufharm" // Variable que tu plantilla parece usar
+            // Variable extra que tu plantilla usa
+            customer_rut: "No especificado"
         };
 
         emailjs.send(emailjsServiceId, emailjsTemplateId, templateParams)
             .then((response) => {
                 showToast('¡Pedido enviado con éxito!', 'success');
-                cart = []; // Vaciar carrito
+                cart = [];
                 updateCart();
-                customerEmailInput.value = ''; // Limpiar el campo de email
+                customerEmailInput.value = '';
             }, (error) => {
                 showToast(`Error al enviar: ${error.text}`, 'error');
             })
@@ -829,6 +842,7 @@
             });
     };
 // #endregion
+
 
 // #region --- 7. EVENT LISTENERS Y EJECUCIÓN INICIAL ---
     document.addEventListener('DOMContentLoaded', () => {

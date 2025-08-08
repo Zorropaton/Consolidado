@@ -324,10 +324,16 @@
     
             <!-- Totales y Formulario de Checkout -->
             <form id="checkout-form" class="border-t border-gray-200 pt-4">
+                <!-- Totales -->
                 <div class="space-y-2 mb-6">
                     <div class="flex justify-between items-center">
                         <span class="text-lg font-semibold text-gray-700">Total Neto:</span>
                         <span id="cart-total" class="text-xl font-bold text-gray-900">$0</span>
+                    </div>
+                    <!-- NUEVA FILA PARA EL DESCUENTO (oculta por defecto) -->
+                    <div id="discount-row" class="flex justify-between items-center text-red-600 hidden">
+                        <span class="text-lg font-semibold">Descuento:</span>
+                        <span id="cart-discount" class="text-xl font-bold">-$0</span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-lg font-semibold text-gray-700">IVA (19%):</span>
@@ -336,6 +342,15 @@
                     <div class="flex justify-between items-center text-blue-600">
                         <span class="text-xl font-bold">Total Final:</span>
                         <span id="cart-grand-total" class="text-2xl font-bold">$0</span>
+                    </div>
+                </div>
+
+                <!-- NUEVA SECCIÓN DE CUPÓN (oculta si el carrito está vacío) -->
+                <div id="coupon-section" class="mt-4 mb-4 border-t pt-4 hidden">
+                    <label for="coupon-code" class="block text-sm font-medium text-gray-700 mb-1">¿Tienes un cupón de descuento?</label>
+                    <div class="flex space-x-2">
+                        <input type="text" id="coupon-code" placeholder="Ingrese cupón" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+                        <button type="button" id="apply-coupon-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition">Aplicar</button>
                     </div>
                 </div>
     
@@ -396,25 +411,29 @@
 <script>
 // #region --- 1. CONFIGURACIÓN Y VARIABLES GLOBALES ---
     let allProducts = [], displayProducts = [], cart = [], currentPage = 1;
-    const itemsPerPage = 10;
-    const farmaciaEmail = "contacto.manufharm@gmail.com"; // El correo que recibirá el pedido
+    let appliedCoupon = null;
+    let discountPercentage = 0;
+    const farmaciaEmail = "contacto.manufharm@gmail.com"; 
 
-    // --- CREDENCIALES CORREGIDAS ---
-    const emailjsServiceId = 'service_0leyw2k';    // CORREGIDO
-    const emailjsTemplateId = 'template_62zn036';   // Tu Template ID
-    const emailjsPublicKey = 'zC5iSodo0VsHC4LbD';     // Tu Public Key (API Key)
+    const emailjsServiceId = 'service_0leyw2k';
+    const emailjsTemplateId = 'template_62zn036';
+    const emailjsPublicKey = 'zC5iSodo0VsHC4LbD';
 
-    // --- Selectores del DOM ---
+    // Selectores del DOM
     const getEl = (id) => document.getElementById(id);
     const productTableBody = getEl('product-table-body'), searchInput = getEl('search-input'), cartButton = getEl('cart-button'), paginationControls = getEl('pagination-controls'), loadingMessage = getEl('loading-message'), errorMessage = getEl('error-message'), noResultsMessage = getEl('no-results'), offerCarousel = getEl('offer-carousel'), productView = getEl('product-view'), cartView = getEl('cart-view'), productDetailView = getEl('product-detail-view');
     const detailImg = getEl('detail-img'), detailDesc = getEl('detail-desc'), detailEan = getEl('detail-ean'), detailInterno = getEl('detail-interno'), detailLaboratorio = getEl('detail-laboratorio'), detailPrice = getEl('detail-price'), detailVence = getEl('detail-vence'), detailStock = getEl('detail-stock'), detailAddToCartBtn = getEl('detail-add-to-cart-btn'), detailQuantityInput = getEl('detail-quantity'), detailExtraDesc = getEl('detail-extra-desc');
     const cartCount = getEl('cart-count'), cartItemsContainer = getEl('cart-items'), cartTotalElement = getEl('cart-total'), cartTaxElement = getEl('cart-tax'), cartGrandTotalElement = getEl('cart-grand-total'), checkoutForm = getEl('checkout-form'), checkoutButton = getEl('checkout-button'), checkoutButtonText = getEl('checkout-button-text'), customerEmailInput = getEl('customer-email'), emailSection = getEl('email-section'), emptyCartMessage = getEl('empty-cart-message');
+    // NUEVOS Selectores para el cupón
+    const couponSection = getEl('coupon-section');
+    const couponInput = getEl('coupon-code');
+    const applyCouponBtn = getEl('apply-coupon-btn');
+    const discountRow = getEl('discount-row');
+    const cartDiscountElement = getEl('cart-discount');
 // #endregion
 
 // #region --- 2. FUNCIONES AUXILIARES (Moneda, Notificaciones, etc.) ---
     const formatCurrencyWithSymbol = (amount) => `$${Math.round(parseFloat(amount) || 0).toLocaleString('es-CL')}`;
-    const calculatePriceWithVAT = (netAmount) => (parseFloat(netAmount) || 0) * 1.19;
-
     const showToast = (message, type = 'success') => {
         const toast = document.createElement('div');
         const colors = { success: 'bg-green-600', error: 'bg-red-600', warning: 'bg-yellow-500 text-black' };
@@ -467,8 +486,8 @@
     const renderProducts = () => {
         productTableBody.innerHTML = '';
         noResultsMessage.classList.toggle('hidden', displayProducts.length > 0 || !loadingMessage.classList.contains('hidden'));
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const productsToRender = displayProducts.slice(startIndex, startIndex + itemsPerPage);
+        const startIndex = (currentPage - 1) * 10;
+        const productsToRender = displayProducts.slice(startIndex, startIndex + 10);
         productsToRender.forEach(product => {
             const row = document.createElement('tr');
             row.className = 'hover:bg-gray-50';
@@ -492,7 +511,7 @@
 
     const renderPaginationControls = () => {
         paginationControls.innerHTML = '';
-        const totalPages = Math.ceil(displayProducts.length / itemsPerPage);
+        const totalPages = Math.ceil(displayProducts.length / 10);
         if (totalPages <= 1) return;
         const createButton = (html, page, isDisabled = false, isActive = false) => {
             const button = document.createElement('button');
@@ -529,27 +548,6 @@
     const bannerProducts = [
         { name: "GLIBENCLAMIDA 5MG X60 COMP", price: 50, imageUrl: "https://www.farmaciasahumada.cl/dw/image/v2/BJVH_PRD/on/demandware.static/-/Sites-ahumada-master-catalog/default/dwc24c6761/images/products/84050/84050.jpg?sw=525&sh=525&sm=fit", ean: "7800007120410", vence: "ago-25" },
         { name: "METORENE COM 12,5MGX30 COM (megalabs)", price: 2000, imageUrl: "https://www.farmaciasahumada.cl/dw/image/v2/BJVH_PRD/on/demandware.static/-/Sites-ahumada-master-catalog/default/dwaa4990f8/images/products/93409/93409.jpg?sw=525&sh=525&sm=fit", ean: "7800059006922", vence: "sept-25" },
-        { name: "NISTATINA OVULOS 100.000 UI X 12", price: 1000, imageUrl: "https://www.laboratoriochile.cl/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2019/03/Nistatina_100000UI_12O_HD.jpg.webp", ean: "7800007142573", vence: "sept-25" },
-        { name: "AZITROMICINA 200MG-5ML SUSP 15ML (hospifarma)", price: 1100, imageUrl: "https://www.farmaciasahumada.cl/on/demandware.static/-/Sites-ahumada-master-catalog/default/dw16553406/images/products/89515/89515.jpg", ean: "7804640561388", vence: "oct-25" },
-        { name: "LORATADINA JBE 5MG-5ML 90ML (mintlab)", price: 850, imageUrl: "https://www.farmaciasahumada.cl/on/demandware.static/-/Sites-ahumada-master-catalog/default/dwd8824c94/images/products/90385/90385.jpg", ean: "7800063130699", vence: "oct-25" },
-        { name: "SERTRALINA 50MGX30 COMP (hetero)", price: 260, imageUrl: "https://assets.farmaciameki.cl/images/093195d0-d484-48fe-8e4b-3db450c3804d/large.jpeg?u=1749217278615", ean: "7800007670595", vence: "oct-25" },
-        { name: "CETIRIZINA CLORHIDRATO 10MGX30 COMP (cureaspring)", price: 550, imageUrl: "https://www.ecofarmacias.cl/wp-content/uploads/2024/06/cetirizina-clorhidrato-10-mg-x-30.jpg", ean: "7804673040362", vence: "oct-25" },
-        { name: "ASPIRINA FORTE 650MGX80 COMP (bayer)", price: 2441, imageUrl: "https://www.belgochilena.cl/wp-content/uploads/2023/05/aspirina-forte-650-mg-x-80-comp-bayer-860492_grande.jpg", ean: "7793640002543", vence: "nov-25" },
-        { name: "BALSAMO ANALGESICO UNGUENTO 15 G.", price: 880, imageUrl: "https://www.ecofarmacias.cl/wp-content/uploads/2021/01/balsamo-analgesico-pasteur-unguento-15-gr.jpg", ean: "7800068010415", vence: "nov-25" },
-        { name: "RIVOXA(B) 15MG 30 COMP", price: 31585, imageUrl: "https://static.salcobrandonline.cl/spree/products/128757/large_webp/580714_1.webp?1733411514", ean: "7800060163812", vence: "nov-25" },
-        { name: "(DM) ALGODÓN HIDRÓFILO PRENSADO ROLLO 1KG X 1 UNID.", price: 2800, imageUrl: "https://afchilespa.cl/wp-content/uploads/2022/10/DMAP000003.png", ean: "7804666063644", vence: "dic-25" },
-        { name: "CLORANFENICOL UNGÜENTO OFT 1% X3.5G.(hospifarma)", price: 934, imageUrl: "https://farmacia.araucomed.com/5717-large_default/cloranfenicol-1-unguento-oftalmico-35g-hospifarma.jpg", ean: "7804640560107", vence: "dic-25" },
-        { name: "TESTOSTERONA 250MG-MLx1 AMP (ethon)", price: 5000, imageUrl: "https://farmacia.araucomed.com/11975-large_default/testosterona-solucion-inyectable-250mg-1ml-x-1-ampolla-ethon.jpg", ean: "7804633500042", vence: "dic-25" },
-        { name: "VALAX 160MGX30COMP (saval)", price: 3667, imageUrl: "https://www.surfarma.cl/archivos/2020/11/30444_VALAX-160-MG-30-COM-1024x1024.jpg", ean: "7800060147102", vence: "dic-25" },
-        { name: "ZOPICLONA 7,5MGX30 COM REC (ascend)", price: 590, imageUrl: "https://assets.farmaciameki.cl/images/c3321932-28b0-4fb9-8105-4863f90c95de/thumb.png", ean: "7804650886020", vence: "dic-25" },
-        { name: "CLARIMIR F SOL OFT X15ml (andromaco)", price: 1900, imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRc9ymEwyu0A6nql1PFhqvKKi_0-1hlSh-Hsg&s", ean: "7800018000961", vence: "dic-25" },
-        { name: "ACUODE 50.000 UI SOL. ORAL CAJA X 2 SOBRES (COLECALCIFEROL)", price: 11750, imageUrl: "https://s3.us-east-2.amazonaws.com/basestack-publicbucketa6745c15-1ul2knuv6sta7/images/2cea5f0b-96e1-45ef-bace-1172c7e2834c/large.jpeg?u=1722007651771", ean: "7800026004791", vence: "ene-26" },
-        { name: "CLARAGINE X16 COMP (prater)", price: 700, imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfV82p89cNgxzC9OyrogLBkdOGh4BtlYJGAQ&s", ean: "7804918402054", vence: "ene-26" },
-        { name: "DOLORUB 5% CR 45G (maver)", price: 1800, imageUrl: "https://www.ecofarmacias.cl/wp-content/uploads/2019/07/Dolorub-45-g.jpg", ean: "7800004508594", vence: "ene-26" },
-        { name: "ESPIRONOLACTONA 25 MGX20 COMP BE", price: 608, imageUrl: "https://www.farmaciasahumada.cl/on/demandware.static/-/Sites-ahumada-master-catalog/default/dwf22ad1d2/images/products/1483/1483.jpg", ean: "7800034507567", vence: "ene-26" },
-        { name: "FORLIP 10 MG", price: 2570, imageUrl: "https://www.novasalud.cl/media/catalog/product/cache/1a10d735dfa619d2686c17030920c9f1/4/0/4004990.jpg", ean: "7804650882947", vence: "ene-26" },
-        { name: "ROSUVASTATINA [ES] 10MGX30 COMP REC (sevenpharma)", price: 1500, imageUrl: "https://farmex.cl/cdn/shop/files/rosuvastatina-10-mg-x-30-comp-recubiertos-seven-pharma-261717_1024x1024.jpg?v=1722573243", ean: "8903726193372", vence: "ene-26" },
-        { name: "TAPSIN ROJ-CAF X200 COMP (maver)", price: 5460, imageUrl: "https://assets.farmaciameki.cl/images/0e3ab861-4772-4aed-b376-d3e09eb2ec7a/large.jpeg?u=1722007631845", ean: "7800004000890", vence: "ene-26" }
     ];
 
     const renderOfferCarousel = () => {
@@ -578,14 +576,8 @@
             product = bannerProducts.find(p => p.ean === ean);
             if (product) {
                 product = {
-                    IMAGEN: product.imageUrl,
-                    DESCPROD: product.name,
-                    "EAN-VALOR": product.ean,
-                    PRODUCTO: 'N/A',
-                    LABORATORIO: 'N/A',
-                    NETO_NUMERICO: product.price,
-                    FECLOTE: product.vence,
-                    STOCK: 'N/A'
+                    IMAGEN: product.imageUrl, DESCPROD: product.name, "EAN-VALOR": product.ean, PRODUCTO: 'N/A',
+                    LABORATORIO: 'N/A', NETO_NUMERICO: product.price, FECLOTE: product.vence, STOCK: 'N/A'
                 };
             }
         }
@@ -656,7 +648,7 @@
     };
 // #endregion
 
-// #region --- 5. LÓGICA DEL CARRITO DE COMPRAS (¡LA PARTE MÁS IMPORTANTE!) ---
+// #region --- 5. LÓGICA DEL CARRITO Y CUPÓN ---
     const handleAddToCart = (event) => {
         const button = event.target.closest('button');
         const ean = button.dataset.ean;
@@ -685,25 +677,28 @@
     };
 
     const updateCart = () => {
-        localStorage.setItem('manufharmCart', JSON.stringify(cart)); // Guardar en localStorage
+        localStorage.setItem('manufharmCart', JSON.stringify(cart));
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
         cartCount.textContent = totalItems;
         
         cartItemsContainer.innerHTML = '';
-        let totalNeto = 0;
-
+        
         if (cart.length === 0) {
             emptyCartMessage.classList.remove('hidden');
             checkoutButton.disabled = true;
             emailSection.classList.add('hidden');
+            couponSection.classList.add('hidden'); // Ocultar cupón si el carrito está vacío
+            discountRow.classList.add('hidden'); // Ocultar descuento
+            discountPercentage = 0; // Resetear descuento
+            appliedCoupon = null;
         } else {
             emptyCartMessage.classList.add('hidden');
             checkoutButton.disabled = false;
             emailSection.classList.remove('hidden');
+            couponSection.classList.remove('hidden'); // Mostrar cupón si hay items
 
             cart.forEach(item => {
                 const itemTotal = item.product.NETO_NUMERICO * item.quantity;
-                totalNeto += itemTotal;
                 const itemElement = document.createElement('div');
                 itemElement.className = 'py-4 flex justify-between items-center flex-wrap';
                 itemElement.innerHTML = `
@@ -725,16 +720,42 @@
             });
         }
 
-        const tax = totalNeto * 0.19;
-        const grandTotal = totalNeto + tax;
+        // Lógica de cálculo de totales con descuento
+        let totalNeto = cart.reduce((sum, item) => sum + (item.product.NETO_NUMERICO * item.quantity), 0);
+        const discountAmount = totalNeto * discountPercentage;
+
+        if (discountAmount > 0) {
+            cartDiscountElement.textContent = `-${formatCurrencyWithSymbol(discountAmount)}`;
+            discountRow.classList.remove('hidden');
+        } else {
+            discountRow.classList.add('hidden');
+        }
+
+        const discountedTotalNeto = totalNeto - discountAmount;
+        const tax = discountedTotalNeto * 0.19;
+        const grandTotal = discountedTotalNeto + tax;
+
         cartTotalElement.textContent = formatCurrencyWithSymbol(totalNeto);
         cartTaxElement.textContent = formatCurrencyWithSymbol(tax);
         cartGrandTotalElement.textContent = formatCurrencyWithSymbol(grandTotal);
 
-        // Añadir listeners a los nuevos botones del carrito
         document.querySelectorAll('.increase-qty-btn').forEach(btn => btn.addEventListener('click', (e) => adjustQuantity(e.currentTarget.dataset.ean, 1)));
         document.querySelectorAll('.decrease-qty-btn').forEach(btn => btn.addEventListener('click', (e) => adjustQuantity(e.currentTarget.dataset.ean, -1)));
         document.querySelectorAll('.remove-item-btn').forEach(btn => btn.addEventListener('click', (e) => removeItem(e.currentTarget.dataset.ean)));
+    };
+
+    const applyCoupon = () => {
+        const code = couponInput.value.trim().toUpperCase();
+        if (code === 'DESC55') {
+            discountPercentage = 0.05; // 5%
+            appliedCoupon = code;
+            showToast('¡Cupón DESC55 aplicado con éxito!', 'success');
+        } else {
+            discountPercentage = 0;
+            appliedCoupon = null;
+            showToast('El cupón ingresado no es válido.', 'error');
+        }
+        updateCart(); // Recalcular y mostrar los nuevos totales
     };
 
     const adjustQuantity = (ean, amount) => {
@@ -781,14 +802,15 @@
         checkoutButton.disabled = true;
         checkoutButtonText.textContent = 'Enviando...';
         
-        let totalNetoGeneral = 0;
-        
-        // Creamos una LISTA de productos (un array de objetos) que coincide con {{#orders}}
+        // Recalcular totales finales para el correo
+        let totalNetoGeneral = cart.reduce((sum, item) => sum + (item.product.NETO_NUMERICO * item.quantity), 0);
+        const discountAmountGeneral = totalNetoGeneral * discountPercentage;
+        const discountedTotalNetoGeneral = totalNetoGeneral - discountAmountGeneral;
+        const totalIVAGeneral = discountedTotalNetoGeneral * 0.19;
+        const totalFinalGeneral = discountedTotalNetoGeneral + totalIVAGeneral;
+
         const orderItems = cart.map(item => {
             const itemTotalNeto = item.product.NETO_NUMERICO * item.quantity;
-            totalNetoGeneral += itemTotalNeto;
-            
-            // Cada objeto tiene los "valores" que tu plantilla necesita para cada producto
             return {
                 image_url: item.product.IMAGEN || 'https://placehold.co/64x64/e0e7ff/374151?text=Med',
                 name: item.product.DESCPROD,
@@ -802,28 +824,20 @@
             };
         });
         
-        const totalIVAGeneral = totalNetoGeneral * 0.19;
-        const totalFinalGeneral = totalNetoGeneral + totalIVAGeneral;
-
-        // Empaquetamos todos los datos para que coincidan con tu plantilla
         const templateParams = {
             order_id: `MFH-${Date.now()}`,
             email: customerEmailValue, 
             from_name: "Drogueria Manufharm",
             reply_to: customerEmailValue,
-
-            // Aquí enviamos la lista de productos que creamos arriba
             orders: orderItems,
-            
-            // Agrupamos los costos en un objeto "cost", como lo espera tu plantilla
             cost: {
                 subtotal_neto: formatCurrencyWithSymbol(totalNetoGeneral),
-                shipping: "$0", // Puedes cambiar este valor si tienes costos de envío
+                // Asegúrate de que tu plantilla de EmailJS tenga una variable como {{cost.discount}}
+                discount: formatCurrencyWithSymbol(discountAmountGeneral),
+                shipping: "$0",
                 tax: formatCurrencyWithSymbol(totalIVAGeneral),
                 total: formatCurrencyWithSymbol(totalFinalGeneral)
             },
-            
-            // Variable extra que tu plantilla usa
             customer_rut: "No especificado"
         };
 
@@ -831,6 +845,9 @@
             .then((response) => {
                 showToast('¡Pedido enviado con éxito!', 'success');
                 cart = [];
+                discountPercentage = 0; // Resetear descuento
+                appliedCoupon = null;
+                couponInput.value = ''; // Limpiar campo de cupón
                 updateCart();
                 customerEmailInput.value = '';
             }, (error) => {
@@ -843,10 +860,8 @@
     };
 // #endregion
 
-
 // #region --- 7. EVENT LISTENERS Y EJECUCIÓN INICIAL ---
     document.addEventListener('DOMContentLoaded', () => {
-        // Inicializa EmailJS si las claves están presentes
         if (emailjsPublicKey && emailjsServiceId && emailjsTemplateId) {
             emailjs.init(emailjsPublicKey);
         } else {
@@ -856,15 +871,16 @@
 
         renderOfferCarousel();
         fetchProducts();
-        loadCartFromStorage(); // Cargar carrito al iniciar
+        loadCartFromStorage();
 
         searchInput.addEventListener('input', filterProducts);
         getEl('back-to-products-detail').addEventListener('click', () => showView('product-view'));
         getEl('back-to-products-cart').addEventListener('click', () => showView('product-view'));
         cartButton.addEventListener('click', () => showView('cart-view'));
         checkoutForm.addEventListener('submit', handleCheckout);
+        // NUEVO Listener para el botón de aplicar cupón
+        applyCouponBtn.addEventListener('click', applyCoupon);
 
-        // Listener para el botón de agregar desde la vista de detalle
         detailAddToCartBtn.addEventListener('click', (e) => {
             const ean = e.currentTarget.dataset.ean;
             const quantity = parseInt(detailQuantityInput.value, 10);

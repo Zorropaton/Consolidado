@@ -9,10 +9,10 @@ export default async function handler(req, res) {
     }
 
     const body = {
-      apiKey: process.env.FLOW_API_KEY,   // definirás esto en Vercel
+      apiKey: process.env.FLOW_API_KEY,
       commerceOrder: ordenId,
       subject: descripcion || "Compra",
-      amount: montoCLP,                   // CLP enteros: 15990
+      amount: montoCLP,                 // CLP enteros
       currency: "CLP",
       email: emailCliente || "",
       urlConfirmation: "https://TU-DOMINIO/flow/confirmacion",
@@ -28,9 +28,9 @@ export default async function handler(req, res) {
     const data = await resp.json();
     if (!resp.ok) return res.status(500).json({ error: data });
 
-    // Flow retorna { url, token, ... }
+    // Flow responde { url, token, ... }
     return res.status(200).json({ urlPago: `${data.url}?token=${data.token}` });
   } catch (err) {
-    return res.status(500).json({ error: err.message || "Error interno" });
+    return res.status(500).json({ error: err?.message || "Error interno" });
   }
 }

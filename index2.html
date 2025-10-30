@@ -467,7 +467,7 @@
     const fetchProducts = async () => {
         loadingMessage.classList.remove('hidden');
         try {
-            const response = await fetch('/productos_pag.csv');
+            const response = await fetch('productos_pag.csv');
             if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
             const csvText = await response.text();
             allProducts = parseCSV(csvText);
@@ -930,4 +930,5 @@
 </body>
 </html>
 </p>
+
 
